@@ -247,6 +247,7 @@ npm run prepare          # lifecycle hook used by private Git installs
 - [Attribution and license notes](./ATTRIBUTION.md)
 - [Design system source of truth](./docs/DESIGN_SYSTEM.md)
 - [Component source references](./docs/COMPONENT_SOURCES.md)
+- [Designer prototype setup](./docs/DESIGNER_PROTOTYPE_SETUP.md)
 - [Migration notes](./docs/MIGRATION_NOTES.md)
 - [Design system usage audit](./docs/DESIGN_SYSTEM_USAGE_AUDIT.md)
 - [Contribution rules](./docs/CONTRIBUTING.md)
