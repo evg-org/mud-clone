@@ -42,9 +42,9 @@ Related references:
 | Avatar | MUD-clone supports MUD avatar sizes/types and adds a white background option. | RSC header/profile surfaces need this local variant. | Treat the white background as a MUD-clone extension and document further avatar variants here. |
 | Table alternatives | MUD-clone has `TableCard` as a small-screen alternative to `Table`. | RSC needs mobile/tablet representations of table rows. | Use `Table` for large-screen tabular data and `TableCard` for small-screen record cards. |
 | Detail rows | MUD-clone has `DetailRow` for label/value rows in cards, details pages, and modals. | The pattern repeats across RSC but has no one-to-one upstream component. | Use `DetailRow` instead of recreating two-cell label/content rows. |
-| Control preview cards | MUD-clone has `ControlCardSmall` for compact control-case previews. | RSC needs a reusable dashboard card for control cases with desktop, mobile, and responsive layouts. | Keep control data in the app; keep the reusable card shell in MUD-clone. Use the component subpath because it loads `MudIcon`. |
+| Control preview cards | Removed from MUD-clone. `ControlCardSmall` was pulled back to RSC. | The component encodes RSC control-domain behavior rather than a generic design-system primitive. | Do not import it from MUD-clone. Keep the RSC-owned implementation in RSC, and create a new generalized card API later if a reusable pattern emerges. |
 | Pagination | MUD-clone has `Pagination` primitives for paged record sets. | RSC needs the same pagination shell across table/list views, and the current implementation builds on `Button` and `MudIcon`. | Use `@mud-clone/components/pagination`; keep it subpath-only while it loads `MudIcon`. |
-| Metric cards | MUD-clone has `MetricCard` and `MetricCardGrid` for dashboard count/action cards. | The pattern is reusable beyond RSC but not a direct upstream primitive. | Keep product text/data in the app; keep the reusable card shell in MUD-clone. |
+| Metric cards | Removed from MUD-clone. `MetricCard` and `MetricCardGrid` were pulled back to RSC. | The components encode RSC dashboard behavior rather than a generic design-system primitive. | Do not import them from MUD-clone. Keep the RSC-owned implementation in RSC, and create a new generalized card API later if a reusable pattern emerges. |
 | Selection cards | MUD-clone has `SelectionCard` for larger selectable rows. | RSC profile role switching needs a selectable card row that is larger than compact menu items. | Keep role/profile data in the app; keep the reusable selectable shell in MUD-clone. Use the component subpath because it loads `MudIcon`. |
 | Section headings | MUD-clone has `SectionHeading` for section titles and title/count combinations. | RSC repeats this heading pattern across pages and needs consistent heading-small typography with optional color override. | Use `SectionHeading` instead of recreating section title/count typography in pages. |
 
@@ -55,7 +55,7 @@ Before changing or adding a component, classify the work:
 | Classification | Belongs in | Examples |
 | --- | --- | --- |
 | Direct MUD mapping | `mud-clone/src` | Button, Select, Link, Tag, Badge, Avatar, Table, Modal styles. |
-| MUD-clone extension | `mud-clone/src` plus this document | `DetailRow`, `TableCard`, `MetricCard`, optional Link visited behavior. |
+| MUD-clone extension | `mud-clone/src` plus this document | `DetailRow`, `TableCard`, `SelectionCard`, optional Link visited behavior. |
 | Product composition | RSC app | Page layouts, route-specific headers, mock/domain data, workflow-specific modals. |
 | Temporary migration bridge | RSC app shim files | Re-exports from `src/app/components/ui` to `@mud-clone`. |
 

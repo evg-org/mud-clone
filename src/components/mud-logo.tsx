@@ -3,8 +3,10 @@ import * as React from "react";
 import { cn } from "./utils";
 import { mudLogoNames, mudLogos } from "../generated/mud-logos";
 
+const mudLogoRegistry: Record<string, string> = mudLogos;
+
 function getMudLogoUrl(name: string) {
-  return mudLogos[name] ?? mudLogos[name.toLowerCase()];
+  return mudLogoRegistry[name] ?? mudLogoRegistry[name.toLowerCase()];
 }
 
 function shouldWarnMissingAsset() {

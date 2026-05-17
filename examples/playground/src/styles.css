@@ -538,8 +538,7 @@
 .icon-grid,
 .logo-grid,
 .inline-demo,
-.table-card-grid,
-.control-card-grid {
+.table-card-grid {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-16);
@@ -1968,14 +1967,6 @@
 
 .detail-row-long-stack {
   max-width: 400px;
-}
-
-.control-card-grid {
-  align-items: stretch;
-}
-
-.control-card-grid [data-slot="control-card-small"] {
-  max-width: 100%;
 }
 
 .table-preview-stack,

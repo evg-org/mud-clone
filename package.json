@@ -1,12 +1,13 @@
 {
   "name": "mud-clone",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1-prototype.1",
   "description": "React implementation of the Moldova government MUD design system, extended for reusable product patterns.",
   "license": "UNLICENSED",
   "type": "module",
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "ATTRIBUTION.md",
     "dist",
@@ -17,56 +18,149 @@
   ],
   "sideEffects": [
     "**/*.css",
+    "dist/assets/**/*",
     "src/assets/**/*"
   ],
   "scripts": {
-    "build": "npm run check:assets && npm run check:colors && npm run check:typography && vite build --config ./vite.config.ts && npm run copy:build-assets && npm run check:build-output",
+    "build": "npm run check:assets && npm run check:colors && npm run check:typography && vite build --config ./vite.config.ts && npm run build:types && npm run copy:build-assets && npm run check:build-output",
     "build:playground": "vite build --config ./examples/playground/vite.config.ts",
+    "build:types": "tsc -p ./tsconfig.declarations.json && npm run fix:declarations",
     "check": "npm run check:assets && npm run check:exports && npm run check:colors && npm run check:typography",
     "check:assets": "node ./scripts/generate-asset-registries.mjs --check",
     "check:build-output": "node ./scripts/check-build-output.mjs",
+    "check:consumer": "npm run build && node ./scripts/check-consumer-package.mjs",
     "check:colors": "node ./scripts/check-color-aliases.mjs",
     "check:exports": "node ./scripts/check-package-exports.mjs",
     "check:typography": "node ./scripts/check-typography-aliases.mjs",
     "copy:build-assets": "node ./scripts/copy-package-assets.mjs",
     "dev:playground": "vite --config ./examples/playground/vite.config.ts",
-    "generate:assets": "node ./scripts/generate-asset-registries.mjs"
+    "fix:declarations": "node ./scripts/fix-declaration-imports.mjs",
+    "generate:assets": "node ./scripts/generate-asset-registries.mjs",
+    "prepare": "npm run build"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./components/accordion": "./src/components/accordion.tsx",
-    "./components/avatar": "./src/components/avatar.tsx",
-    "./components/badge": "./src/components/badge.tsx",
-    "./components/button": "./src/components/button.tsx",
-    "./components/checkbox": "./src/components/checkbox.tsx",
-    "./components/chip": "./src/components/chip.tsx",
-    "./components/control-card-small": "./src/components/control-card-small.tsx",
-    "./components/detail-row": "./src/components/detail-row.tsx",
-    "./components/dialog": "./src/components/dialog.tsx",
-    "./components/dropdown-menu": "./src/components/dropdown-menu.tsx",
-    "./components/icon": "./src/components/icon.tsx",
-    "./components/input": "./src/components/input.tsx",
-    "./components/link": "./src/components/link.tsx",
-    "./components/menu": "./src/components/menu.tsx",
-    "./components/metric-card": "./src/components/metric-card.tsx",
-    "./components/modal": "./src/components/modal.tsx",
-    "./components/mud-icon": "./src/components/mud-icon.tsx",
-    "./components/mud-logo": "./src/components/mud-logo.tsx",
-    "./components/pagination": "./src/components/pagination.tsx",
-    "./components/radio-group": "./src/components/radio-group.tsx",
-    "./components/search-input": "./src/components/search-input.tsx",
-    "./components/selection-card": "./src/components/selection-card.tsx",
-    "./components/separator": "./src/components/separator.tsx",
-    "./components/section-heading": "./src/components/section-heading.tsx",
-    "./components/select": "./src/components/select.tsx",
-    "./components/switch": "./src/components/switch.tsx",
-    "./components/table": "./src/components/table.tsx",
-    "./components/table-card": "./src/components/table-card.tsx",
-    "./components/tabs": "./src/components/tabs.tsx",
-    "./components/tag": "./src/components/tag.tsx",
-    "./components/textarea": "./src/components/textarea.tsx",
-    "./styles/design-system.css": "./src/styles/design-system.css",
-    "./styles/fonts.css": "./src/styles/fonts.css"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./components/accordion": {
+      "types": "./dist/components/accordion.d.ts",
+      "import": "./dist/components/accordion.js"
+    },
+    "./components/avatar": {
+      "types": "./dist/components/avatar.d.ts",
+      "import": "./dist/components/avatar.js"
+    },
+    "./components/badge": {
+      "types": "./dist/components/badge.d.ts",
+      "import": "./dist/components/badge.js"
+    },
+    "./components/button": {
+      "types": "./dist/components/button.d.ts",
+      "import": "./dist/components/button.js"
+    },
+    "./components/checkbox": {
+      "types": "./dist/components/checkbox.d.ts",
+      "import": "./dist/components/checkbox.js"
+    },
+    "./components/chip": {
+      "types": "./dist/components/chip.d.ts",
+      "import": "./dist/components/chip.js"
+    },
+    "./components/detail-row": {
+      "types": "./dist/components/detail-row.d.ts",
+      "import": "./dist/components/detail-row.js"
+    },
+    "./components/dialog": {
+      "types": "./dist/components/dialog.d.ts",
+      "import": "./dist/components/dialog.js"
+    },
+    "./components/dropdown-menu": {
+      "types": "./dist/components/dropdown-menu.d.ts",
+      "import": "./dist/components/dropdown-menu.js"
+    },
+    "./components/icon": {
+      "types": "./dist/components/icon.d.ts",
+      "import": "./dist/components/icon.js"
+    },
+    "./components/input": {
+      "types": "./dist/components/input.d.ts",
+      "import": "./dist/components/input.js"
+    },
+    "./components/link": {
+      "types": "./dist/components/link.d.ts",
+      "import": "./dist/components/link.js"
+    },
+    "./components/menu": {
+      "types": "./dist/components/menu.d.ts",
+      "import": "./dist/components/menu.js"
+    },
+    "./components/modal": {
+      "types": "./dist/components/modal.d.ts",
+      "import": "./dist/components/modal.js"
+    },
+    "./components/mud-icon": {
+      "types": "./dist/components/mud-icon.d.ts",
+      "import": "./dist/components/mud-icon.js"
+    },
+    "./components/mud-logo": {
+      "types": "./dist/components/mud-logo.d.ts",
+      "import": "./dist/components/mud-logo.js"
+    },
+    "./components/pagination": {
+      "types": "./dist/components/pagination.d.ts",
+      "import": "./dist/components/pagination.js"
+    },
+    "./components/radio-group": {
+      "types": "./dist/components/radio-group.d.ts",
+      "import": "./dist/components/radio-group.js"
+    },
+    "./components/search-input": {
+      "types": "./dist/components/search-input.d.ts",
+      "import": "./dist/components/search-input.js"
+    },
+    "./components/selection-card": {
+      "types": "./dist/components/selection-card.d.ts",
+      "import": "./dist/components/selection-card.js"
+    },
+    "./components/separator": {
+      "types": "./dist/components/separator.d.ts",
+      "import": "./dist/components/separator.js"
+    },
+    "./components/section-heading": {
+      "types": "./dist/components/section-heading.d.ts",
+      "import": "./dist/components/section-heading.js"
+    },
+    "./components/select": {
+      "types": "./dist/components/select.d.ts",
+      "import": "./dist/components/select.js"
+    },
+    "./components/switch": {
+      "types": "./dist/components/switch.d.ts",
+      "import": "./dist/components/switch.js"
+    },
+    "./components/table": {
+      "types": "./dist/components/table.d.ts",
+      "import": "./dist/components/table.js"
+    },
+    "./components/table-card": {
+      "types": "./dist/components/table-card.d.ts",
+      "import": "./dist/components/table-card.js"
+    },
+    "./components/tabs": {
+      "types": "./dist/components/tabs.d.ts",
+      "import": "./dist/components/tabs.js"
+    },
+    "./components/tag": {
+      "types": "./dist/components/tag.d.ts",
+      "import": "./dist/components/tag.js"
+    },
+    "./components/textarea": {
+      "types": "./dist/components/textarea.d.ts",
+      "import": "./dist/components/textarea.js"
+    },
+    "./styles/design-system.css": "./dist/styles/design-system.css",
+    "./styles/fonts.css": "./dist/styles/fonts.css"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "1.1.3",
@@ -89,9 +183,12 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
+    "@types/react": "18.3.28",
+    "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "4.7.0",
     "tailwindcss": "4.1.12",
     "tw-animate-css": "1.3.8",
+    "typescript": "5.9.3",
     "vite": "6.3.5"
   }
 }

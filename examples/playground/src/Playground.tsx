@@ -34,9 +34,7 @@ import {
   TagsPage,
 } from "./pages/components";
 import {
-  ControlCardsPage,
   DetailRowsPage,
-  MetricsPage,
   SectionHeadingPage,
 } from "./pages/patterns";
 
@@ -92,8 +90,6 @@ const routes: DocsRoute[] = [
   { component: SelectionPage, href: "/selection", label: "Selection" },
   { component: TableCardPage, href: "/table-card", label: "Table Card" },
   { component: OverlaysTabsPage, href: "/overlays-tabs", label: "Overlays & Tabs" },
-  { component: MetricsPage, href: "/metric-cards", label: "Metric Cards" },
-  { component: ControlCardsPage, href: "/control-cards", label: "Control Cards" },
   { component: DetailRowsPage, href: "/detail-row", label: "Detail Row" },
   { component: SectionHeadingPage, href: "/section-heading", label: "Section Heading" },
 ];
@@ -130,9 +126,6 @@ const routeAliases = new Map([
   ["/custom-components/selection", "/selection"],
   ["/custom-components/table-card", "/table-card"],
   ["/custom-components/overlays-tabs", "/overlays-tabs"],
-  ["/custom-components/metrics", "/metric-cards"],
-  ["/custom-components/metric-cards", "/metric-cards"],
-  ["/custom-components/control-cards", "/control-cards"],
   ["/custom-components/detail-row", "/detail-row"],
   ["/custom-components/detail-rows", "/detail-row"],
   ["/custom-components/section-heading", "/section-heading"],
@@ -140,9 +133,6 @@ const routeAliases = new Map([
   ["/patterns/selection", "/selection"],
   ["/patterns/table-card", "/table-card"],
   ["/patterns/overlays-tabs", "/overlays-tabs"],
-  ["/patterns/metrics", "/metric-cards"],
-  ["/patterns/metric-cards", "/metric-cards"],
-  ["/patterns/control-cards", "/control-cards"],
   ["/patterns/detail-row", "/detail-row"],
   ["/patterns/detail-rows", "/detail-row"],
   ["/patterns/section-heading", "/section-heading"],

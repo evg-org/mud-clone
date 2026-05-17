@@ -391,10 +391,12 @@ function TableSortButton({
   const isAscending = direction === "asc";
   const isSorted = direction !== "none";
   const resolvedMaxLines = resolveMaxLines(maxLines, 2);
+  const ariaSort =
+    direction === "asc" ? "ascending" : direction === "desc" ? "descending" : "none";
 
   return (
     <button
-      aria-sort={direction}
+      aria-sort={ariaSort}
       className={cn(
         "inline-flex w-full min-w-0 cursor-pointer items-center gap-[var(--spacing-6)] border-0 bg-transparent p-0 text-left [font:inherit] [color:inherit]",
         className,

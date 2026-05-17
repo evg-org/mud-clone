@@ -53,12 +53,18 @@ component file.
 | Local primitive | Upstream anchors | Notes |
 | --- | --- | --- |
 | `DetailRow` | `Components/table.html`, `Components/scss/components/_table.scss`, typography and spacing tokens | Reusable label/value row for cards, details pages, tables on small screens, and modals. |
-| `ControlCardSmall` | Card, tag, icon, typography, spacing, radius, border, and focus tokens | Compact control-case preview card created for RSC and promoted directly to MUD-clone. Subpath-only because it loads `MudIcon`. |
 | `Pagination` | Button, link, icon, typography, spacing, and focus tokens | Reusable paged record-set navigation created for RSC and promoted to MUD-clone. Subpath-only because it loads `MudIcon`. |
 | `SelectionCard` | Menu selected-state behavior, card border/radius tokens, typography, spacing, and icon tokens | Larger selectable row/card pattern created for RSC profile role switching and promoted to MUD-clone. Subpath-only because it loads `MudIcon`. |
 | `SectionHeading` | Typography, spacing, and color tokens | Reusable section title and title/count pattern created for RSC and promoted to MUD-clone. |
 | `TableCard` | `Components/table.html`, `Components/scss/components/_table.scss`, typography, spacing, radius, and border tokens | Small-screen alternative view for tabular records. |
-| `MetricCard` | Typography, spacing, radius, border, and icon tokens | Dashboard count/action card pattern created for RSC and promoted to MUD-clone. |
+
+## Pulled Back To RSC
+
+`MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were removed from
+MUD-clone and pulled back to RSC because they encode RSC dashboard and
+control-domain behavior. They should not be imported from MUD-clone. If a
+generic reusable card pattern is needed later, add it as a new MUD-clone
+extension with a fresh API and new source notes.
 
 ## How To Use This File
 

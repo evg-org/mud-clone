@@ -10,7 +10,7 @@ work, product-specific RSC work, or a temporary migration bridge.
 
 | Change type | Location | Examples |
 | --- | --- | --- |
-| Reusable design-system primitive | `mud-clone/src/components` | Button, Link, Select, Table, TableCard, DetailRow, MetricCard, Modal, Dialog. |
+| Reusable design-system primitive | `mud-clone/src/components` | Button, Link, Select, Table, TableCard, DetailRow, Modal, Dialog. |
 | Foundation token, asset, or style | `mud-clone/src/styles` or `mud-clone/src/assets` | Color aliases, typography, shadows, spacing, Onest fonts, MUD icons, MUD logos. |
 | Package documentation | `mud-clone/docs` | Source references, migration notes, contribution rules, standalone package guidance. |
 | RSC product composition | RSC app files outside `mud-clone` | Pages, routes, mock/domain data, workflow-specific layouts, product-specific copy. |
@@ -51,15 +51,14 @@ Use this workflow for reusable component work:
 4. Add or update the package export in `mud-clone/package.json`.
 5. Add the component to the root `@mud-clone` barrel only when it is
    lightweight and does not load the MUD icon/logo registry.
-6. Keep asset-heavy components subpath-only.
+6. Prefer subpaths for asset-heavy components and uncommon patterns.
 7. If RSC still imports the old path, keep `src/app/components/ui/...` as a
    compatibility shim that re-exports from `@mud-clone`.
 8. Update docs when ownership, export policy, source references, or intentional
    differences change.
-9. If MUD icon or logo assets changed, run
-   `npm --prefix mud-clone run generate:assets`.
-10. Run `npm --prefix mud-clone run check`.
-11. Run `npm run build` from the repository root.
+9. If MUD icon or logo assets changed, run `npm run generate:assets`.
+10. Run `npm run check`.
+11. Run `npm run build` from the package root.
 12. Remove generated `dist` unless the task explicitly needs build artifacts.
 
 ## Applying New Designs
@@ -72,8 +71,6 @@ When implementing new designs in RSC:
 - Use `Table` with `TableCard` for responsive tabular data.
 - Use `DetailRow` for repeated label/value rows.
 - Use `Pagination` for paged record sets.
-- Use `MetricCard` for dashboard count/action cards.
-- Use `ControlCardSmall` for compact control-case preview cards.
 - Use `SectionHeading` for reusable section titles and title/count headings.
 - Use `Tag` for semantic statuses and `Badge` for counters or notification
   dots.
@@ -94,6 +91,10 @@ Keep these out of MUD-clone unless they are generalized first:
 - Domain data, selectors, mock data, and API adapters.
 - Workflow-specific modal content.
 - Product-specific cards that encode RSC business meaning.
+- RSC dashboard/control-domain cards such as the pulled-back `MetricCard`,
+  `MetricCardGrid`, and `ControlCardSmall` implementations. If a generic
+  reusable card pattern is needed later, create a new generalized MUD-clone
+  component with a fresh API.
 - Header/profile/notification behavior until split into reusable surface and
   product state.
 - Generated Figma imports unless cleaned into reusable primitives.
@@ -110,3 +111,5 @@ Before finishing a design-system change:
 - Generated asset registries are up to date when MUD icons or logos changed.
 - Components use tokens instead of raw CSS values where tokens exist.
 - `npm run build` passes.
+- `npm run check:consumer` passes when package exports, assets, or declaration
+  output changed.

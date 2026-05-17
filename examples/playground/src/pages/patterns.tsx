@@ -7,64 +7,8 @@ import {
   Separator,
   Tag,
 } from "@mud-clone";
-import { ControlCardSmall } from "@mud-clone/components/control-card-small";
-import { MetricCard, MetricCardGrid } from "@mud-clone/components/metric-card";
 import { MudIcon } from "@mud-clone/components/mud-icon";
-import { controls } from "../docs-data";
 import { ExampleCard, PageHeader } from "../docs-ui";
-
-export function MetricsPage() {
-  return (
-    <div className="docs-page">
-      <PageHeader
-        description="Reusable dashboard summary cards, using responsive desktop/mobile variants."
-        eyebrow="Custom Components"
-        title="Metric Cards"
-      />
-      <ExampleCard title="Dashboard metrics">
-        <MetricCardGrid>
-          <MetricCard label="Controale active" value="2" />
-          <MetricCard label="Documente solicitate" value="11" />
-          <MetricCard label="Cereri trimise" value="0" />
-        </MetricCardGrid>
-      </ExampleCard>
-    </div>
-  );
-}
-
-export function ControlCardsPage() {
-  return (
-    <div className="docs-page">
-      <PageHeader
-        description="Compact cards for control previews on dashboard-like surfaces."
-        eyebrow="Custom Components"
-        title="Control Cards"
-      />
-      <ExampleCard title="Desktop and mobile variants">
-        <div className="control-card-grid">
-          <ControlCardSmall
-            address={controls[1].address}
-            controlNumber={controls[1].number}
-            layout="desktop"
-            name={controls[1].company}
-            statusIcon={controls[1].statusIcon}
-            statusLabel={controls[1].statusLabel}
-            statusTone={controls[1].statusTone}
-          />
-          <ControlCardSmall
-            address={controls[0].address}
-            controlNumber={controls[0].number}
-            layout="mobile"
-            name={controls[0].company}
-            statusIcon={controls[0].statusIcon}
-            statusLabel={controls[0].statusLabel}
-            statusTone={controls[0].statusTone}
-          />
-        </div>
-      </ExampleCard>
-    </div>
-  );
-}
 
 function SectionHeadingPreviewAction() {
   return (

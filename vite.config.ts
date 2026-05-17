@@ -3,12 +3,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 const componentEntries = {
+  "components/accordion": "src/components/accordion.tsx",
   "components/avatar": "src/components/avatar.tsx",
   "components/badge": "src/components/badge.tsx",
   "components/button": "src/components/button.tsx",
   "components/checkbox": "src/components/checkbox.tsx",
   "components/chip": "src/components/chip.tsx",
-  "components/control-card-small": "src/components/control-card-small.tsx",
   "components/detail-row": "src/components/detail-row.tsx",
   "components/dialog": "src/components/dialog.tsx",
   "components/dropdown-menu": "src/components/dropdown-menu.tsx",
@@ -16,7 +16,6 @@ const componentEntries = {
   "components/input": "src/components/input.tsx",
   "components/link": "src/components/link.tsx",
   "components/menu": "src/components/menu.tsx",
-  "components/metric-card": "src/components/metric-card.tsx",
   "components/modal": "src/components/modal.tsx",
   "components/mud-icon": "src/components/mud-icon.tsx",
   "components/mud-logo": "src/components/mud-logo.tsx",

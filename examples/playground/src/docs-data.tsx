@@ -46,8 +46,6 @@ export const navGroups = [
       { href: "/section-heading", label: "Section Heading", needsReview: false },
       { href: "/selection", label: "Selection", needsReview: true },
       { href: "/overlays-tabs", label: "Overlays & Tabs", needsReview: true },
-      { href: "/metric-cards", label: "Metric Cards", needsReview: true },
-      { href: "/control-cards", label: "Control Cards", needsReview: true },
     ],
   },
 ];

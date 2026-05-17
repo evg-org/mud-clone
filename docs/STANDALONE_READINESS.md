@@ -7,7 +7,8 @@ Last checked: 2026-05-17.
 
 ## Current Assessment
 
-Status: **not standalone-ready yet, but source coupling is low**.
+Status: **developer handoff-ready as an internal package, but not public
+release-ready yet**.
 
 Standalone packaging work is intentionally on hold while RSC usage hardening is
 active. Current promotion priorities and RSC source-of-truth rules are tracked
@@ -16,9 +17,9 @@ in [`RSC_USAGE_HARDENING.md`](./RSC_USAGE_HARDENING.md).
 The reusable source files are already concentrated under `mud-clone/src`, and
 the current audit did not find direct imports from RSC app paths inside
 `mud-clone/src`. The package now has explicit dependency metadata, generated
-asset registries, a package-owned Vite build check, and a minimal playground.
-The main remaining work is declaration output, final built export paths, legal
-clearance, naming, and versioning.
+asset registries, declaration output, built package export paths, a
+package-owned Vite build check, and a playground. The main remaining work is
+legal clearance, final naming, versioning, and release workflow decisions.
 
 ## Two-Repository Usage Plan
 
@@ -36,8 +37,8 @@ The extraction flow should be:
 
 1. Continue hardening `mud-clone/` inside the RSC repository until reusable
    foundations, assets, and reviewed components live there consistently.
-2. Finish standalone readiness items: declaration output, final built export
-   paths, package/repo name, legal clearance, dependency policy, and versioning.
+2. Finish remaining standalone readiness items: package/repo name, legal
+   clearance, dependency policy, versioning, and release workflow.
 3. Create the separate MUD-clone GitHub repository. Done:
    [`evgheniif/mud-clone`](https://github.com/evgheniif/mud-clone.git).
 4. Copy or move the `mud-clone` package contents into that repository. Done:
@@ -51,8 +52,11 @@ The extraction flow should be:
 
 Recommended connection model:
 
-- **Short term**: use a Git dependency or local link while validating the split
-  and testing changes across both repositories.
+- **Short term**: use the private Git dependency
+  `git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1` for
+  separate React/Vite prototypes, or a local link while validating same-machine
+  changes. Git installs rely on the package `prepare` lifecycle to build
+  gitignored `dist` output during dependency installation.
 - **Long term**: publish MUD-clone as a private package with SemVer releases,
   then update the RSC dependency version when a release is ready to adopt.
 
@@ -70,19 +74,19 @@ Workflow rules after the split:
 | Area | Status | Notes | Next action |
 | --- | --- | --- | --- |
 | Standalone GitHub repository | Created | Target repository exists at `https://github.com/evgheniif/mud-clone.git`, and the initial package snapshot is pushed to `main`. | Keep future reusable DS changes flowing into the standalone repo first. |
-| RSC source coupling | Reduced | The package `src` directory does not import `src/app`, `@/`, or RSC page/domain modules. RSC now declares `mud-clone: file:../mud-clone`, resolves `@mud-clone` through the installed local link at `node_modules/mud-clone/src`, and runs `check:mud-clone-link` before build. RSC compatibility shims still exist. | Keep shims temporary; replace direct source-path usage with final package imports after the package name/export strategy is settled. |
-| Vite coupling | Reduced | `MudIcon` and `MudLogo` use generated source registries instead of runtime `import.meta.glob`. The registries use explicit `new URL(..., import.meta.url).href` asset references. | Keep generated registries in sync; revisit only if a future package target cannot consume `new URL` asset references. |
-| Package exports | Mostly ready | `mud-clone/package.json` exports the root barrel, every current component subpath, and the CSS foundation files from source paths. Built export paths are intentionally deferred, but `check:build-output` now validates matching `dist` artifacts after `build`. | Decide final built export paths after declaration output and final asset output paths are settled. |
+| RSC source coupling | Reduced | The package `src` directory does not import `src/app`, `@/`, or RSC page/domain modules. RSC now declares `mud-clone: file:../mud-clone`, resolves package imports through the installed local link, and runs `check:mud-clone-link` before build. RSC compatibility shims still exist. | Keep shims temporary; replace direct source-path usage with package imports after the package name/export strategy is settled. |
+| Vite coupling | Reduced | `MudLogo` uses a generated source registry. `MudIcon` still uses Vite `import.meta.glob` for lazy icon URL loading, and the package build normalizes emitted icon/logo URLs so consumers resolve package-owned assets instead of app-root `/assets` paths. | Keep generated registries and build asset normalization in sync; revisit only if a future package target cannot consume `new URL` asset references. |
+| Package exports | Ready for internal handoff | `mud-clone/package.json` exports the root barrel, every current component subpath, and the CSS foundation files from built `dist` paths. Type conditions point to matching declaration files. | Revisit only if the public package name or output layout changes. |
 | Package dependencies | Mostly ready | `mud-clone/package.json` now lists React peers and the current Radix, CVA, utility, and icon dependencies used by source files. Versions match the parent app baseline. | Revisit peer-versus-direct dependency policy before publication. |
-| Package scripts/files | Partially ready | `mud-clone/package.json` now declares `files`, `sideEffects`, asset generation/check scripts, build asset copying, build output validation, package build, and playground scripts. | Add a package-owned type declaration output step before publication. |
-| Package build | Partially ready | `mud-clone/vite.config.ts` can build the root barrel and current component subpaths as an ES module library bundle. `npm --prefix mud-clone run build` also copies CSS/font assets and validates exported build artifacts. Type declaration output is intentionally deferred for now. | Add declaration output and final built export paths. |
-| CSS and font assets | Mostly ready | CSS uses relative font URLs to copied Onest files under `mud-clone/src/assets/fonts/onest`; the package build now copies styles to `dist/styles` and fonts to `dist/assets/fonts`. | Verify asset URL behavior again after final package export paths are chosen. |
+| Package scripts/files | Mostly ready | `mud-clone/package.json` now declares `files`, `sideEffects`, asset generation/check scripts, declaration generation, build asset copying, build output validation, package build, clean consumer validation, playground scripts, and the `prepare` lifecycle required by private Git installs. | Revisit package contents before public publication. |
+| Package build | Mostly ready | `mud-clone/vite.config.ts` can build the root barrel and current component subpaths as an ES module library bundle. `npm run build` also emits declarations, copies CSS/font assets, and validates exported build artifacts. | Verify a clean consumer install before release. |
+| CSS and font assets | Mostly ready | CSS uses relative font URLs to copied Onest files under `mud-clone/src/assets/fonts/onest`; the package build now copies styles to `dist/styles` and fonts to `dist/assets/fonts`. | Verify asset URL behavior again in a clean consuming app before release. |
 | Icon and logo assets | Mostly ready | MUD assets are copied under `mud-clone/src/assets/mud` and resolved by generated registries consumed by `MudIcon`/`MudLogo`. | Decide whether to ship all copied assets or prune to a documented supported set. |
 | Documentation | Good baseline | `DESIGN_SYSTEM.md`, `COMPONENT_SOURCES.md`, `MIGRATION_NOTES.md`, and `CONTRIBUTING.md` exist. | Add install/import examples and standalone package usage docs. |
 | Examples/playground | In progress | `examples/playground` is a package-owned, page-based Vite reference surface that imports MUD-clone primitives through `@mud-clone` aliases and documents foundations, components, and reusable RSC patterns. | Keep adding focused page routes when new reusable primitives are added. |
 | Attribution/license | Documented, needs review before release | `ATTRIBUTION.md` records upstream MUD, copied assets, Onest font, and license cautions. The package remains `UNLICENSED` and `private`. | Get explicit legal/publication clearance before public repo creation or package publication. |
-| Package name | Undecided | Current `name` is `mud-clone`, `private` is `true`, and `version` is `0.0.0`. | Decide final package/repo name before publishing or copying. |
-| Versioning/release process | Missing | No release policy exists. | Decide SemVer policy, changelog format, and how RSC consumes updates after split. |
+| Package name | Prototype-ready | Current `name` is `mud-clone`, `private` is `true`, and `version` is `0.0.1-prototype.1`. | Decide final public/private package name before registry publication. |
+| Versioning/release process | Prototype tag | Use Git tags such as `v0.0.1-prototype.1` for short-term prototype consumption. | Decide SemVer policy, changelog format, and private registry workflow before broader adoption. |
 
 ## External Dependencies Found In Source
 
@@ -116,10 +120,10 @@ need an explicit dependency policy before standalone extraction.
 - [x] Package metadata lists current required runtime dependencies.
 - [x] Package has an initial package-owned export check script.
 - [x] Package build emits package JavaScript and assets for the current source.
-- [x] Asset registry strategy uses generated source registries instead of
-  runtime `import.meta.glob`.
-- [x] Declaration output and built export paths are explicitly deferred until
-  after final package output paths are settled.
+- [x] Package-owned asset strategy is generated or build-normalized instead of
+  depending on consumer app-root asset paths.
+- [x] Declaration output and built export paths are configured for internal
+  package handoff.
 - [x] License and upstream MUD attribution notes are documented.
 - [x] Page-based examples/playground exists.
 - [x] Two-repository usage plan is documented.
@@ -128,40 +132,37 @@ need an explicit dependency policy before standalone extraction.
 - [x] Initial package snapshot is copied to and pushed from the standalone repo.
 - [x] RSC has a short-term local dependency link to the standalone repo.
 - [x] RSC build validates the local MUD-clone dependency link.
-- [ ] Package build emits declaration types and finalized CSS/assets paths.
+- [x] Package build emits declaration types and finalized CSS/assets paths.
+- [x] `npm run check:consumer` validates clean local tarball consumption,
+  documented imports, CSS/font assets, icon/logo assets, Radix-backed
+  components, and TypeScript declarations.
 - [ ] Legal/publication clearance for standalone release is confirmed.
 - [ ] Final package/repo name is decided.
 - [ ] Versioning and RSC update workflow are decided.
 
 ## Recommended Next Steps When Standalone Work Resumes
 
-1. Add declaration output and decide final built export paths.
+1. Repeat clean consumer validation before each release candidate.
 2. Confirm legal/publication clearance for standalone release.
 3. Decide package name and release/update flow.
 4. Expand the playground as new reusable primitives are added.
 
 ## Declaration And Export Path Decision
 
-Decision: keep package exports pointed at source paths for now and defer
-declaration output until final package output paths are settled.
+Decision: package exports now point at built `dist` artifacts, and each
+component export has a matching `types` condition.
 
 Reasons:
 
-- The current workspace does not have a local `tsc` binary available.
-- Adding declaration generation now would require new TypeScript tooling or a
-  declaration plugin before the package extraction model is finalized.
-- `MudIcon` and `MudLogo` now use generated registries, but the final built
-  output shape may still change when declaration and asset output paths are
-  finalized.
-- Source-path exports are still useful inside the current RSC/Vite app and are
-  already covered by `npm --prefix mud-clone run check`.
-- `npm --prefix mud-clone run build` now validates that matching JavaScript,
-  CSS, and font artifacts exist under `dist`, but the package manifest still
-  intentionally exposes source paths until declaration and final distribution
-  paths are decided.
-
-This should be revisited after deciding declaration tooling and final
-distribution paths.
+- Internal consumers should import the package like a real dependency instead
+  of relying on source-path exports.
+- `tsc -p tsconfig.declarations.json` emits declaration files for the root
+  barrel and component subpaths.
+- `npm run check` validates package export source inputs before build, while
+  `npm run build` validates the emitted JavaScript, declarations, CSS, and font
+  assets under `dist`.
+- CSS foundation exports point at `dist/styles`, and copied font assets live
+  under `dist/assets/fonts`.
 
 ## Asset Registry Decision
 
@@ -177,15 +178,14 @@ Reasons:
 
 - Runtime components no longer depend on Vite-only `import.meta.glob`.
 - `MudIcon` and `MudLogo` import normal TypeScript registry modules.
-- Registry output is deterministic and checked by
-  `npm --prefix mud-clone run check`.
+- Registry output is deterministic and checked by `npm run check`.
 - `new URL(..., import.meta.url).href` keeps asset references explicit and
   works with the current package Vite build.
 
 Commands:
 
 ```bash
-npm --prefix mud-clone run generate:assets
-npm --prefix mud-clone run check
-npm --prefix mud-clone run build
+npm run generate:assets
+npm run check
+npm run build
 ```

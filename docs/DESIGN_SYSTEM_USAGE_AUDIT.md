@@ -395,11 +395,17 @@ prototype-wide usage audit:
 
 | Component | Review status | Prototype usage audit | Adoption status | Recommended audit priority | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `MetricCard` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Verify dashboard count/action cards. |
-| `ControlCardSmall` | Not reviewed in this audit | Not started | Partial/unknown | Medium | New DS card exists; needs dashboard/prototype adoption audit. |
 | `Pagination` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for paged record sets; verify usage where pagination appears. |
 | `Modal` / `Dialog` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists; verify product overlays and compact dialogs. |
 | `Tabs` | Not reviewed in this audit | Not started | Partial/unknown | Low | Exists; audit when tabbed surfaces are in active scope. |
+
+Pulled-back components:
+
+`MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were removed from
+MUD-clone and returned to RSC ownership because they encode dashboard and
+control-domain behavior. They should not be imported from MUD-clone. If a
+generic reusable card pattern is needed later, create a new generalized
+component with a fresh API.
 
 Goal:
 
@@ -754,11 +760,9 @@ MUD-clone before using it in product pages.
    of migrating them mechanically.
 2. Audit Tailwind shadow utilities component-by-component, starting with
    MUD-clone controls before legacy shadcn primitives.
-3. Review `MetricCard` next so dashboard count/action cards use one documented
-   card primitive across the prototype.
-4. After `MetricCard`, continue formal review for the next unreviewed
-   components: `ControlCardSmall`, `Pagination`, or `Modal` / `Dialog`.
-5. Later, remove `--app-space-*`, `--app-radius-*`, and `--app-shadow-*`
+3. Continue formal review for the next unreviewed components: `Pagination`,
+   `Modal` / `Dialog`, or `Tabs`.
+4. Later, remove `--app-space-*`, `--app-radius-*`, and `--app-shadow-*`
    compatibility aliases once no external or historical references need them.
 
 ## Rule For New Work While Audit Is Open

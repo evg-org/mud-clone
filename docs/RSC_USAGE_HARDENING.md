@@ -31,9 +31,14 @@ core primitives:
 - `Avatar`, `Badge`, `Button`, `DetailRow`, `Icon`, `Input`, `Link`,
   `RadioGroup`, `SectionHeading`, `Switch`, `Tabs`, `TableCard`, `Tag`, and
   `Textarea`.
-- Subpath primitives for `Checkbox`, `ControlCardSmall`, `Dialog`,
-  `DropdownMenu`, `Menu`, `MetricCard`, `Modal`, `MudIcon`, `MudLogo`,
-  `Pagination`, `SearchInput`, `Select`, and `Table`.
+- Subpath primitives for `Checkbox`, `Dialog`, `DropdownMenu`, `Menu`,
+  `Modal`, `MudIcon`, `MudLogo`, `Pagination`, `SearchInput`, `Select`, and
+  `Table`.
+
+`MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were pulled back to RSC
+because they encode dashboard and control-domain behavior. They are no longer
+MUD-clone exports. If a reusable card pattern is needed later, add a new
+generalized MUD-clone component with a fresh API.
 
 The old RSC paths under `src/app/components/ui` remain useful during migration,
 but their long-term role is compatibility only. When a file is a shim, it
@@ -67,8 +72,9 @@ Direct `@mud-clone` usage already exists in active RSC pages:
   component subpaths.
 - `src/app/pages/Cereri.tsx` uses `Input`, `Textarea`, `Dialog`, and `DropdownMenu`
   through `@mud-clone` or component subpaths.
-- `src/app/pages/Workspace.tsx` uses `MetricCard` and `ControlCardSmall`
-  through component subpaths.
+- `src/app/components/dashboard/MetricCard.tsx` and
+  `src/app/components/controls/ControlCardSmall.tsx` are RSC-owned product
+  components, not MUD-clone primitives.
 
 Several active pages still import migrated primitives through compatibility
 shims. That is acceptable while migration is in progress, but new work should

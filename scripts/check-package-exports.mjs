@@ -19,15 +19,43 @@ function checkPath(label, value) {
     return;
   }
 
-  const absolutePath = resolve(packageRoot, value);
+  const sourcePath = sourcePathForPackagePath(value);
+  const absolutePath = resolve(packageRoot, sourcePath ?? value);
 
   if (!existsSync(absolutePath)) {
-    failures.push(`${label} points to a missing file: ${value}`);
+    const expectedPath = sourcePath ? `${value} (source: ${sourcePath})` : value;
+    failures.push(`${label} points to a missing file: ${expectedPath}`);
   }
 }
 
 checkPath("main", manifest.main);
 checkPath("module", manifest.module);
+checkPath("types", manifest.types);
+
+function sourcePathForPackagePath(packagePath) {
+  if (typeof packagePath !== "string" || !packagePath.startsWith("./dist/")) {
+    return undefined;
+  }
+
+  if (packagePath === "./dist/index.js" || packagePath === "./dist/index.d.ts") {
+    return "./src/index.ts";
+  }
+
+  const componentMatch = packagePath.match(
+    /^\.\/dist\/components\/(.+)\.(?:js|d\.ts)$/,
+  );
+  if (componentMatch) {
+    return `./src/components/${componentMatch[1]}.tsx`;
+  }
+
+  const styleMatch = packagePath.match(/^\.\/dist\/styles\/(.+\.css)$/);
+  if (styleMatch) {
+    return `./src/styles/${styleMatch[1]}`;
+  }
+
+  failures.push(`Cannot map build path to a source file: ${packagePath}`);
+  return undefined;
+}
 
 for (const [exportName, exportValue] of Object.entries(manifest.exports ?? {})) {
   if (typeof exportValue === "string") {

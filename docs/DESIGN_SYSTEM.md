@@ -99,11 +99,9 @@ Root exports:
 Subpath-only exports:
 
 - `@mud-clone/components/checkbox`
-- `@mud-clone/components/control-card-small`
 - `@mud-clone/components/dropdown-menu`
 - `@mud-clone/components/dialog`
 - `@mud-clone/components/menu`
-- `@mud-clone/components/metric-card`
 - `@mud-clone/components/modal`
 - `@mud-clone/components/mud-icon`
 - `@mud-clone/components/mud-logo`
@@ -138,11 +136,6 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
   value is required and the row may expand. For multiple tags in one cell, wrap
   `Tag` items in `TagGroup` inside `TableCell dataType="tag"` so the tags wrap
   onto following lines within the cell width.
-- Metric action cards: use `MetricCard` and `MetricCardGrid` for dashboard
-  count cards with a label, numeric value, and chevron action.
-- Control preview cards: use `ControlCardSmall` from
-  `@mud-clone/components/control-card-small` for compact control-case preview
-  cards with desktop, mobile, or responsive layout.
 - Section headings: use `SectionHeading` for section titles and title/count
   combinations that use the shared heading-small typography.
 - Detail rows: use `DetailRow` for label/value rows in cards, details pages,
@@ -211,7 +204,6 @@ Before finishing UI work, check:
 
 - Are repeated records implemented with `Table` plus `TableCard` where
   appropriate?
-- Are dashboard-style count cards using `MetricCard` or `MetricCardGrid`?
 - Are label/value rows using `DetailRow`?
 - Are actions using shared `Button` variants without local typography or
   padding overrides?
@@ -222,3 +214,11 @@ Before finishing UI work, check:
 - Are modal/overlay patterns using `Modal` or `Dialog`?
 - Are icons/logos coming from `MudIcon` or `MudLogo`?
 - Are typography, shadows, borders, spacing, and colors token-based?
+
+## Pulled Back To RSC
+
+`MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were removed from
+MUD-clone and pulled back to RSC because they encode RSC dashboard and
+control-domain behavior. They should not be imported from MUD-clone. If a
+generic reusable card pattern is needed later, create a new generalized
+component with a fresh API instead of restoring these RSC-specific components.

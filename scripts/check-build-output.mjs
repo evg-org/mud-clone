@@ -63,6 +63,7 @@ function addExpectedPath(label, packagePath) {
 
 addExpectedPath("main", manifest.main);
 addExpectedPath("module", manifest.module);
+addExpectedPath("types", manifest.types);
 
 for (const [exportName, exportValue] of Object.entries(manifest.exports ?? {})) {
   const values = collectExportValues(exportValue);

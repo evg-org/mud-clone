@@ -1,77 +1,246 @@
 # MUD-clone
 
 MUD-clone is the RSC project's React implementation of the Moldova government
-MUD design system, enhanced with reusable patterns developed during the RSC
-project.
+MUD design system, extended with reusable product patterns developed during the
+RSC project.
 
-This folder is intended to become the design-system source of truth for RSC and
-later be moved or copied into a standalone GitHub repository.
+The package is intended for internal developer consumption as `mud-clone`.
+Use the built package for application imports, and use the playground as the
+canonical visual reference for foundations, components, and composed patterns.
 
-## Current Status
+## Start Here For Developers
 
-`mud-clone/` is now the source of truth for the migrated foundations and core
-primitives used by RSC. Standalone packaging work is intentionally on hold
-while the project hardens day-to-day RSC usage of this source of truth.
+Install dependencies and build the package before linking or consuming it:
 
-Migrated foundations:
+```bash
+npm install
+npm run build
+```
 
-- MUD-derived tokens and app aliases in `src/styles/design-system.css`.
-- Onest font declarations in `src/styles/fonts.css`.
-- Onest font files in `src/assets/fonts/onest`.
-- MUD icons and logos in `src/assets/mud`.
+For local internal consumption from another app, use a local file dependency or
+workspace link that points at this package root:
 
-Root exports from `@mud-clone`:
+```json
+{
+  "dependencies": {
+    "mud-clone": "file:../mud-clone"
+  }
+}
+```
 
-- `Avatar`
-- `Badge`
-- `Button`
-- `DetailRow`
-- `Icon`
-- `Input`
-- `Link`
-- `RadioGroup` and `RadioGroupItem`
-- `SectionHeading`
-- `Switch`
-- `TableCard` and related `TableCard*` primitives
-- `Tabs` and related `Tabs*` primitives
-- `Tag`
-- `Textarea`
+For a separate private React/Vite prototype repository, prefer the tagged Git
+dependency. The package keeps `private: true`, but Git installs still work
+because the `prepare` lifecycle builds `dist` during dependency installation:
 
-Subpath-only exports:
+```json
+{
+  "dependencies": {
+    "mud-clone": "git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1"
+  }
+}
+```
 
-- `@mud-clone/components/checkbox`
-- `@mud-clone/components/control-card-small`
-- `@mud-clone/components/dropdown-menu`
-- `@mud-clone/components/dialog`
-- `@mud-clone/components/menu`
-- `@mud-clone/components/metric-card`
-- `@mud-clone/components/modal`
-- `@mud-clone/components/mud-icon`
-- `@mud-clone/components/mud-logo`
-- `@mud-clone/components/pagination`
-- `@mud-clone/components/search-input`
-- `@mud-clone/components/select`
-- `@mud-clone/components/table`
-- `@mud-clone/styles/design-system.css`
-- `@mud-clone/styles/fonts.css`
+The consuming repository needs read access to `evgheniif/mud-clone`. For GitHub
+Actions, use a deploy key or token with read access to this private repository.
 
-## Export Policy
+Import the package CSS once near the application root, before rendering
+MUD-clone components:
 
-Use the root `@mud-clone` barrel only for lightweight components that do not
-load asset registries.
+```tsx
+import "mud-clone/styles/fonts.css";
+import "mud-clone/styles/design-system.css";
+```
 
-Use component subpaths for components that load MUD icon/logo registries or are
-otherwise better kept isolated from unrelated imports. This keeps imports such
-as `Button`, `Input`, and `Link` from pulling in the full icon registry.
+Use root imports for the convenience component surface:
 
-Every migrated component should also have a package subpath export so future
-standalone package consumers can import narrowly.
+```tsx
+import { Button, Tag, TextInput } from "mud-clone";
 
-Current Batch D split:
+export function ExampleForm() {
+  return (
+    <form>
+      <TextInput label="Request number" placeholder="578242" />
+      <Tag tone="warning" variant="outlined">In process</Tag>
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+}
+```
 
-- Root-safe controls: `Tabs`, `RadioGroup`, and `Switch`.
-- Subpath-only controls/overlays: `Modal`, `Dialog`, and `Checkbox`, because
-  they load `MudIcon`.
+Use subpath imports when a component is not exposed on the root barrel or when
+you want a narrow import for an asset-heavy surface:
+
+```tsx
+import { MudIcon } from "mud-clone/components/mud-icon";
+import { Table, TableBody, TableCell, TableRow } from "mud-clone/components/table";
+```
+
+## Import Contract
+
+Package exports point at built files under `dist` and include declaration files
+for TypeScript autocomplete and prop validation.
+
+Root imports from `mud-clone` cover the common component surface: `Accordion`,
+`Avatar`, `Badge`, `Button`, `Checkbox`, `DetailRow`, `FilterChip`, `Icon`,
+`InfoTag`, `Input`, `InputChip`, `Link`, `RadioGroup`, `SearchInput`,
+`Separator`, `SectionHeading`, `Switch`, `TableCard`, `Tabs`, `Tag`,
+`TextArea`, `Textarea`, and `TextInput`.
+
+Every component also has a subpath export. Prefer subpaths for icons, logos,
+tables, selects, overlays, menus, pagination, and less common product patterns:
+
+```tsx
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "mud-clone/components/select";
+import { Table, TableHead, TableHeader, TableRow } from "mud-clone/components/table";
+import { MudLogo } from "mud-clone/components/mud-logo";
+```
+
+CSS exports are:
+
+```tsx
+import "mud-clone/styles/fonts.css";
+import "mud-clone/styles/design-system.css";
+```
+
+The font CSS references package-owned Onest files copied into `dist/assets` by
+`npm run build`. MUD icons and logos resolve package-owned assets and should be
+used through `MudIcon` and `MudLogo`.
+
+## Component Status
+
+Status is based on the current playground navigation review flags.
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Foundations: colors, typography, spacing, radius, elevation, icons | Stable | Use as the current token and asset baseline. |
+| Assets foundation page | Needs review | Asset inventory is present, but final supported asset set may still be pruned. |
+| Core components: Accordion, Avatar, Badge, Button, Checkbox, Chip, Link, Menu, Radio Group, Search, Select, Separator, Switch, Table, Tag, Text inputs | Stable | Use these for new internal development. |
+| Reusable patterns: Detail Row, Section Heading, Table Card | Stable | Preferred for repeated detail, section title, and responsive table-card layouts. |
+| Selection | Needs review | Available as a package export, but keep adoption intentional until review is complete. |
+| Modal, Dialog, Tabs and overlay examples | Needs review | APIs are available, but composed examples still need final review. |
+| Pulled-back components | RSC-owned | `MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were removed from MUD-clone because they encode RSC dashboard/control-domain behavior. Create a fresh generalized card API if a reusable pattern is needed later. |
+| Deprecated components | None | Deprecated props are documented in component types when present. |
+
+## Usage Recipes
+
+### Form Controls
+
+```tsx
+import { Button, TextInput } from "mud-clone";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "mud-clone/components/select";
+
+export function PermitSearchForm() {
+  return (
+    <form className="grid gap-[var(--spacing-16)]">
+      <TextInput
+        clearable
+        label="Request number"
+        placeholder="Enter request number"
+      />
+      <Select defaultValue="all">
+        <SelectTrigger aria-label="Status">
+          <SelectValue placeholder="Status" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All statuses</SelectItem>
+          <SelectItem value="planned">Planned</SelectItem>
+          <SelectItem value="in-process">In process</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button type="submit">Search</Button>
+    </form>
+  );
+}
+```
+
+### Table Layout
+
+```tsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "mud-clone/components/table";
+import { Tag } from "mud-clone";
+
+export function RequestsTable() {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Request</TableHead>
+          <TableHead>Company</TableHead>
+          <TableHead>Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>#578242</TableCell>
+          <TableCell>EcoConstruct Cahul</TableCell>
+          <TableCell dataType="tag">
+            <Tag tone="warning" variant="outlined">In process</Tag>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### Status Pattern
+
+```tsx
+import { Badge, Tag } from "mud-clone";
+import { MudIcon } from "mud-clone/components/mud-icon";
+
+export function StatusSummary() {
+  return (
+    <div className="flex items-center gap-[var(--spacing-12)]">
+      <Tag tone="positive" variant="outlined">
+        <MudIcon name="Outlined/16/checkmark-small" size="sm" />
+        Finalized
+      </Tag>
+      <Badge tone="brand">3</Badge>
+    </div>
+  );
+}
+```
+
+## Playground
+
+Run the playground to inspect the package visually:
+
+```bash
+npm run dev:playground
+npm run build:playground
+```
+
+The playground is the canonical visual catalog for this phase. It covers
+foundations, component states, and composed reusable patterns. Storybook is
+intentionally deferred until package usage, type output, exports, and handoff
+docs are stable; if added later, use it for isolated state review and visual
+regression, not as a replacement for the playground.
+
+## Package Scripts
+
+```bash
+npm run check            # generated assets, package exports, color aliases, typography aliases
+npm run build            # library JS, declaration files, CSS assets, font assets, build validation
+npm run check:consumer   # build, pack, install, typecheck, and bundle a clean temp consumer app
+npm run build:types      # declaration-only TypeScript output
+npm run build:playground # production playground build
+npm run dev:playground   # local playground server
+npm run prepare          # lifecycle hook used by private Git installs
+```
 
 ## Documentation
 
@@ -84,34 +253,13 @@ Current Batch D split:
 - [RSC usage hardening](./docs/RSC_USAGE_HARDENING.md)
 - [Standalone readiness](./docs/STANDALONE_READINESS.md)
 
-## Playground
+## Ownership Rules
 
-The package has a Vite playground in `examples/playground` for inspecting
-MUD-clone foundations, components, and reusable RSC patterns outside the app.
-It is intentionally lightweight, but structured like a documentation/reference
-surface: each sidebar item has its own route, with token groups, component
-variants, and composition examples on focused pages.
+Reusable implementation belongs in `src/components`, `src/styles`, and
+`src/assets`. Product-specific pages, routes, mock data, API adapters, and
+workflow-specific copy stay in consuming applications.
 
-From the repository root:
-
-```bash
-npm --prefix mud-clone run dev:playground
-npm --prefix mud-clone run build:playground
-```
-
-Useful foundation routes:
-
-- `/foundations/colors`
-- `/foundations/typography`
-- `/foundations/spacing`
-- `/foundations/borders-radius`
-- `/foundations/elevation`
-- `/foundations/icons-logos`
-
-## RSC Compatibility
-
-The old RSC files under `src/app/components/ui` remain as compatibility shims
-while migration is in progress. New source-of-truth changes should happen in
-`mud-clone/src`, not in the shim files.
-
-App-specific pages, domain data, routing, and product workflows stay in RSC.
+Before changing a MUD-mapped primitive, check
+[`docs/COMPONENT_SOURCES.md`](./docs/COMPONENT_SOURCES.md), preserve upstream
+visual states unless an intentional difference is documented, and update
+[`docs/MIGRATION_NOTES.md`](./docs/MIGRATION_NOTES.md) when behavior diverges.
