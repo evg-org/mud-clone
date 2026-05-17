@@ -3,15 +3,18 @@
 This document tracks the work needed to make `mud-clone/` the practical
 source of truth for RSC UI work before we add more product components.
 
-Last checked: 2026-05-12.
+Last checked: 2026-05-17.
 
 ## Current Decision
 
-Standalone package readiness is on hold for now.
+Standalone package publication readiness is on hold for now, but RSC now has a
+short-term local dependency link to the standalone MUD-clone repository:
+`mud-clone: file:../mud-clone`.
 
 The active priority is RSC design-system usage hardening:
 
-- New reusable UI implementation belongs in `mud-clone/src`.
+- New reusable UI implementation belongs in the standalone repo's `src`
+  directory.
 - Existing `src/app/components/ui` files should either be compatibility shims
   or explicitly app-owned exceptions.
 - RSC pages should compose with `mud-clone` primitives instead of recreating
@@ -21,7 +24,8 @@ The active priority is RSC design-system usage hardening:
 
 ## Current Source Of Truth
 
-`mud-clone/src` already owns the migrated foundations and core primitives:
+The standalone repo's `src` directory already owns the migrated foundations and
+core primitives:
 
 - Foundations, Onest fonts, MUD icons, and MUD logos.
 - `Avatar`, `Badge`, `Button`, `DetailRow`, `Icon`, `Input`, `Link`,
@@ -35,10 +39,10 @@ The old RSC paths under `src/app/components/ui` remain useful during migration,
 but their long-term role is compatibility only. When a file is a shim, it
 should not contain independent styling or behavior.
 
-RSC must also keep `mud-clone/src/**/*.{js,ts,jsx,tsx}` in
-`src/styles/tailwind.css` source scanning while it consumes source-path
-components. Otherwise MUD-clone utility classes will not be emitted in the app
-stylesheet.
+RSC must also keep the linked package source in `src/styles/tailwind.css`
+source scanning while it consumes source-path components. The current short-term
+path is `../../node_modules/mud-clone/src/**/*.{js,ts,jsx,tsx}`. Otherwise
+MUD-clone utility classes will not be emitted in the app stylesheet.
 
 ## Current RSC Usage
 
@@ -149,7 +153,8 @@ Before implementing a new design:
 ## Standalone Work Hold
 
 Do not continue declaration output, final built export paths, package naming,
-legal release review, or versioning work until standalone extraction resumes.
+legal release review, or versioning work until standalone publication work
+resumes.
 
 The package-readiness notes remain in `STANDALONE_READINESS.md`, but they are
 not the current next step.
