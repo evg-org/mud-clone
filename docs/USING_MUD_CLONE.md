@@ -1,11 +1,12 @@
-# Using MUD-clone In A React/Vite Prototype
+# Using MUD-clone In Another Project
 
-This guide is for designers or developers who want to use `mud-clone` in a
-separate React/Vite prototype project.
+This guide is for anyone who needs to use `mud-clone` in a separate React/Vite
+project: designers, developers, product managers, reviewers, or other project
+contributors.
 
 `mud-clone` is currently a private internal design-system package. It is not
-published to npm. Install it from the private GitHub repository using the
-prototype tag below.
+published to npm. Install it from the private GitHub repository using the tag
+below.
 
 ## What You Need
 
@@ -15,7 +16,10 @@ prototype tag below.
   `https://github.com/evgheniif/mud-clone`.
 - GitHub SSH access configured on your machine.
 
-The current prototype package tag is:
+If you are not the person who manages the project code, share this document
+with that person. They can follow the setup steps below.
+
+The current package tag is:
 
 ```text
 v0.0.1-prototype.1
@@ -32,9 +36,9 @@ ssh -T git@github.com
 If this fails with a permission error, ask for access to the private
 `evgheniif/mud-clone` repository and make sure your SSH key is added to GitHub.
 
-## 2. Install MUD-clone
+## 2. Install MUD-clone In Your Project
 
-In your prototype project, install the tagged package:
+In the project that should use MUD-clone, install the tagged package:
 
 ```bash
 npm install git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1
@@ -134,9 +138,9 @@ export function MudCloneSmokeTest() {
 }
 ```
 
-## 5. Verify It Works
+## 5. Verify It Works In The Project
 
-Run the prototype locally:
+Run the project locally:
 
 ```bash
 npm run dev
@@ -164,7 +168,8 @@ npm run typecheck
 
 ## Updating To A New Version
 
-When a new MUD-clone prototype tag is shared, update the tag in `package.json`:
+When a new MUD-clone package tag is shared, update the tag in the consuming
+project's `package.json`:
 
 ```json
 {
@@ -180,11 +185,11 @@ Then reinstall:
 npm install
 ```
 
-Commit the updated `package.json` and lockfile in your prototype repo.
+Commit the updated `package.json` and lockfile in the consuming project.
 
 ## GitHub Actions Or CI
 
-If your prototype builds in GitHub Actions, the workflow also needs read access
+If your project builds in GitHub Actions, the workflow also needs read access
 to the private `mud-clone` repository.
 
 Use one of these:
@@ -240,12 +245,12 @@ Then check the browser network tab for missing assets.
 
 ### React version mismatch
 
-The current prototype package expects React 18. If your project uses a different
+The current package expects React 18. If your project uses a different
 React major version, align with the MUD-clone maintainer before continuing.
 
 ## Do Not Do This
 
-- Do not copy files from `mud-clone/src` into your prototype.
+- Do not copy files from `mud-clone/src` into your project.
 - Do not import from `mud-clone/src` or `mud-clone/dist` directly.
 - Do not edit files inside `node_modules/mud-clone`.
 - Do not depend on the `main` branch unless you are testing unreleased changes.

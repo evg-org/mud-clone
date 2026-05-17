@@ -28,7 +28,7 @@ workspace link that points at this package root:
 }
 ```
 
-For a separate private React/Vite prototype repository, prefer the tagged Git
+For a separate private React/Vite project, prefer the tagged Git
 dependency. The package keeps `private: true`, but Git installs still work
 because the `prepare` lifecycle builds `dist` during dependency installation:
 
@@ -247,7 +247,7 @@ npm run prepare          # lifecycle hook used by private Git installs
 - [Attribution and license notes](./ATTRIBUTION.md)
 - [Design system source of truth](./docs/DESIGN_SYSTEM.md)
 - [Component source references](./docs/COMPONENT_SOURCES.md)
-- [Designer prototype setup](./docs/DESIGNER_PROTOTYPE_SETUP.md)
+- [Using MUD-clone in another project](./docs/USING_MUD_CLONE.md)
 - [Migration notes](./docs/MIGRATION_NOTES.md)
 - [Design system usage audit](./docs/DESIGN_SYSTEM_USAGE_AUDIT.md)
 - [Contribution rules](./docs/CONTRIBUTING.md)
