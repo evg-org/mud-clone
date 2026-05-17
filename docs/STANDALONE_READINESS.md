@@ -70,7 +70,7 @@ Workflow rules after the split:
 | Area | Status | Notes | Next action |
 | --- | --- | --- | --- |
 | Standalone GitHub repository | Created | Target repository exists at `https://github.com/evgheniif/mud-clone.git`, and the initial package snapshot is pushed to `main`. | Keep future reusable DS changes flowing into the standalone repo first. |
-| RSC source coupling | Reduced | The package `src` directory does not import `src/app`, `@/`, or RSC page/domain modules. RSC now declares `mud-clone: file:../mud-clone` and resolves `@mud-clone` through the installed local link at `node_modules/mud-clone/src`. RSC compatibility shims still exist. | Keep shims temporary; replace direct source-path usage with final package imports after the package name/export strategy is settled. |
+| RSC source coupling | Reduced | The package `src` directory does not import `src/app`, `@/`, or RSC page/domain modules. RSC now declares `mud-clone: file:../mud-clone`, resolves `@mud-clone` through the installed local link at `node_modules/mud-clone/src`, and runs `check:mud-clone-link` before build. RSC compatibility shims still exist. | Keep shims temporary; replace direct source-path usage with final package imports after the package name/export strategy is settled. |
 | Vite coupling | Reduced | `MudIcon` and `MudLogo` use generated source registries instead of runtime `import.meta.glob`. The registries use explicit `new URL(..., import.meta.url).href` asset references. | Keep generated registries in sync; revisit only if a future package target cannot consume `new URL` asset references. |
 | Package exports | Mostly ready | `mud-clone/package.json` exports the root barrel, every current component subpath, and the CSS foundation files from source paths. Built export paths are intentionally deferred, but `check:build-output` now validates matching `dist` artifacts after `build`. | Decide final built export paths after declaration output and final asset output paths are settled. |
 | Package dependencies | Mostly ready | `mud-clone/package.json` now lists React peers and the current Radix, CVA, utility, and icon dependencies used by source files. Versions match the parent app baseline. | Revisit peer-versus-direct dependency policy before publication. |
@@ -127,6 +127,7 @@ need an explicit dependency policy before standalone extraction.
 - [x] Package build output validates exported JS, CSS, and font artifacts.
 - [x] Initial package snapshot is copied to and pushed from the standalone repo.
 - [x] RSC has a short-term local dependency link to the standalone repo.
+- [x] RSC build validates the local MUD-clone dependency link.
 - [ ] Package build emits declaration types and finalized CSS/assets paths.
 - [ ] Legal/publication clearance for standalone release is confirmed.
 - [ ] Final package/repo name is decided.

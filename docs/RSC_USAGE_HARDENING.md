@@ -44,6 +44,18 @@ source scanning while it consumes source-path components. The current short-term
 path is `../../node_modules/mud-clone/src/**/*.{js,ts,jsx,tsx}`. Otherwise
 MUD-clone utility classes will not be emitted in the app stylesheet.
 
+RSC now runs `npm run check:mud-clone-link` before the normal prototype,
+foundation, and component checks. That guard verifies:
+
+- `package.json` and `package-lock.json` use `mud-clone: file:../mud-clone`.
+- `node_modules/mud-clone` is a local link to the standalone repo.
+- Runtime Vite/Tailwind/preview paths do not point back to the old in-repo
+  `mud-clone` source folder.
+
+The color, typography, and foundation alias checks also scan
+`node_modules/mud-clone` so they validate the linked standalone source, not the
+old local copy.
+
 ## Current RSC Usage
 
 Direct `@mud-clone` usage already exists in active RSC pages:
@@ -133,10 +145,10 @@ Before implementing a new design:
 6. Update `COMPONENT_SOURCES.md` for MUD-backed components.
 7. Update `MIGRATION_NOTES.md` for MUD-clone extensions or intentional
    differences.
-8. Run `npm --prefix mud-clone run check`.
-9. Run `npm run build`.
+8. Run the relevant MUD-clone checks in the standalone repo.
+9. Run `npm run build` in RSC.
 10. If the playground is affected, run
-    `npm --prefix mud-clone run build:playground`.
+    `npm run build:playground` in the standalone repo.
 
 ## Recommended Phase 6 Order
 
