@@ -1,3 +1,17 @@
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./components/accordion";
+export type {
+  AccordionContentProps,
+  AccordionItemProps,
+  AccordionProps,
+  AccordionTriggerProps,
+  AccordionType,
+  AccordionValue,
+} from "./components/accordion";
 export { Icon, iconVariants } from "./components/icon";
 export {
   Avatar,

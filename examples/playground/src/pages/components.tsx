@@ -5,6 +5,10 @@ import {
   type ReactNode,
 } from "react";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
   Avatar,
   AvatarFallback,
   AvatarIconFallback,
@@ -2030,6 +2034,140 @@ export function LinksPage() {
           </div>
         </ExampleCard>
 
+      </div>
+    </div>
+  );
+}
+
+const accordionServiceItems = [
+  {
+    heading: "Certificate request",
+    supportingText: "Submit and track a public service request.",
+  },
+  {
+    heading: "Application status",
+    supportingText: "Review current processing stage and next steps.",
+  },
+  {
+    heading: "Payment confirmation",
+    supportingText: "Check fees, receipts, and payment references.",
+  },
+  {
+    heading: "Appointment details",
+    supportingText: "Manage office visits and digital appointments.",
+  },
+  {
+    heading: "Document delivery",
+    supportingText: "Choose pickup, courier, or digital delivery.",
+  },
+];
+
+function AccordionServiceRows() {
+  return (
+    <div className="accordion-service-list">
+      {accordionServiceItems.map((item) => (
+        <div className="accordion-service-row" key={item.heading}>
+          <div className="accordion-service-copy">
+            <strong>{item.heading}</strong>
+            <span>{item.supportingText}</span>
+          </div>
+          <Tag tone="neutral">Label</Tag>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AccordionPreview({
+  className,
+  defaultValue = "",
+}: {
+  className?: string;
+  defaultValue?: string;
+}) {
+  return (
+    <Accordion className={className} defaultValue={defaultValue}>
+      <AccordionItem value="overview">
+        <AccordionTrigger
+          heading="Accordion Heading"
+          supportingText="Supporting Text"
+        />
+        <AccordionContent>
+          <AccordionServiceRows />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="services">
+        <AccordionTrigger
+          heading="Accordion Heading"
+          supportingText="Supporting Text"
+        />
+        <AccordionContent>
+          <AccordionServiceRows />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="documents">
+        <AccordionTrigger
+          heading="Accordion Heading"
+          supportingText="Supporting Text"
+        />
+        <AccordionContent>
+          <AccordionServiceRows />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+
+export function AccordionPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="The Accordion component organizes long content into expandable sections while keeping the entire header row as the interaction target."
+        eyebrow="Components"
+        title="Accordion"
+      />
+      <div className="component-grid one">
+        <ExampleCard
+          description="The header uses desktop and mobile typography from the Figma spec, with a 48px circular icon target."
+          title="Breakpoints"
+        >
+          <div className="accordion-preview-stack">
+            <div className="accordion-preview-item">
+              <span>desktop</span>
+              <AccordionPreview className="accordion-preview-desktop" />
+            </div>
+            <div className="accordion-preview-item">
+              <span>mobile</span>
+              <AccordionPreview className="accordion-preview-mobile" />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="The open section switches the heading to the brand color and exposes the content slot below the trigger."
+          title="States"
+        >
+          <div className="accordion-preview-stack">
+            <div className="accordion-preview-item">
+              <span>desktop</span>
+              <AccordionPreview
+                className="accordion-preview-desktop"
+                defaultValue="services"
+              />
+            </div>
+            <div className="accordion-preview-item">
+              <span>mobile</span>
+              <AccordionPreview
+                className="accordion-preview-mobile"
+                defaultValue="services"
+              />
+            </div>
+            <div className="accordion-preview-item">
+              <span>hover</span>
+              <AccordionPreview className="accordion-preview-desktop accordion-preview-hover" />
+            </div>
+          </div>
+        </ExampleCard>
       </div>
     </div>
   );

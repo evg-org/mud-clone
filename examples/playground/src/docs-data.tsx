@@ -32,6 +32,7 @@ export const navGroups = [
       { href: "/input-textarea", label: "Input: Textarea", needsReview: false, visualGroup: "inputs" },
       { href: "/input-search", label: "Input: Search", needsReview: false, visualGroup: "inputs" },
       { href: "/input-select", label: "Input: Select", needsReview: false, visualGroup: "inputs" },
+      { href: "/accordion", label: "Accordion", needsReview: false },
       { href: "/menu", label: "Menu", needsReview: false },
       { href: "/separator", label: "Separator", needsReview: false },
       { href: "/table", label: "Table", needsReview: false },

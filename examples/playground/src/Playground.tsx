@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ComponentType, MouseEvent } from "react";
 import { MudLogo } from "@mud-clone/components/mud-logo";
 import { defaultRoute, navGroups } from "./docs-data";
@@ -12,6 +12,7 @@ import {
   TypographyPage,
 } from "./pages/foundations";
 import {
+  AccordionPage,
   AvatarsPage,
   BadgesPage,
   ButtonsPage,
@@ -84,6 +85,7 @@ const routes: DocsRoute[] = [
   { component: InputTextareaPage, href: "/input-textarea", label: "Input: Textarea" },
   { component: InputSearchPage, href: "/input-search", label: "Input: Search" },
   { component: InputSelectPage, href: "/input-select", label: "Input: Select" },
+  { component: AccordionPage, href: "/accordion", label: "Accordion" },
   { component: MenuPage, href: "/menu", label: "Menu" },
   { component: SeparatorPage, href: "/separator", label: "Separator" },
   { component: TablePage, href: "/table", label: "Table" },
@@ -118,6 +120,7 @@ const routeAliases = new Map([
   ["/components/input-textarea", "/input-textarea"],
   ["/components/input-search", "/input-search"],
   ["/components/input-select", "/input-select"],
+  ["/components/accordion", "/accordion"],
   ["/components/menu", "/menu"],
   ["/components/separator", "/separator"],
   ["/components/table", "/table"],
@@ -235,9 +238,15 @@ function DocsNavLink({
 
 export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
   const browserBasePath = normalizeBasePath(basePath);
+  const mainRef = useRef<HTMLElement>(null);
   const [activeHref, setActiveHref] = useState(() =>
     normalizeRoute(window.location.pathname, browserBasePath),
   );
+
+  const scrollToPageStart = useCallback(() => {
+    mainRef.current?.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0 });
+  }, []);
 
   useEffect(() => {
     const normalizedHref = normalizeRoute(window.location.pathname, browserBasePath);
@@ -246,7 +255,7 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
     if (window.location.pathname !== normalizedBrowserHref) {
       window.history.replaceState(null, "", normalizedBrowserHref);
     }
-  }, [browserBasePath]);
+  }, [browserBasePath, scrollToPageStart]);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -258,7 +267,7 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
       }
 
       setActiveHref(normalizedHref);
-      window.scrollTo({ top: 0 });
+      scrollToPageStart();
     };
 
     window.addEventListener("popstate", handlePopState);
@@ -266,7 +275,7 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [browserBasePath]);
+  }, [browserBasePath, scrollToPageStart]);
 
   const activeRoute = useMemo(
     () => routeMap.get(activeHref) ?? routeMap.get(defaultRoute)!,
@@ -282,7 +291,7 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
       setActiveHref(href);
     }
 
-    window.scrollTo({ top: 0 });
+    scrollToPageStart();
   }
 
   return (
@@ -337,7 +346,7 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
         </nav>
       </aside>
 
-      <main className="docs-main">
+      <main className="docs-main" ref={mainRef}>
         <ActivePage />
       </main>
     </div>
