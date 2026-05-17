@@ -1,0 +1,20 @@
+@import "./styles.css";
+
+html {
+  background: var(--color-background-base-secondary);
+  color: var(--color-text-base-default);
+  font-family: var(--app-font-family-sans);
+  letter-spacing: var(--app-letter-spacing-default);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}

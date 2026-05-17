@@ -1,0 +1,80 @@
+/* Onest font assets copied from egov-moldova/design-system at eb9370580402a29ab7e7917aeca905e107b0bd77. */
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestThin1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestLight1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestRegular1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestMedium1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestBold1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestExtraBold1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../assets/fonts/onest/OnestBlack1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest:Regular";
+  src: url("../assets/fonts/onest/OnestRegular1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest:Medium";
+  src: url("../assets/fonts/onest/OnestMedium1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest:SemiBold";
+  src: url("../assets/fonts/onest/OnestMedium1602-hint.woff") format("woff");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
