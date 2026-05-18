@@ -41,7 +41,7 @@ Each alias maps property-by-property. For example,
 ## Migration Order
 
 1. [x] Document `--app-type-*` as temporary compatibility.
-2. [x] Migrate MUD-clone playground/documentation CSS.
+2. [x] Migrate MUD-clone preview/documentation CSS.
 3. [x] Migrate MUD-clone component CSS/classes.
 4. [x] Migrate RSC compatibility bridge and active pages/components.
    - [x] Root reusable UI components in `src/app/components/ui`.
@@ -58,7 +58,7 @@ After each migration slice:
 
 ```bash
 npm --prefix mud-clone run check
-npm --prefix mud-clone run build:playground
+npm --prefix mud-clone run build:preview
 ```
 
 Run the root build when the RSC app or shared root CSS is touched:

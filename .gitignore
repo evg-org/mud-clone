@@ -1,5 +1,5 @@
 node_modules
 dist
-examples/playground/dist
+examples/preview/dist
 .DS_Store
 *.tgz

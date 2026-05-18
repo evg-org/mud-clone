@@ -117,7 +117,7 @@ The counts below were gathered from:
 
 - `src/app`
 - `mud-clone/src`
-- `mud-clone/examples/playground/src`
+- `mud-clone/examples/preview/src`
 
 The scan excludes root and MUD-clone `design-system.css` definitions so counts
 represent usage, not declarations.
@@ -129,9 +129,9 @@ represent usage, not declarations.
 | `--app-space-*` | 0 | Runtime usage migrated to `--spacing-*`. |
 | `--app-radius-*` | 0 | Runtime usage migrated to `--border-radius-*`. |
 | `--app-shadow-*` | 0 | Runtime usage migrated to `--drop-shadow-*`. |
-| `--spacing-*` | 468 | Includes runtime/component usage and playground/docs data. |
-| `--border-radius-*` | 118 | Includes runtime/component usage and playground/docs data. |
-| `--drop-shadow-*` | 25 | Includes runtime/component usage and playground/docs data. |
+| `--spacing-*` | 468 | Includes runtime/component usage and preview/docs data. |
+| `--border-radius-*` | 118 | Includes runtime/component usage and preview/docs data. |
+| `--drop-shadow-*` | 25 | Includes runtime/component usage and preview/docs data. |
 
 Resolved spacing aliases:
 
@@ -214,7 +214,7 @@ Direct MUD shadow usage:
 #### Hard-Coded Value Classification
 
 The following broad scan excludes imported Figma dumps, experiments, and the
-playground. These counts are a signal, not an automatic migration list. The
+preview. These counts are a signal, not an automatic migration list. The
 classification separates values that duplicate MUD foundations from values that
 are layout, component geometry, or legacy component cleanup.
 

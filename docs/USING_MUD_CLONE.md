@@ -170,13 +170,13 @@ npm run typecheck
 The preview pages live in the `mud-clone` repository itself. They are not part
 of the project that consumes `mud-clone` as a dependency.
 
-To open the preview pages locally, clone and run the MUD-clone playground:
+To open the preview pages locally, clone and run the MUD-clone preview:
 
 ```bash
 git clone https://github.com/evg-org/mud-clone.git
 cd mud-clone
 npm install
-npm run dev:playground
+npm run dev:preview
 ```
 
 Open the Vite URL printed in the terminal. It is usually:
@@ -197,20 +197,20 @@ Common direct preview paths:
 - `/icons`
 - `/assets`
 
-To verify that the preview playground builds for production, run:
+To verify that the preview builds for production, run:
 
 ```bash
-npm run build:playground
+npm run build:preview
 ```
 
-If GitHub Pages is enabled for the repository, the hosted playground should be:
+The hosted GitHub Pages preview is live at:
 
 ```text
 https://evg-org.github.io/mud-clone/
 ```
 
-If that URL returns 404, use the local preview workflow above until Pages is
-configured.
+If that URL returns 404 during a deployment window, use the local preview
+workflow above and check the latest GitHub Actions Pages run.
 
 ## Updating To A New Version
 

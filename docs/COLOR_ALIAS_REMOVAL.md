@@ -62,7 +62,7 @@ color tokens directly.
 
 1. [x] Stop documenting `--app-color-*` as foundation colors.
 2. [x] Mark `--app-color-*` aliases as temporary compatibility.
-3. [x] Migrate MUD-clone playground/documentation CSS.
+3. [x] Migrate MUD-clone preview/documentation CSS.
 4. [x] Migrate MUD-clone component CSS/classes.
 5. [x] Migrate RSC compatibility bridge and active pages/components.
 6. [x] Migrate or retire experiment/prototype import surfaces.
@@ -83,7 +83,7 @@ After each migration slice:
 
 ```bash
 npm --prefix mud-clone run check
-npm --prefix mud-clone run build:playground
+npm --prefix mud-clone run build:preview
 ```
 
 Run the root build when the RSC app or shared root CSS is touched:

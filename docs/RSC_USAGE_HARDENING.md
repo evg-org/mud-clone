@@ -154,8 +154,8 @@ Before implementing a new design:
    differences.
 8. Run the relevant MUD-clone checks in the standalone repo.
 9. Run `npm run build` in RSC.
-10. If the playground is affected, run
-    `npm run build:playground` in the standalone repo.
+10. If the preview is affected, run `npm run build:preview` in the standalone
+    repo.
 
 ## Recommended Phase 6 Order
 

@@ -5,7 +5,7 @@ MUD design system, extended with reusable product patterns developed during the
 RSC project.
 
 The package is intended for internal developer consumption as `mud-clone`.
-Use the built package for application imports, and use the playground as the
+Use the built package for application imports, and use the preview as the
 canonical visual reference for foundations, components, and composed patterns.
 
 ## Start Here For Developers
@@ -109,7 +109,7 @@ used through `MudIcon` and `MudLogo`.
 
 ## Component Status
 
-Status is based on the current playground navigation review flags.
+Status is based on the current preview navigation review flags.
 
 | Area | Status | Notes |
 | --- | --- | --- |
@@ -215,20 +215,20 @@ export function StatusSummary() {
 }
 ```
 
-## Playground
+## Preview
 
-Run the playground to inspect the package visually:
+Run the preview to inspect the package visually:
 
 ```bash
-npm run dev:playground
-npm run build:playground
+npm run dev:preview
+npm run build:preview
 ```
 
-The playground is the canonical visual catalog for this phase. It covers
+The preview is the canonical visual catalog for this phase. It covers
 foundations, component states, and composed reusable patterns. Storybook is
 intentionally deferred until package usage, type output, exports, and handoff
 docs are stable; if added later, use it for isolated state review and visual
-regression, not as a replacement for the playground.
+regression, not as a replacement for the preview.
 
 ## Package Scripts
 
@@ -237,8 +237,10 @@ npm run check            # generated assets, package exports, color aliases, typ
 npm run build            # library JS, declaration files, CSS assets, font assets, build validation
 npm run check:consumer   # build, pack, install, typecheck, and bundle a clean temp consumer app
 npm run build:types      # declaration-only TypeScript output
-npm run build:playground # production playground build
-npm run dev:playground   # local playground server
+npm run build:preview    # production preview build
+npm run dev:preview      # local preview server
+npm run build:playground # compatibility alias for build:preview
+npm run dev:playground   # compatibility alias for dev:preview
 npm run prepare          # lifecycle hook used by private Git installs
 ```
 

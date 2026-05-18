@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ComponentType, MouseEvent } from "react";
+import { Separator } from "@mud-clone";
 import { MudLogo } from "@mud-clone/components/mud-logo";
 import { defaultRoute, navGroups } from "./docs-data";
 import {
@@ -53,6 +54,7 @@ type NavItem = {
   href: string;
   label: string;
   needsReview: boolean;
+  separator?: boolean;
   visualGroup?: string;
 };
 
@@ -61,6 +63,10 @@ type NavItemChunk =
       items: NavItem[];
       type: "grouped";
       visualGroup: string;
+    }
+  | {
+      key: string;
+      type: "separator";
     }
   | {
       item: NavItem;
@@ -75,33 +81,37 @@ const routes: DocsRoute[] = [
   { component: ElevationPage, href: "/elevation", label: "Elevation" },
   { component: IconsLogosPage, href: "/icons", label: "Icons" },
   { component: AssetsPage, href: "/assets", label: "Assets" },
+  { component: AccordionPage, href: "/accordion", label: "Accordion" },
   { component: AvatarsPage, href: "/avatars", label: "Avatars" },
   { component: ButtonsPage, href: "/buttons", label: "Buttons" },
-  { component: CheckboxPage, href: "/checkbox", label: "Checkbox" },
-  { component: RadioButtonPage, href: "/radio-button", label: "Radio Button" },
-  { component: SwitchPage, href: "/switch", label: "Switch" },
-  { component: ChipPage, href: "/chip", label: "Chip" },
-  { component: SegmentedControlPage, href: "/segmented-control", label: "Segmented Control" },
   { component: LinksPage, href: "/links", label: "Links" },
   { component: TagsPage, href: "/tags", label: "Tags" },
   { component: BadgesPage, href: "/badges", label: "Badges" },
+  { component: ChipPage, href: "/chip", label: "Chip" },
+  { component: CheckboxPage, href: "/checkbox", label: "Checkbox" },
+  { component: RadioButtonPage, href: "/radio-button", label: "Radio Button" },
+  { component: SwitchPage, href: "/switch", label: "Switch" },
+  { component: TabsPage, href: "/tabs", label: "Tabs" },
+  {
+    component: SegmentedControlPage,
+    href: "/segmented-control",
+    label: "Segmented Control",
+  },
+  { component: InputSelectPage, href: "/input-select", label: "Input: Select" },
   { component: InputTextPage, href: "/input-text", label: "Input: Text" },
+  { component: InputTextareaPage, href: "/input-textarea", label: "Input: Textarea" },
   { component: InputNumericPage, href: "/input-numeric", label: "Input: Numeric" },
   { component: InputDatePage, href: "/input-date", label: "Input: Date" },
   { component: InputPhoneNumberPage, href: "/input-phone-number", label: "Input: Phone Number" },
-  { component: InputTextareaPage, href: "/input-textarea", label: "Input: Textarea" },
   { component: InputSearchPage, href: "/input-search", label: "Input: Search" },
-  { component: InputSelectPage, href: "/input-select", label: "Input: Select" },
-  { component: AccordionPage, href: "/accordion", label: "Accordion" },
-  { component: MenuPage, href: "/menu", label: "Menu" },
-  { component: TabsPage, href: "/tabs", label: "Tabs" },
   { component: TooltipPage, href: "/tooltip", label: "Tooltip" },
   { component: SeparatorPage, href: "/separator", label: "Separator" },
   { component: TablePage, href: "/table", label: "Table" },
-  { component: TableCardPage, href: "/table-card", label: "Table Card" },
+  { component: MenuPage, href: "/menu", label: "Menu" },
   { component: ModalPage, href: "/modal", label: "Modal" },
-  { component: DetailRowsPage, href: "/detail-row", label: "Detail Row" },
   { component: SectionHeadingPage, href: "/section-heading", label: "Section Heading" },
+  { component: DetailRowsPage, href: "/detail-row", label: "Detail Row" },
+  { component: TableCardPage, href: "/table-card", label: "Table Card" },
 ];
 
 const routeMap = new Map(routes.map((route) => [route.href, route]));
@@ -163,7 +173,7 @@ const routeAliases = new Map([
 ]);
 const viteBaseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
-type MudClonePlaygroundProps = {
+type MudClonePreviewProps = {
   basePath?: string;
 };
 
@@ -198,6 +208,12 @@ function chunkNavItems(items: NavItem[]) {
 
   while (index < items.length) {
     const item = items[index];
+
+    if (item.separator) {
+      chunks.push({ key: `separator-${index}`, type: "separator" });
+      index += 1;
+      continue;
+    }
 
     if (!item.visualGroup) {
       chunks.push({ item, type: "single" });
@@ -249,7 +265,7 @@ function DocsNavLink({
   );
 }
 
-export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
+export function MudClonePreview({ basePath }: MudClonePreviewProps = {}) {
   const browserBasePath = normalizeBasePath(basePath);
   const mainRef = useRef<HTMLElement>(null);
   const [activeHref, setActiveHref] = useState(() =>
@@ -309,9 +325,9 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
 
   return (
     <div className="docs-app">
-      <aside className="docs-sidebar" aria-label="Playground navigation">
+      <aside className="docs-sidebar" aria-label="Preview navigation">
         <a
-          aria-label="MUD-clone reference home"
+          aria-label="MUD-clone preview home"
           className="docs-sidebar-brand"
           href={toBrowserHref(defaultRoute, browserBasePath)}
           onClick={(event) => navigate(event, defaultRoute)}
@@ -319,7 +335,7 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
           <MudLogo className="docs-logo" name="government-logo" />
           <span>
             <span>MUD-clone</span>
-            <strong>Reference</strong>
+            <strong>Preview</strong>
           </span>
         </a>
 
@@ -327,24 +343,39 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
           {navGroups.map((group) => (
             <div className="docs-nav-group" key={group.label}>
               <p>{group.label}</p>
-              {chunkNavItems(group.items).map((chunk) =>
-                chunk.type === "grouped" ? (
-                  <div
-                    className="docs-nav-visual-group"
-                    data-visual-group={chunk.visualGroup}
-                    key={`${group.label}-${chunk.visualGroup}`}
-                  >
-                    {chunk.items.map((item) => (
-                      <DocsNavLink
-                        activeHref={activeHref}
-                        browserBasePath={browserBasePath}
-                        item={item}
-                        key={item.href}
-                        navigate={navigate}
-                      />
-                    ))}
-                  </div>
-                ) : (
+              {chunkNavItems(group.items).map((chunk) => {
+                if (chunk.type === "separator") {
+                  return (
+                    <Separator
+                      className="docs-nav-separator"
+                      key={`${group.label}-${chunk.key}`}
+                      thickness="extra-thin"
+                      tone="subtle"
+                    />
+                  );
+                }
+
+                if (chunk.type === "grouped") {
+                  return (
+                    <div
+                      className="docs-nav-visual-group"
+                      data-visual-group={chunk.visualGroup}
+                      key={`${group.label}-${chunk.visualGroup}`}
+                    >
+                      {chunk.items.map((item) => (
+                        <DocsNavLink
+                          activeHref={activeHref}
+                          browserBasePath={browserBasePath}
+                          item={item}
+                          key={item.href}
+                          navigate={navigate}
+                        />
+                      ))}
+                    </div>
+                  );
+                }
+
+                return (
                   <DocsNavLink
                     activeHref={activeHref}
                     browserBasePath={browserBasePath}
@@ -352,8 +383,8 @@ export function MudClonePlayground({ basePath }: MudClonePlaygroundProps = {}) {
                     key={chunk.item.href}
                     navigate={navigate}
                   />
-                ),
-              )}
+                );
+              })}
             </div>
           ))}
         </nav>

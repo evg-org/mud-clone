@@ -7,7 +7,7 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const forbiddenPattern = /--app-color-[A-Za-z0-9_-]+/g;
 const ignoredDirs = new Set([".git", "dist", "node_modules"]);
 const textFilePattern = /\.(css|scss|ts|tsx|js|jsx|mjs|cjs|html)$/;
-const targets = ["src", "examples/playground/src"];
+const targets = ["src", "examples/preview/src"];
 const violations = [];
 
 function lineNumberFor(source, index) {

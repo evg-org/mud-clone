@@ -24,7 +24,8 @@
   ],
   "scripts": {
     "build": "npm run check:assets && npm run check:colors && npm run check:typography && vite build --config ./vite.config.ts && npm run build:types && npm run copy:build-assets && npm run check:build-output",
-    "build:playground": "vite build --config ./examples/playground/vite.config.ts",
+    "build:playground": "npm run build:preview",
+    "build:preview": "vite build --config ./examples/preview/vite.config.ts",
     "build:types": "tsc -p ./tsconfig.declarations.json && npm run fix:declarations",
     "check": "npm run check:assets && npm run check:exports && npm run check:colors && npm run check:typography",
     "check:assets": "node ./scripts/generate-asset-registries.mjs --check",
@@ -34,7 +35,8 @@
     "check:exports": "node ./scripts/check-package-exports.mjs",
     "check:typography": "node ./scripts/check-typography-aliases.mjs",
     "copy:build-assets": "node ./scripts/copy-package-assets.mjs",
-    "dev:playground": "vite --config ./examples/playground/vite.config.ts",
+    "dev:playground": "npm run dev:preview",
+    "dev:preview": "vite --config ./examples/preview/vite.config.ts",
     "fix:declarations": "node ./scripts/fix-declaration-imports.mjs",
     "generate:assets": "node ./scripts/generate-asset-registries.mjs",
     "prepare": "npm run build"

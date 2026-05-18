@@ -4,13 +4,13 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-const playgroundRoot = fileURLToPath(new URL(".", import.meta.url));
-const packageRoot = resolve(playgroundRoot, "../..");
-const playgroundBase = process.env.GITHUB_PAGES === "true" ? "/mud-clone/" : "/";
+const previewRoot = fileURLToPath(new URL(".", import.meta.url));
+const packageRoot = resolve(previewRoot, "../..");
+const previewBase = process.env.GITHUB_PAGES === "true" ? "/mud-clone/" : "/";
 
 export default defineConfig({
-  base: playgroundBase,
-  root: playgroundRoot,
+  base: previewBase,
+  root: previewRoot,
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
