@@ -166,6 +166,47 @@ If your project has TypeScript checks, run them too:
 npm run typecheck
 ```
 
+## Open The MUD-clone Preview Pages
+
+The preview pages live in the `mud-clone` repository itself. They are not part
+of the project that consumes `mud-clone` as a dependency.
+
+To open the preview pages locally, clone and run the MUD-clone playground:
+
+```bash
+git clone git@github.com:evgheniif/mud-clone.git
+cd mud-clone
+npm install
+npm run dev:playground
+```
+
+Open the Vite URL printed in the terminal. It is usually:
+
+```text
+http://localhost:5173
+```
+
+Common direct preview paths:
+
+- `/colors`
+- `/typography`
+- `/buttons`
+- `/input-text`
+- `/input-select`
+- `/table`
+- `/modal`
+- `/icons`
+- `/assets`
+
+To verify that the preview playground builds for production, run:
+
+```bash
+npm run build:playground
+```
+
+At this stage, the preview pages are local-only unless a shared hosted
+playground URL is provided later.
+
 ## Updating To A New Version
 
 When a new MUD-clone package tag is shared, update the tag in the consuming
