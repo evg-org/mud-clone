@@ -28,20 +28,20 @@ workspace link that points at this package root:
 }
 ```
 
-For a separate private React/Vite project, prefer the tagged Git
-dependency. The package keeps `private: true`, but Git installs still work
+For a separate React/Vite project, prefer the tagged public Git dependency.
+The package keeps `private: true`, but Git installs still work
 because the `prepare` lifecycle builds `dist` during dependency installation:
 
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1"
+    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1"
   }
 }
 ```
 
-The consuming repository needs read access to `evgheniif/mud-clone`. For GitHub
-Actions, use a deploy key or token with read access to this private repository.
+The repository is public, so consuming projects and GitHub Actions can install
+the tagged Git dependency without a deploy key or repository read token.
 
 Import the package CSS once near the application root, before rendering
 MUD-clone components:

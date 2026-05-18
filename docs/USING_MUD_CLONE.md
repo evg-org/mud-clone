@@ -4,17 +4,17 @@ This guide is for anyone who needs to use `mud-clone` in a separate React/Vite
 project: designers, developers, product managers, reviewers, or other project
 contributors.
 
-`mud-clone` is currently a private internal design-system package. It is not
-published to npm. Install it from the private GitHub repository using the tag
-below.
+`mud-clone` is currently distributed from a public GitHub repository. It is not
+published to npm. Install it from GitHub using the tag below. The repository is
+public, but the package remains `UNLICENSED`; do not treat public visibility as
+open-source reuse permission.
 
 ## What You Need
 
 - A React/Vite project.
-- Node.js and npm installed.
-- Read access to the private GitHub repository:
-  `https://github.com/evgheniif/mud-clone`.
-- GitHub SSH access configured on your machine.
+- Node.js, npm, and Git installed.
+- Network access to GitHub:
+  `https://github.com/evg-org/mud-clone`.
 
 If you are not the person who manages the project code, share this document
 with that person. They can follow the setup steps below.
@@ -25,23 +25,22 @@ The current package tag is:
 v0.0.1-prototype.1
 ```
 
-## 1. Confirm GitHub Access
+## 1. Confirm Repository Access
 
-From your terminal, verify that GitHub SSH works:
+From your terminal, verify that the public repository is reachable:
 
 ```bash
-ssh -T git@github.com
+git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.1
 ```
 
-If this fails with a permission error, ask for access to the private
-`evgheniif/mud-clone` repository and make sure your SSH key is added to GitHub.
+If this fails, confirm network access to GitHub and that the tag exists.
 
 ## 2. Install MUD-clone In Your Project
 
 In the project that should use MUD-clone, install the tagged package:
 
 ```bash
-npm install git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1
+npm install git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1
 ```
 
 This adds `mud-clone` to your `package.json`. It should look like this:
@@ -49,7 +48,7 @@ This adds `mud-clone` to your `package.json`. It should look like this:
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1"
+    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1"
   }
 }
 ```
@@ -174,7 +173,7 @@ of the project that consumes `mud-clone` as a dependency.
 To open the preview pages locally, clone and run the MUD-clone playground:
 
 ```bash
-git clone git@github.com:evgheniif/mud-clone.git
+git clone https://github.com/evg-org/mud-clone.git
 cd mud-clone
 npm install
 npm run dev:playground
@@ -204,8 +203,14 @@ To verify that the preview playground builds for production, run:
 npm run build:playground
 ```
 
-At this stage, the preview pages are local-only unless a shared hosted
-playground URL is provided later.
+If GitHub Pages is enabled for the repository, the hosted playground should be:
+
+```text
+https://evg-org.github.io/mud-clone/
+```
+
+If that URL returns 404, use the local preview workflow above until Pages is
+configured.
 
 ## Updating To A New Version
 
@@ -215,7 +220,7 @@ project's `package.json`:
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+ssh://git@github.com/evgheniif/mud-clone.git#NEW_TAG"
+    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#NEW_TAG"
   }
 }
 ```
@@ -230,27 +235,22 @@ Commit the updated `package.json` and lockfile in the consuming project.
 
 ## GitHub Actions Or CI
 
-If your project builds in GitHub Actions, the workflow also needs read access
-to the private `mud-clone` repository.
-
-Use one of these:
-
-- A deploy key with read access to `evgheniif/mud-clone`.
-- A GitHub token that can read the private repository.
-
-Without this access, CI installs will fail even if local install works.
+If your project builds in GitHub Actions, no deploy key or repository read token
+is needed for the public HTTPS Git dependency. CI still needs normal outbound
+network access to GitHub and npm.
 
 ## Troubleshooting
 
-### Permission denied when installing
+### Repository install fails
 
-Your machine cannot read the private repository. Confirm SSH access:
+Confirm the public repository URL and tag:
 
 ```bash
-ssh -T git@github.com
+git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.1
 ```
 
-Then ask for access to `evgheniif/mud-clone` if needed.
+If the command fails, check network access to GitHub and that the requested tag
+exists.
 
 ### `Cannot find module "mud-clone"`
 

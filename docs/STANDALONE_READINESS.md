@@ -7,8 +7,8 @@ Last checked: 2026-05-17.
 
 ## Current Assessment
 
-Status: **developer handoff-ready as an internal package, but not public
-release-ready yet**.
+Status: **developer handoff-ready from the public GitHub repository, but not
+open-source or npm release-ready yet**.
 
 Standalone packaging work is intentionally on hold while RSC usage hardening is
 active. Current promotion priorities and RSC source-of-truth rules are tracked
@@ -29,7 +29,7 @@ The intended long-term relationship is:
   assets, and component behavior.
 - **MUD-clone repository**: our reusable React design-system implementation and
   source of truth for shared UI. Target GitHub repository:
-  [`evgheniif/mud-clone`](https://github.com/evgheniif/mud-clone.git).
+  [`evg-org/mud-clone`](https://github.com/evg-org/mud-clone.git).
 - **RSC repository**: the product/prototype application that consumes MUD-clone
   and keeps product-specific pages, routing, workflows, and domain data.
 
@@ -40,7 +40,7 @@ The extraction flow should be:
 2. Finish remaining standalone readiness items: package/repo name, legal
    clearance, dependency policy, versioning, and release workflow.
 3. Create the separate MUD-clone GitHub repository. Done:
-   [`evgheniif/mud-clone`](https://github.com/evgheniif/mud-clone.git).
+   [`evg-org/mud-clone`](https://github.com/evg-org/mud-clone.git).
 4. Copy or move the `mud-clone` package contents into that repository. Done:
    the initial package snapshot is pushed to `origin/main`.
 5. Make RSC consume MUD-clone as a dependency instead of relying on the local
@@ -52,8 +52,8 @@ The extraction flow should be:
 
 Recommended connection model:
 
-- **Short term**: use the private Git dependency
-  `git+ssh://git@github.com/evgheniif/mud-clone.git#v0.0.1-prototype.1` for
+- **Short term**: use the public Git dependency
+  `git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1` for
   separate React/Vite prototypes, or a local link while validating same-machine
   changes. Git installs rely on the package `prepare` lifecycle to build
   gitignored `dist` output during dependency installation.
@@ -73,18 +73,18 @@ Workflow rules after the split:
 
 | Area | Status | Notes | Next action |
 | --- | --- | --- | --- |
-| Standalone GitHub repository | Created | Target repository exists at `https://github.com/evgheniif/mud-clone.git`, and the initial package snapshot is pushed to `main`. | Keep future reusable DS changes flowing into the standalone repo first. |
+| Standalone GitHub repository | Created | Target repository exists at `https://github.com/evg-org/mud-clone.git`, and the initial package snapshot is pushed to `main`. | Keep future reusable DS changes flowing into the standalone repo first. |
 | RSC source coupling | Reduced | The package `src` directory does not import `src/app`, `@/`, or RSC page/domain modules. RSC now declares `mud-clone: file:../mud-clone`, resolves package imports through the installed local link, and runs `check:mud-clone-link` before build. RSC compatibility shims still exist. | Keep shims temporary; replace direct source-path usage with package imports after the package name/export strategy is settled. |
 | Vite coupling | Reduced | `MudLogo` uses a generated source registry. `MudIcon` still uses Vite `import.meta.glob` for lazy icon URL loading, and the package build normalizes emitted icon/logo URLs so consumers resolve package-owned assets instead of app-root `/assets` paths. | Keep generated registries and build asset normalization in sync; revisit only if a future package target cannot consume `new URL` asset references. |
 | Package exports | Ready for internal handoff | `mud-clone/package.json` exports the root barrel, every current component subpath, and the CSS foundation files from built `dist` paths. Type conditions point to matching declaration files. | Revisit only if the public package name or output layout changes. |
 | Package dependencies | Mostly ready | `mud-clone/package.json` now lists React peers and the current Radix, CVA, utility, and icon dependencies used by source files. Versions match the parent app baseline. | Revisit peer-versus-direct dependency policy before publication. |
-| Package scripts/files | Mostly ready | `mud-clone/package.json` now declares `files`, `sideEffects`, asset generation/check scripts, declaration generation, build asset copying, build output validation, package build, clean consumer validation, playground scripts, and the `prepare` lifecycle required by private Git installs. | Revisit package contents before public publication. |
+| Package scripts/files | Mostly ready | `mud-clone/package.json` now declares `files`, `sideEffects`, asset generation/check scripts, declaration generation, build asset copying, build output validation, package build, clean consumer validation, playground scripts, and the `prepare` lifecycle required by Git installs. | Revisit package contents before public publication. |
 | Package build | Mostly ready | `mud-clone/vite.config.ts` can build the root barrel and current component subpaths as an ES module library bundle. `npm run build` also emits declarations, copies CSS/font assets, and validates exported build artifacts. | Verify a clean consumer install before release. |
 | CSS and font assets | Mostly ready | CSS uses relative font URLs to copied Onest files under `mud-clone/src/assets/fonts/onest`; the package build now copies styles to `dist/styles` and fonts to `dist/assets/fonts`. | Verify asset URL behavior again in a clean consuming app before release. |
 | Icon and logo assets | Mostly ready | MUD assets are copied under `mud-clone/src/assets/mud` and resolved by generated registries consumed by `MudIcon`/`MudLogo`. | Decide whether to ship all copied assets or prune to a documented supported set. |
 | Documentation | Good baseline | `DESIGN_SYSTEM.md`, `COMPONENT_SOURCES.md`, `MIGRATION_NOTES.md`, and `CONTRIBUTING.md` exist. | Add install/import examples and standalone package usage docs. |
 | Examples/playground | In progress | `examples/playground` is a package-owned, page-based Vite reference surface that imports MUD-clone primitives through `@mud-clone` aliases and documents foundations, components, and reusable RSC patterns. | Keep adding focused page routes when new reusable primitives are added. |
-| Attribution/license | Documented, needs review before release | `ATTRIBUTION.md` records upstream MUD, copied assets, Onest font, and license cautions. The package remains `UNLICENSED` and `private`. | Get explicit legal/publication clearance before public repo creation or package publication. |
+| Attribution/license | Documented, needs review before release | `ATTRIBUTION.md` records upstream MUD, copied assets, Onest font, and license cautions. The package remains `UNLICENSED` and `private`. | Get explicit legal/publication clearance before open-source licensing or package publication. |
 | Package name | Prototype-ready | Current `name` is `mud-clone`, `private` is `true`, and `version` is `0.0.1-prototype.1`. | Decide final public/private package name before registry publication. |
 | Versioning/release process | Prototype tag | Use Git tags such as `v0.0.1-prototype.1` for short-term prototype consumption. | Decide SemVer policy, changelog format, and private registry workflow before broader adoption. |
 
