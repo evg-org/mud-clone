@@ -35,7 +35,7 @@ because the `prepare` lifecycle builds `dist` during dependency installation:
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1"
+    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.2"
   }
 }
 ```

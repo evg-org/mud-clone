@@ -1,7 +1,7 @@
 {
   "name": "mud-clone",
   "private": true,
-  "version": "0.0.1-prototype.1",
+  "version": "0.0.1-prototype.2",
   "description": "React implementation of the Moldova government MUD design system, extended for reusable product patterns.",
   "license": "UNLICENSED",
   "type": "module",

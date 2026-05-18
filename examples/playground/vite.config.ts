@@ -6,8 +6,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 const playgroundRoot = fileURLToPath(new URL(".", import.meta.url));
 const packageRoot = resolve(playgroundRoot, "../..");
+const playgroundBase = process.env.GITHUB_PAGES === "true" ? "/mud-clone/" : "/";
 
 export default defineConfig({
+  base: playgroundBase,
   root: playgroundRoot,
   plugins: [react(), tailwindcss()],
   resolve: {

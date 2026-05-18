@@ -22,7 +22,7 @@ with that person. They can follow the setup steps below.
 The current package tag is:
 
 ```text
-v0.0.1-prototype.1
+v0.0.1-prototype.2
 ```
 
 ## 1. Confirm Repository Access
@@ -30,7 +30,7 @@ v0.0.1-prototype.1
 From your terminal, verify that the public repository is reachable:
 
 ```bash
-git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.1
+git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.2
 ```
 
 If this fails, confirm network access to GitHub and that the tag exists.
@@ -40,7 +40,7 @@ If this fails, confirm network access to GitHub and that the tag exists.
 In the project that should use MUD-clone, install the tagged package:
 
 ```bash
-npm install git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1
+npm install git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.2
 ```
 
 This adds `mud-clone` to your `package.json`. It should look like this:
@@ -48,7 +48,7 @@ This adds `mud-clone` to your `package.json`. It should look like this:
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1"
+    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.2"
   }
 }
 ```
@@ -246,7 +246,7 @@ network access to GitHub and npm.
 Confirm the public repository URL and tag:
 
 ```bash
-git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.1
+git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.2
 ```
 
 If the command fails, check network access to GitHub and that the requested tag

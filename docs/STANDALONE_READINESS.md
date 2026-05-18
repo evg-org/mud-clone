@@ -53,7 +53,7 @@ The extraction flow should be:
 Recommended connection model:
 
 - **Short term**: use the public Git dependency
-  `git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.1` for
+  `git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.2` for
   separate React/Vite prototypes, or a local link while validating same-machine
   changes. Git installs rely on the package `prepare` lifecycle to build
   gitignored `dist` output during dependency installation.
@@ -85,8 +85,8 @@ Workflow rules after the split:
 | Documentation | Good baseline | `DESIGN_SYSTEM.md`, `COMPONENT_SOURCES.md`, `MIGRATION_NOTES.md`, and `CONTRIBUTING.md` exist. | Add install/import examples and standalone package usage docs. |
 | Examples/playground | In progress | `examples/playground` is a package-owned, page-based Vite reference surface that imports MUD-clone primitives through `@mud-clone` aliases and documents foundations, components, and reusable RSC patterns. | Keep adding focused page routes when new reusable primitives are added. |
 | Attribution/license | Documented, needs review before release | `ATTRIBUTION.md` records upstream MUD, copied assets, Onest font, and license cautions. The package remains `UNLICENSED` and `private`. | Get explicit legal/publication clearance before open-source licensing or package publication. |
-| Package name | Prototype-ready | Current `name` is `mud-clone`, `private` is `true`, and `version` is `0.0.1-prototype.1`. | Decide final public/private package name before registry publication. |
-| Versioning/release process | Prototype tag | Use Git tags such as `v0.0.1-prototype.1` for short-term prototype consumption. | Decide SemVer policy, changelog format, and private registry workflow before broader adoption. |
+| Package name | Prototype-ready | Current `name` is `mud-clone`, `private` is `true`, and `version` is `0.0.1-prototype.2`. | Decide final public/package name before registry publication. |
+| Versioning/release process | Prototype tag | Use Git tags such as `v0.0.1-prototype.2` for short-term prototype consumption. | Decide SemVer policy, changelog format, and registry workflow before broader adoption. |
 
 ## External Dependencies Found In Source
 
