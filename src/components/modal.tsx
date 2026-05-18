@@ -7,17 +7,19 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { MudIcon } from "./mud-icon";
 import { cn } from "./utils";
 
+type ModalSize = NonNullable<VariantProps<typeof modalContentVariants>["size"]>;
+
 const modalContentVariants = cva(
   [
-    "fixed left-1/2 top-1/2 z-50 flex max-h-[calc(100vh-2rem)] w-[90vw] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden border border-[var(--color-border-base-default)] bg-[var(--color-background-base-default)] [color:var(--color-text-base-default)]",
-    "shadow-[var(--drop-shadow-300)]",
+    "fixed left-1/2 top-1/2 z-50 flex max-h-[min(780px,calc(100dvh_-_var(--spacing-32)))] w-[calc(100vw_-_var(--spacing-32))] min-w-[280px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden bg-[var(--color-background-base-default)] [color:var(--color-text-base-default)]",
+    "shadow-[0_0_0_0.5px_rgba(0,0,0,0.12),0_10px_24px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.08)]",
     "duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
   ],
   {
     variants: {
       size: {
-        sm: "max-w-[320px]",
-        md: "max-w-[590px]",
+        sm: "max-w-[588px]",
+        md: "max-w-[588px]",
         lg: "max-w-[720px]",
         fullscreen:
           "h-dvh max-h-dvh w-screen max-w-none rounded-none border-0 shadow-none",
@@ -29,7 +31,7 @@ const modalContentVariants = cva(
           "data-[state=closed]:slide-out-to-bottom-[var(--spacing-40)] data-[state=open]:slide-in-from-bottom-[var(--spacing-40)]",
       },
       radius: {
-        default: "rounded-[var(--border-radius-16)] max-[680px]:rounded-[var(--border-radius-12)]",
+        default: "rounded-[var(--border-radius-16)]",
         none: "rounded-none",
       },
     },
@@ -47,6 +49,12 @@ const modalContentVariants = cva(
     },
   },
 );
+
+const ModalSizeContext = React.createContext<ModalSize>("md");
+
+function getModalSize(size: VariantProps<typeof modalContentVariants>["size"]) {
+  return size ?? "md";
+}
 
 function Modal({
   ...props
@@ -100,21 +108,26 @@ function ModalContent({
   VariantProps<typeof modalContentVariants> & {
     hideClose?: boolean;
   }) {
+  const modalSize = getModalSize(size);
+
   return (
     <ModalPortal>
       <ModalOverlay />
       <DialogPrimitive.Content
         data-slot="modal-content"
+        data-size={modalSize}
         className={cn(modalContentVariants({ animation, radius, size }), className)}
         {...props}
       >
-        {!hideClose && (
-          <DialogPrimitive.Close className="absolute right-[var(--spacing-20)] top-[var(--spacing-24)] z-10 inline-flex size-[var(--spacing-32)] items-center justify-center rounded-[var(--border-radius-full)] border-0 bg-[var(--color-background-base-tertiary)] [color:var(--color-icon-base-secondary)] outline-none transition-[background-color,box-shadow] hover:bg-[var(--color-background-base-tertiary-active)] focus-visible:ring-[3px] focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-background">
-            <MudIcon name="Outlined/16/cross-large" size="sm" />
-            <span className="sr-only">Închide</span>
-          </DialogPrimitive.Close>
-        )}
-        {children}
+        <ModalSizeContext.Provider value={modalSize}>
+          {!hideClose && (
+            <DialogPrimitive.Close className="absolute right-[var(--spacing-20)] top-[var(--spacing-24)] z-10 inline-flex size-[var(--spacing-32)] items-center justify-center rounded-[var(--border-radius-full)] border-0 bg-[var(--color-background-base-tertiary)] [color:var(--color-icon-base-secondary)] outline-none transition-[background-color,box-shadow] hover:bg-[var(--color-background-base-tertiary-active)] focus-visible:ring-[3px] focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-background">
+              <MudIcon name="Outlined/16/cross-large" size="sm" />
+              <span className="sr-only">Închide</span>
+            </DialogPrimitive.Close>
+          )}
+          {children}
+        </ModalSizeContext.Provider>
       </DialogPrimitive.Content>
     </ModalPortal>
   );
@@ -144,7 +157,7 @@ function ModalHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="modal-header"
       className={cn(
-        "grid gap-[var(--spacing-8)] px-[var(--spacing-32)] pb-0 pr-[var(--spacing-48)] pt-[var(--spacing-24)]",
+        "grid gap-[var(--spacing-12)] px-[var(--spacing-32)] pb-0 pr-[var(--spacing-64)] pt-[var(--spacing-24)]",
         className,
       )}
       {...props}
@@ -156,11 +169,16 @@ function ModalTitle({
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
+  const modalSize = React.useContext(ModalSizeContext);
+
   return (
     <DialogPrimitive.Title
       data-slot="modal-title"
       className={cn(
-        "line-clamp-3 break-words [font-family:var(--app-font-family-sans)] [font-size:var(--text-heading-h3-sm-font-size)] [font-weight:var(--text-heading-h3-sm-font-weight)] [line-height:var(--text-heading-h3-sm-line-height)] [letter-spacing:var(--text-heading-h3-sm-letter-spacing)] [color:var(--color-text-base-default)]",
+        "line-clamp-3 break-words [font-family:var(--app-font-family-sans)] [color:var(--color-text-base-default)]",
+        modalSize === "sm"
+          ? "[font-size:var(--text-heading-h4-xs-font-size)] [font-weight:var(--text-heading-h4-xs-font-weight)] [line-height:var(--text-heading-h4-xs-line-height)] [letter-spacing:var(--text-heading-h4-xs-letter-spacing)]"
+          : "[font-size:var(--text-heading-h3-sm-font-size)] [font-weight:var(--text-heading-h3-sm-font-weight)] [line-height:var(--text-heading-h3-sm-line-height)] [letter-spacing:var(--text-heading-h3-sm-letter-spacing)]",
         className,
       )}
       {...props}
@@ -172,11 +190,16 @@ function ModalDescription({
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+  const modalSize = React.useContext(ModalSizeContext);
+
   return (
     <DialogPrimitive.Description
       data-slot="modal-description"
       className={cn(
-        "[font-family:var(--app-font-family-sans)] [font-size:var(--text-body-sm-font-size)] [line-height:var(--text-body-sm-line-height)] [color:var(--color-text-base-secondary)]",
+        "[font-family:var(--app-font-family-sans)] [color:var(--color-text-base-secondary)]",
+        modalSize === "sm"
+          ? "[font-size:var(--text-body-sm-font-size)] [line-height:var(--text-body-sm-line-height)]"
+          : "[font-size:var(--text-body-md-font-size)] [line-height:var(--text-body-md-line-height)]",
         className,
       )}
       {...props}
@@ -185,11 +208,16 @@ function ModalDescription({
 }
 
 function ModalBody({ className, ...props }: React.ComponentProps<"div">) {
+  const modalSize = React.useContext(ModalSizeContext);
+
   return (
     <div
       data-slot="modal-body"
       className={cn(
-        "flex max-h-[calc(64vh-4px)] flex-col gap-[var(--spacing-16)] overflow-y-auto px-[var(--spacing-32)] py-[var(--spacing-24)] pr-[var(--spacing-20)] [font-family:var(--app-font-family-sans)] [font-size:var(--text-body-md-font-size)] [line-height:var(--text-body-md-line-height)] [color:var(--color-text-base-secondary)]",
+        "flex min-h-0 flex-col overflow-y-auto px-[var(--spacing-32)] [font-family:var(--app-font-family-sans)] [color:var(--color-text-base-secondary)]",
+        modalSize === "sm"
+          ? "gap-[var(--spacing-12)] pb-[var(--spacing-20)] pt-[var(--spacing-16)] [font-size:var(--text-body-sm-font-size)] [line-height:var(--text-body-sm-line-height)]"
+          : "gap-[var(--spacing-16)] pb-[var(--spacing-40)] pt-[var(--spacing-24)] [font-size:var(--text-body-md-font-size)] [line-height:var(--text-body-md-line-height)]",
         className,
       )}
       {...props}
@@ -198,11 +226,16 @@ function ModalBody({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function ModalFooter({ className, ...props }: React.ComponentProps<"div">) {
+  const modalSize = React.useContext(ModalSizeContext);
+
   return (
     <div
       data-slot="modal-footer"
       className={cn(
-        "flex flex-col-reverse gap-[var(--spacing-8)] px-[var(--spacing-20)] pb-[var(--spacing-24)] pt-[var(--spacing-12)] sm:flex-row sm:justify-end",
+        "flex flex-col-reverse gap-[var(--spacing-8)] px-[var(--spacing-20)] pt-[var(--spacing-12)] [&_[data-slot=button]]:w-full [&_[data-slot=button]]:rounded-[var(--app-control-radius-full)] sm:flex-row sm:justify-end sm:[&_[data-slot=button]]:w-auto",
+        modalSize === "sm"
+          ? "pb-[var(--spacing-20)] [&_[data-slot=button]]:h-[var(--app-control-height-md)] [&_[data-slot=button]]:min-w-[var(--app-control-min-width-md)] [&_[data-slot=button]]:px-[var(--spacing-20)] [&_[data-slot=button]]:![font-size:var(--text-body-sm-500-font-size)] [&_[data-slot=button]]:![line-height:var(--text-body-sm-500-line-height)]"
+          : "pb-[var(--spacing-24)]",
         className,
       )}
       {...props}

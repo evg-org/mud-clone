@@ -84,34 +84,44 @@ Root exports:
 - `Avatar`
 - `Badge`
 - `Button`
+- `DateInput`
 - `DetailRow`
 - `Icon`
 - `Input`
 - `Link`
+- `NumericInput`
+- `PhoneNumberInput`
 - `RadioGroup` and `RadioGroupItem`
 - `SectionHeading`
+- `SegmentedControl` and `SegmentedControlItem`
 - `Switch`
 - `TableCard` and related `TableCard*` primitives
 - `Tabs` and related `Tabs*` primitives
 - `Tag`
+- `Tooltip`
 - `Textarea`
 
 Subpath-only exports:
 
 - `@mud-clone/components/checkbox`
 - `@mud-clone/components/dropdown-menu`
-- `@mud-clone/components/dialog`
 - `@mud-clone/components/menu`
 - `@mud-clone/components/modal`
 - `@mud-clone/components/mud-icon`
 - `@mud-clone/components/mud-logo`
 - `@mud-clone/components/pagination`
 - `@mud-clone/components/search-input`
-- `@mud-clone/components/selection-card`
 - `@mud-clone/components/select`
 - `@mud-clone/components/table`
 - `@mud-clone/styles/design-system.css`
 - `@mud-clone/styles/fonts.css`
+
+Deprecated compatibility-only subpath export:
+
+- `@mud-clone/components/selection-card` remains available to avoid breaking
+  existing imports, but `SelectionCard` is RSC-specific and should not be used
+  for new MUD-clone work. New usage should live in the consuming product app;
+  this export will be removed from MUD-clone in a future cleanup.
 
 ## Primitive Usage Rules
 
@@ -126,9 +136,6 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
   visited styling; and pointer/touch target sizing.
 - Menus: use `Menu` or `DropdownMenu` for compact action menus, contextual
   menus, menu groups, separators, checkbox/radio items, and submenus.
-- Selection cards: use `SelectionCard` from
-  `@mud-clone/components/selection-card` for larger selectable account, role,
-  or profile rows that do not fit compact `MenuItem` sizing.
 - Tables and record lists: use `Table` for large-screen tabular data and
   `TableCard` for small-screen card alternatives. `TableHead` truncates long
   titles after 2 lines by default; text, link, and number `TableCell` values
@@ -147,13 +154,20 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
 - Status labels and semantic chips: use `Tag` for statuses such as planned, in
   process, finalized, signed, or validation states. Use `Badge` only for
   compact counters, notification dots, or short numeric indicators.
-- Modals and dialogs: use `Modal` for richer product/content overlays and
-  `Dialog` for compact generic dialog flows.
+- Modals: use `Modal` for overlay flows, including compact confirmations.
+  MUD-clone does not ship a separate dialog primitive because Figma defines
+  Modal as the overlay component.
 - Tabbed views: use `Tabs`, `TabsList`, `TabsTrigger`, and `TabsContent`.
+- Tooltips: use `Tooltip` for brief contextual hints on hover/focus and
+  `TooltipBubble` for static documentation/previews. Keep rich walkthrough or
+  product-tour state in the consuming app.
 - Checkboxes: use `Checkbox`.
 - Radio controls: use `RadioGroup` and `RadioGroupItem`.
+- Segmented controls: use `SegmentedControl` for compact single-choice mode
+  switches with concise labels.
 - Switches: use `Switch`.
-- Text inputs/search: use `Input`, `Textarea`, and `SearchInput`.
+- Text, numeric, phone, and date inputs/search: use `Input`, `NumericInput`,
+  `PhoneNumberInput`, `DateInput`, `Textarea`, and `SearchInput`.
 - Icons and logos: use `MudIcon` and `MudLogo`; do not paste inline SVGs for
   MUD-provided assets.
 - Typography: use semantic text tokens or established text primitives. Do not
@@ -190,7 +204,7 @@ Review these areas first:
   semantic component values.
 - New or renamed icons/logos under upstream component assets.
 - Component CSS that maps directly to existing primitives such as `Button`,
-  `Input`, `Select`, `Badge`, `Dialog`, `Table`, `Tabs`, and navigation
+  `Input`, `Select`, `Badge`, `Modal`, `Table`, `Tabs`, and navigation
   elements.
 
 When adopting upstream changes, update local files intentionally and refresh
@@ -211,7 +225,7 @@ Before finishing UI work, check:
 - Are compact action/contextual menus using `Menu` primitives?
 - Are statuses using `Tag`, and counters/dots using `Badge`?
 - Are selects/dropdowns using `Select`?
-- Are modal/overlay patterns using `Modal` or `Dialog`?
+- Are modal/overlay patterns using `Modal` or `Tooltip`?
 - Are icons/logos coming from `MudIcon` or `MudLogo`?
 - Are typography, shadows, borders, spacing, and colors token-based?
 

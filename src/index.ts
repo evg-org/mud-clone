@@ -42,6 +42,16 @@ export type {
   InputChipProps,
 } from "./components/chip";
 export {
+  DateInput,
+  dateInputControlVariants,
+} from "./components/date-input";
+export type {
+  DateInputPreviewState,
+  DateInputProps,
+  DateInputSize,
+  DateInputTone,
+} from "./components/date-input";
+export {
   Checkbox,
   CheckboxField,
   checkboxFocusShadow,
@@ -75,6 +85,26 @@ export type {
   TextInputPreviewState,
   TextInputProps,
 } from "./components/input";
+export {
+  NumericInput,
+  numericInputControlVariants,
+} from "./components/numeric-input";
+export type {
+  NumericInputPreviewState,
+  NumericInputProps,
+  NumericInputSize,
+  NumericInputTone,
+} from "./components/numeric-input";
+export {
+  PhoneNumberInput,
+  phoneNumberInputControlVariants,
+} from "./components/phone-number-input";
+export type {
+  PhoneNumberInputPreviewState,
+  PhoneNumberInputProps,
+  PhoneNumberInputSize,
+  PhoneNumberInputTone,
+} from "./components/phone-number-input";
 export { Link, linkVariants } from "./components/link";
 export type { LinkProps, LinkWeight } from "./components/link";
 export {
@@ -99,6 +129,19 @@ export type {
   SearchInputShape,
   SearchInputSize,
 } from "./components/search-input";
+export {
+  SegmentedControl,
+  SegmentedControlItem,
+  segmentedControlItemVariants,
+  segmentedControlVariants,
+} from "./components/segmented-control";
+export type {
+  SegmentedControlItemProps,
+  SegmentedControlOption,
+  SegmentedControlPreviewState,
+  SegmentedControlProps,
+  SegmentedControlSize,
+} from "./components/segmented-control";
 export { Separator } from "./components/separator";
 export type {
   SeparatorProps,
@@ -119,7 +162,22 @@ export {
   TableCardSeparator,
   TableCardTitle,
 } from "./components/table-card";
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
+export {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsOverflowIndicator,
+  TabsTrigger,
+  tabsListVariants,
+  tabsTriggerVariants,
+} from "./components/tabs";
+export type {
+  TabsListProps,
+  TabsOverflowIndicatorProps,
+  TabsPreviewState,
+  TabsSize,
+  TabsTriggerProps,
+} from "./components/tabs";
 export {
   InfoTag,
   Tag,
@@ -127,6 +185,19 @@ export {
   infoTagVariants,
   tagVariants,
 } from "./components/tag";
+export {
+  Tooltip,
+  TooltipBubble,
+  tooltipBubbleVariants,
+} from "./components/tooltip";
+export type {
+  TooltipAlign,
+  TooltipArrowPosition,
+  TooltipBubbleProps,
+  TooltipProps,
+  TooltipSide,
+  TooltipSize,
+} from "./components/tooltip";
 export { TextArea, Textarea, textareaVariants } from "./components/textarea";
 export type {
   TextAreaProps,

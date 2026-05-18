@@ -379,6 +379,7 @@ Reviewed components with completed prototype-wide usage audit:
 | `RadioGroup` | Reviewed | Complete | Adopted | Manual | No active product radio fields were found; the local bridge re-exports MUD-clone `RadioGroup` for future usage. |
 | `Switch` | Reviewed | Complete | Adopted | Manual | No active product switch fields were found; the local bridge re-exports MUD-clone `Switch` for future usage. |
 | `Table` | Reviewed | Complete | Adopted | Manual | Active product table surfaces use the canonical `Table` API; the temporary Table v1 reference surface has been removed. |
+| `Tabs` | Reviewed | Pending prototype audit | Adopted for new work | Manual | Local primitive now matches the Figma Tabs spec, including desktop/mobile sizing, selected underline, focus, icon, badge, and overflow states. |
 | `TableCard` | Reviewed | Complete | Adopted | Manual | Active small-screen record-list alternatives use `TableCard`; row content uses `TableCardRow`, which composes `DetailRow`. |
 | `DetailRow` | Reviewed | Complete | Adopted with exceptions | Manual | Active label/value rows use `DetailRow` directly or through `TableCardRow`; timeline/progress/icon grids are documented non-detail-row exceptions. |
 | `Separator` | Reviewed | Complete | Adopted with exceptions | Manual | Active standalone component separators use reviewed `Separator`; primitive-specific separators inside command/context/menu/breadcrumb/OTP legacy internals remain deferred. |
@@ -396,8 +397,10 @@ prototype-wide usage audit:
 | Component | Review status | Prototype usage audit | Adoption status | Recommended audit priority | Notes |
 | --- | --- | --- | --- | --- | --- |
 | `Pagination` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for paged record sets; verify usage where pagination appears. |
-| `Modal` / `Dialog` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists; verify product overlays and compact dialogs. |
-| `Tabs` | Not reviewed in this audit | Not started | Partial/unknown | Low | Exists; audit when tabbed surfaces are in active scope. |
+| `PhoneNumberInput` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for phone number fields with country-code prefix and validation states; audit when phone entry appears in active product forms. |
+| `Modal` | Reviewed against Figma Modal | Not started | Partial/unknown | Medium | Canonical overlay component. The previous `Dialog` package export was removed because Figma does not define a separate dialog primitive. |
+| `SegmentedControl` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for compact single-choice mode switches with two-to-five segments; audit when segmented filters or mode switches appear in active product screens. |
+| `Tooltip` | Not reviewed in this audit | Not started | Partial/unknown | Low | Exists for brief contextual hints and static tooltip previews; audit when tooltip/help affordances appear in active product screens. |
 
 Pulled-back components:
 
@@ -428,11 +431,14 @@ Usage rules:
 - Icons and logos use `MudIcon` and `MudLogo` with canonical MUD-clone asset
   paths.
 - Standard text fields use reviewed `TextInput` / `Input` primitives.
+- Phone number fields use `PhoneNumberInput` once reviewed for the active
+  product surface.
 - Multiline text fields use reviewed `TextArea` / `Textarea` primitives.
 - Search fields use reviewed `SearchInput` primitives.
 - Select-like form fields use reviewed `Select` primitives.
 - Compact actions, contextual lists, and selection menus use reviewed `Menu` /
   `DropdownMenu` primitives.
+- Contextual hints use `Tooltip` once reviewed for the active product surface.
 - Record tables use reviewed `Table` primitives; avoid page-local table markup
   unless a surface is explicitly deferred.
 - Small-screen alternatives for record tables use reviewed `TableCard`
@@ -445,6 +451,8 @@ Usage rules:
   pattern.
 - Standard checkbox fields use reviewed `Checkbox` primitives.
 - Standard radio option groups use reviewed `RadioGroup` primitives.
+- Compact single-choice mode switches use `SegmentedControl` once reviewed for
+  the active product surface.
 - Binary settings use reviewed `Switch` primitives.
 - Chip/filter-style tokens use reviewed `Chip` primitives; status and semantic
   labels continue to use reviewed `Tag`.
@@ -487,7 +495,7 @@ Scanned scope:
 | Component | Correct usage | Migration candidates | Deferred / exceptions | Notes |
 | --- | ---: | ---: | ---: | --- |
 | `Avatar` | 3 direct usages | 0 | 1 imported-header review | `ProfileMenu` and `PersonCard` already use `Avatar`. Figma-imported headers still contain profile visuals outside the reviewed component surface. |
-| `Button` | 43 direct usages | 0 | 3 | Most command actions already use `Button`. ProfileMenu role selection was promoted to `SelectionCard` instead of being forced into a button variant. |
+| `Button` | 43 direct usages | 0 | 3 | Most command actions already use `Button`. ProfileMenu role selection is intentionally handled by an RSC-local component rather than a MUD-clone button variant. |
 | `Link` | 6 direct DS link patterns | 0 overlapping candidates | 0 | `Documente`, `Cereri`, `CerereDetalii`, and `ControlDetalii` use `Link as AppLink` with `RouterLink` for navigation links. Reviewed `Link` supports regular 400 and medium 500 weight options. |
 | `Tag` | 11 direct usages | 0 | 1 local chip primitive | Status helpers already wrap `Tag`. `Chip` remains a separate legacy primitive to review when chip/filter work resumes. |
 | `Badge` | 1 direct product usage | 0 | 2 | Workspace header notification count now uses `Badge`. `SectionHeading` counts and notification-card unread strips are not badge replacements by default. |
@@ -499,6 +507,7 @@ Scanned scope:
 | `Menu` / `DropdownMenu` | 1 direct product menu usage | 0 | 4 legacy/internal menu-like primitives | `Cereri` uses MUD-clone `DropdownMenu` for the create-request action. Local `dropdown-menu` and `menu` bridge files re-export MUD-clone primitives. Sidebar, navigation, context-menu, and menubar primitives are deferred because they are separate legacy/internal surfaces. |
 | `Checkbox` | 0 direct product fields | 0 | 1 bridge re-export, legacy contextual/menu variants deferred | No active product checkbox fields were found. `src/app/components/ui/checkbox.tsx` re-exports MUD-clone `Checkbox`; contextual menu checkbox behavior is a separate primitive. |
 | `RadioGroup` | 0 direct product fields | 0 | 1 bridge re-export, legacy contextual/menu variants deferred | No active product radio fields were found. `src/app/components/ui/radio-group.tsx` re-exports MUD-clone `RadioGroup`; contextual menu radio behavior is a separate primitive. |
+| `SegmentedControl` | 0 direct product usages | 0 | 0 | No active product segmented controls were found. Use for compact single-choice mode switches once a product surface requires this interaction. |
 | `Switch` | 0 direct product fields | 0 | 1 bridge re-export | No active product switch fields were found. `src/app/components/ui/switch.tsx` re-exports MUD-clone `Switch`. |
 | `Table` | 3 direct product page families | 0 | 0 | `Documente`, `ControlDetalii`, and `Cereri` use the canonical `Table` family with final `headerStyle` and `zebra` props. The temporary Table v1 reference surface has been removed. |
 | `TableCard` | 3 direct product page families | 0 | 0 | `Documente`, `ControlDetalii`, and `Cereri` use `TableCard` for small-screen record-list alternatives. `TableCardRow` composes reviewed `DetailRow`, so label/value row behavior stays shared. |
@@ -592,9 +601,10 @@ Resolved in the second migration batch:
 
 Resolved in the third migration batch:
 
-- `src/app/components/ProfileMenu.tsx`: role selection now uses MUD-clone
-  `SelectionCard`, promoted as a reusable selectable row/card primitive because
-  the shape is larger than compact `MenuItem` and not a standard action button.
+- `src/app/components/ProfileMenu.tsx`: role selection previously used
+  MUD-clone `SelectionCard`, but that component has been pulled back to RSC.
+  The MUD-clone export is deprecated compatibility only and should not be used
+  for new product work.
 
 Badge candidates:
 
@@ -751,8 +761,9 @@ Allowed raw-button exceptions are intentionally narrow and count-based:
 - `src/app/components/ui/sidebar.tsx`: one legacy shadcn sidebar trigger.
 
 If a new design needs a button-like or selectable pattern that does not fit
-`Button`, `Link`, `Menu`, or `SelectionCard`, promote the pattern into
-MUD-clone before using it in product pages.
+`Button`, `Link`, or `Menu`, keep product-specific behavior in the consuming
+app. If a generic reusable card pattern is needed later, create a new
+generalized MUD-clone component with a fresh API.
 
 ## Recommended Next Actions
 
@@ -761,7 +772,7 @@ MUD-clone before using it in product pages.
 2. Audit Tailwind shadow utilities component-by-component, starting with
    MUD-clone controls before legacy shadcn primitives.
 3. Continue formal review for the next unreviewed components: `Pagination`,
-   `Modal` / `Dialog`, or `Tabs`.
+   `Modal`, or `Tooltip`.
 4. Later, remove `--app-space-*`, `--app-radius-*`, and `--app-shadow-*`
    compatibility aliases once no external or historical references need them.
 

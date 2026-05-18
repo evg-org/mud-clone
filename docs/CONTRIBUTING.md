@@ -10,7 +10,7 @@ work, product-specific RSC work, or a temporary migration bridge.
 
 | Change type | Location | Examples |
 | --- | --- | --- |
-| Reusable design-system primitive | `mud-clone/src/components` | Button, Link, Select, Table, TableCard, DetailRow, Modal, Dialog. |
+| Reusable design-system primitive | `mud-clone/src/components` | Button, Link, Select, Table, TableCard, DetailRow, Modal. |
 | Foundation token, asset, or style | `mud-clone/src/styles` or `mud-clone/src/assets` | Color aliases, typography, shadows, spacing, Onest fonts, MUD icons, MUD logos. |
 | Package documentation | `mud-clone/docs` | Source references, migration notes, contribution rules, standalone package guidance. |
 | RSC product composition | RSC app files outside `mud-clone` | Pages, routes, mock/domain data, workflow-specific layouts, product-specific copy. |
@@ -74,9 +74,10 @@ When implementing new designs in RSC:
 - Use `SectionHeading` for reusable section titles and title/count headings.
 - Use `Tag` for semantic statuses and `Badge` for counters or notification
   dots.
-- Use `Modal` or `Dialog` for overlays.
-- Use `Input`, `Textarea`, `SearchInput`, `Checkbox`, `RadioGroup`, `Switch`,
-  and `Tabs` instead of recreating controls in pages.
+- Use `Modal` or `Tooltip` for overlays and contextual help.
+- Use `Input`, `NumericInput`, `PhoneNumberInput`, `DateInput`, `Textarea`,
+  `SearchInput`, `Checkbox`, `RadioGroup`, `SegmentedControl`, `Switch`, and
+  `Tabs` instead of recreating controls in pages.
 - Use `MudIcon` and `MudLogo` for MUD-provided assets.
 
 If the design repeats a pattern that is not covered here, first consider

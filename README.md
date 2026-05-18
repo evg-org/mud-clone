@@ -81,9 +81,10 @@ Package exports point at built files under `dist` and include declaration files
 for TypeScript autocomplete and prop validation.
 
 Root imports from `mud-clone` cover the common component surface: `Accordion`,
-`Avatar`, `Badge`, `Button`, `Checkbox`, `DetailRow`, `FilterChip`, `Icon`,
-`InfoTag`, `Input`, `InputChip`, `Link`, `RadioGroup`, `SearchInput`,
-`Separator`, `SectionHeading`, `Switch`, `TableCard`, `Tabs`, `Tag`,
+`Avatar`, `Badge`, `Button`, `Checkbox`, `DateInput`, `DetailRow`,
+`FilterChip`, `Icon`, `InfoTag`, `Input`, `InputChip`, `Link`,
+`NumericInput`, `PhoneNumberInput`, `RadioGroup`, `SearchInput`, `Separator`,
+`SectionHeading`, `SegmentedControl`, `Switch`, `TableCard`, `Tabs`, `Tag`, `Tooltip`,
 `TextArea`, `Textarea`, and `TextInput`.
 
 Every component also has a subpath export. Prefer subpaths for icons, logos,
@@ -114,12 +115,11 @@ Status is based on the current playground navigation review flags.
 | --- | --- | --- |
 | Foundations: colors, typography, spacing, radius, elevation, icons | Stable | Use as the current token and asset baseline. |
 | Assets foundation page | Needs review | Asset inventory is present, but final supported asset set may still be pruned. |
-| Core components: Accordion, Avatar, Badge, Button, Checkbox, Chip, Link, Menu, Radio Group, Search, Select, Separator, Switch, Table, Tag, Text inputs | Stable | Use these for new internal development. |
+| Core components: Accordion, Avatar, Badge, Button, Checkbox, Chip, Date Input, Link, Menu, Numeric Input, Radio Group, Search, Segmented Control, Select, Separator, Switch, Table, Tabs, Tag, Text inputs, Tooltip | Stable | Use these for new internal development. |
 | Reusable patterns: Detail Row, Section Heading, Table Card | Stable | Preferred for repeated detail, section title, and responsive table-card layouts. |
-| Selection | Needs review | Available as a package export, but keep adoption intentional until review is complete. |
-| Modal, Dialog, Tabs and overlay examples | Needs review | APIs are available, but composed examples still need final review. |
+| Modal | Stable | Figma-backed Modal is the package overlay component. The former Dialog export was removed because Figma defines Modal, not a separate dialog primitive. |
 | Pulled-back components | RSC-owned | `MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were removed from MUD-clone because they encode RSC dashboard/control-domain behavior. Create a fresh generalized card API if a reusable pattern is needed later. |
-| Deprecated components | None | Deprecated props are documented in component types when present. |
+| Deprecated components | Compatibility only | `SelectionCard` remains exported from `@mud-clone/components/selection-card` only to avoid breaking existing imports. It is RSC-specific, new usage should live in the consuming product app, and it will be removed from MUD-clone in a future cleanup. |
 
 ## Usage Recipes
 

@@ -19,14 +19,19 @@ import {
   Button,
   Checkbox,
   CheckboxField,
+  DateInput,
   DetailRow,
   FilterChip,
   InputChip,
   Link,
+  NumericInput,
+  PhoneNumberInput,
   RadioField,
   RadioGroup,
   RadioGroupItem,
   SearchInput,
+  SegmentedControl,
+  SegmentedControlItem,
   Separator,
   Switch,
   TableCard,
@@ -38,24 +43,16 @@ import {
   TableCardSeparator,
   TableCardTitle,
   Tabs,
-  TabsContent,
   TabsList,
   TabsTrigger,
+  Tooltip,
+  TooltipBubble,
   InfoTag,
   Tag,
   TagGroup,
   TextArea,
   TextInput,
 } from "@mud-clone";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@mud-clone/components/dialog";
 import {
   Menu,
   MenuCheckboxItem,
@@ -79,7 +76,6 @@ import {
   ModalTrigger,
 } from "@mud-clone/components/modal";
 import { MudIcon } from "@mud-clone/components/mud-icon";
-import { SelectionCard } from "@mud-clone/components/selection-card";
 import {
   Select,
   SelectContent,
@@ -728,6 +724,60 @@ function InputChipStateItem({
   );
 }
 
+type SegmentedPreviewState = "default" | "focus" | "hover";
+
+const segmentedControlLongLabel =
+  "Moldova's digital evolution is at the heart of seamless public service delivery";
+
+function getSegmentedControlItems(count: number, labels?: readonly string[]) {
+  return Array.from({ length: count }, (_, index) => ({
+    label: labels?.[index] ?? "Label",
+    value: `segment-${index + 1}`,
+  }));
+}
+
+function SegmentedControlPreviewItem({
+  children,
+  label,
+  note,
+}: {
+  children: ReactNode;
+  label: string;
+  note?: ReactNode;
+}) {
+  return (
+    <div className="segmented-preview-item">
+      <p>{label}</p>
+      {children}
+      {note ? <span>{note}</span> : null}
+    </div>
+  );
+}
+
+function SegmentedControlStateItem({
+  state,
+}: {
+  state: SegmentedPreviewState;
+}) {
+  const previewState = state === "default" ? undefined : state;
+
+  return (
+    <SegmentedControlPreviewItem label={state}>
+      <SegmentedControl
+        aria-label={`Segmented control ${state} preview`}
+        value="segment-1"
+      >
+        <SegmentedControlItem label="Label" value="segment-1" />
+        <SegmentedControlItem
+          label="Label"
+          previewState={previewState}
+          value="segment-2"
+        />
+      </SegmentedControl>
+    </SegmentedControlPreviewItem>
+  );
+}
+
 type LinkSize = ComponentProps<typeof Link>["size"];
 type LinkVariant = ComponentProps<typeof Link>["variant"];
 type LinkWeight = ComponentProps<typeof Link>["weight"];
@@ -766,6 +816,15 @@ const linkWeights: { label: string; weight: LinkWeight }[] = [
 type TextInputTone = NonNullable<ComponentProps<typeof TextInput>["tone"]>;
 type TextInputSize = NonNullable<ComponentProps<typeof TextInput>["inputSize"]>;
 type TextInputPreviewState = ComponentProps<typeof TextInput>["previewState"];
+type NumericInputTone = NonNullable<ComponentProps<typeof NumericInput>["tone"]>;
+type NumericInputSize = NonNullable<ComponentProps<typeof NumericInput>["inputSize"]>;
+type NumericInputPreviewState = ComponentProps<typeof NumericInput>["previewState"];
+type DateInputTone = NonNullable<ComponentProps<typeof DateInput>["tone"]>;
+type DateInputSize = NonNullable<ComponentProps<typeof DateInput>["inputSize"]>;
+type DateInputPreviewState = ComponentProps<typeof DateInput>["previewState"];
+type PhoneNumberInputTone = NonNullable<ComponentProps<typeof PhoneNumberInput>["tone"]>;
+type PhoneNumberInputSize = NonNullable<ComponentProps<typeof PhoneNumberInput>["inputSize"]>;
+type PhoneNumberInputPreviewState = ComponentProps<typeof PhoneNumberInput>["previewState"];
 
 const textInputTones: { label: string; tone: TextInputTone }[] = [
   { label: "default", tone: "default" },
@@ -790,6 +849,148 @@ const textInputStateRows: {
   { disabled: true, label: "disabled" },
   { label: "mandatory", mandatory: true },
 ];
+
+const numericInputTones: { label: string; tone: NumericInputTone }[] = [
+  { label: "default", tone: "default" },
+  { label: "destructive", tone: "destructive" },
+  { label: "success", tone: "success" },
+];
+
+const numericInputStateRows: Record<
+  NumericInputTone,
+  {
+    defaultValue?: string;
+    disabled?: boolean;
+    label: string;
+    loading?: boolean;
+    mandatory?: boolean;
+    previewState?: NumericInputPreviewState;
+    readOnly?: boolean;
+  }[]
+> = {
+  default: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "12345", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "12345", label: "loading", loading: true },
+    { defaultValue: "12345", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+    { defaultValue: "12345", label: "read-only", readOnly: true },
+  ],
+  destructive: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "12345", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "12345", label: "loading", loading: true },
+    { defaultValue: "12345", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+  success: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "12345", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "12345", label: "loading", loading: true },
+    { defaultValue: "12345", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+};
+
+const dateInputTones: { label: string; tone: DateInputTone }[] = [
+  { label: "default", tone: "default" },
+  { label: "destructive", tone: "destructive" },
+];
+
+const dateInputStateRows: Record<
+  DateInputTone,
+  {
+    defaultValue?: string;
+    disabled?: boolean;
+    label: string;
+    mandatory?: boolean;
+    previewState?: DateInputPreviewState;
+  }[]
+> = {
+  default: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { defaultValue: "15/04/2025", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "15/04/2025", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+  destructive: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { defaultValue: "15/04/2025", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "15/04/2025", label: "filled" },
+    { disabled: true, label: "disabled" },
+  ],
+};
+
+const phoneNumberInputTones: { label: string; tone: PhoneNumberInputTone }[] = [
+  { label: "default", tone: "default" },
+  { label: "warning", tone: "warning" },
+  { label: "destructive", tone: "destructive" },
+  { label: "success", tone: "success" },
+];
+
+const phoneNumberInputStateRows: Record<
+  PhoneNumberInputTone,
+  {
+    defaultValue?: string;
+    disabled?: boolean;
+    label: string;
+    loading?: boolean;
+    mandatory?: boolean;
+    previewState?: PhoneNumberInputPreviewState;
+  }[]
+> = {
+  default: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "loading", loading: true },
+    { defaultValue: "69  123  456", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+  warning: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+  destructive: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "loading", loading: true },
+    { defaultValue: "69  123  456", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+  success: [
+    { label: "default" },
+    { label: "hover", previewState: "hover" },
+    { label: "focus-empty", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "focus-populated", previewState: "focus" },
+    { defaultValue: "69  123  456", label: "loading", loading: true },
+    { defaultValue: "69  123  456", label: "filled" },
+    { disabled: true, label: "disabled" },
+    { label: "mandatory", mandatory: true },
+  ],
+};
 
 function inputIconSize(inputSize: TextInputSize) {
   return inputSize === "md" ? "md" : "lg";
@@ -825,6 +1026,30 @@ function TextInputEmailIcon({ inputSize }: { inputSize: TextInputSize }) {
 
 function TextInputChevronIcon({ inputSize }: { inputSize: TextInputSize }) {
   return <MudIcon name="Outlined/20/chevron-bottom" size={inputIconSize(inputSize)} />;
+}
+
+function NumericInputCoinsIcon({ inputSize }: { inputSize: NumericInputSize }) {
+  return (
+    <MudIcon
+      name="Outlined/24/coins"
+      size={inputSize === "md" ? "md" : "lg"}
+    />
+  );
+}
+
+function NumericInputPreviewItem({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="numeric-input-preview-item">
+      <span>{label}</span>
+      {children}
+    </div>
+  );
 }
 
 function TextInputStateColumn({
@@ -885,6 +1110,283 @@ function TextInputVariationSet({ inputSize }: { inputSize: TextInputSize }) {
         />
       </TextInputPreviewItem>
     </div>
+  );
+}
+
+function NumericInputVariationSet({ inputSize }: { inputSize: NumericInputSize }) {
+  return (
+    <div className="numeric-input-preview-row">
+      <NumericInputPreviewItem label="none">
+        <NumericInput inputSize={inputSize} placeholder="12345" />
+      </NumericInputPreviewItem>
+      <NumericInputPreviewItem label="prefix">
+        <NumericInput inputSize={inputSize} placeholder="12345" prefix="€" />
+      </NumericInputPreviewItem>
+      <NumericInputPreviewItem label="suffix">
+        <NumericInput inputSize={inputSize} placeholder="12345" suffix="lei" />
+      </NumericInputPreviewItem>
+      <NumericInputPreviewItem label="icon-leading">
+        <NumericInput
+          inputSize={inputSize}
+          leadingIcon={<NumericInputCoinsIcon inputSize={inputSize} />}
+          placeholder="12345"
+          suffix="lei"
+        />
+      </NumericInputPreviewItem>
+    </div>
+  );
+}
+
+function NumericInputStateColumn({
+  label,
+  tone,
+}: {
+  label: string;
+  tone: NumericInputTone;
+}) {
+  return (
+    <div className="numeric-input-state-column">
+      {numericInputStateRows[tone].map((state) => (
+        <NumericInputPreviewItem
+          key={`${label}-${state.label}`}
+          label={`${label}: ${state.label}`}
+        >
+          <NumericInput
+            defaultValue={state.defaultValue}
+            disabled={state.disabled}
+            loading={state.loading}
+            mandatory={state.mandatory}
+            placeholder="12345"
+            previewState={state.previewState}
+            readOnly={state.readOnly}
+            required={state.mandatory}
+            suffix="lei"
+            tone={tone}
+          />
+        </NumericInputPreviewItem>
+      ))}
+    </div>
+  );
+}
+
+function DateInputPreviewItem({
+  children,
+  label,
+  note,
+}: {
+  children: ReactNode;
+  label: string;
+  note?: ReactNode;
+}) {
+  return (
+    <div className="date-input-preview-item">
+      <span>{label}</span>
+      {children}
+      {note && <p className="date-input-preview-note">{note}</p>}
+    </div>
+  );
+}
+
+function DateInputStateColumn({
+  label,
+  tone,
+}: {
+  label: string;
+  tone: DateInputTone;
+}) {
+  return (
+    <div className="date-input-state-column">
+      {dateInputStateRows[tone].map((state) => (
+        <DateInputPreviewItem
+          key={`${label}-${state.label}`}
+          label={`${label}: ${state.label}`}
+        >
+          <DateInput
+            defaultValue={state.defaultValue}
+            disabled={state.disabled}
+            inputSize="lg"
+            mandatory={state.mandatory}
+            previewState={state.previewState}
+            required={state.mandatory}
+            tone={tone}
+          />
+        </DateInputPreviewItem>
+      ))}
+    </div>
+  );
+}
+
+function DateInputSizeExample({
+  inputSize,
+  label,
+}: {
+  inputSize: DateInputSize;
+  label: string;
+}) {
+  return (
+    <DateInputPreviewItem label={label}>
+      <DateInput inputSize={inputSize} />
+    </DateInputPreviewItem>
+  );
+}
+
+function PhoneNumberInputPreviewItem({
+  children,
+  label,
+  note,
+}: {
+  children: ReactNode;
+  label: string;
+  note?: ReactNode;
+}) {
+  return (
+    <div className="phone-number-input-preview-item">
+      <span>{label}</span>
+      {children}
+      {note && <p className="phone-number-input-preview-note">{note}</p>}
+    </div>
+  );
+}
+
+function PhoneNumberInputStateColumn({
+  label,
+  tone,
+}: {
+  label: string;
+  tone: PhoneNumberInputTone;
+}) {
+  return (
+    <div className="phone-number-input-state-column">
+      {phoneNumberInputStateRows[tone].map((state) => (
+        <PhoneNumberInputPreviewItem
+          key={`${label}-${state.label}`}
+          label={`${label}: ${state.label}`}
+        >
+          <PhoneNumberInput
+            defaultValue={state.defaultValue}
+            disabled={state.disabled}
+            loading={state.loading}
+            mandatory={state.mandatory}
+            previewState={state.previewState}
+            required={state.mandatory}
+            tone={tone}
+          />
+        </PhoneNumberInputPreviewItem>
+      ))}
+    </div>
+  );
+}
+
+function PhoneNumberInputSizeExample({
+  inputSize,
+  label,
+}: {
+  inputSize: PhoneNumberInputSize;
+  label: string;
+}) {
+  return (
+    <PhoneNumberInputPreviewItem label={label}>
+      <PhoneNumberInput inputSize={inputSize} />
+    </PhoneNumberInputPreviewItem>
+  );
+}
+
+type PhoneCountryOption = {
+  code: string;
+  flag: string;
+  name: string;
+  selected?: boolean;
+};
+
+const phoneCountryOptions: PhoneCountryOption[] = [
+  { code: "+262", flag: "🇾🇹", name: "Mayotte" },
+  { code: "+52", flag: "🇲🇽", name: "Mexico" },
+  { code: "+373", flag: "🇲🇩", name: "Moldova", selected: true },
+  { code: "+377", flag: "🇲🇨", name: "Monaco" },
+  { code: "+976", flag: "🇲🇳", name: "Mongolia" },
+  { code: "+382", flag: "🇲🇪", name: "Montenegro" },
+  { code: "+1", flag: "🇲🇸", name: "Montserrat" },
+  { code: "+212", flag: "🇲🇦", name: "Morocco" },
+];
+
+const scrolledPhoneCountryOptions: PhoneCountryOption[] = [
+  { code: "+230", flag: "🇲🇺", name: "Mauritius" },
+  ...phoneCountryOptions,
+];
+
+const filteredPhoneCountryOptions = phoneCountryOptions.slice(2);
+
+function PhoneCountryMenu({
+  options,
+  searchValue,
+  scrollable = false,
+}: {
+  options: PhoneCountryOption[];
+  searchValue?: string;
+  scrollable?: boolean;
+}) {
+  return (
+    <div
+      className="phone-number-country-menu"
+      data-scrollable={scrollable ? true : undefined}
+    >
+      <SearchInput
+        defaultValue={searchValue}
+        inputSize="md"
+        placeholder="Search country"
+        previewState={searchValue ? "focus-populated" : "focus-empty"}
+        shape="rectangular"
+      />
+      <div className="phone-number-country-menu-list">
+        {options.map((option) => (
+          <div
+            className="phone-number-country-menu-row"
+            data-selected={option.selected ? true : undefined}
+            key={`${option.name}-${option.code}`}
+          >
+            <div className="phone-number-country-menu-main">
+              <span className="phone-number-country-menu-flag">{option.flag}</span>
+              <span className="phone-number-country-menu-label">
+                <span>{option.name}</span>
+                <span>{option.code}</span>
+              </span>
+            </div>
+            {option.selected && (
+              <MudIcon
+                className="phone-number-country-menu-check"
+                name="Outlined/24/checkmark-small"
+                size="lg"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PhoneCountrySelectorExample({
+  label,
+  options,
+  scrollable,
+  searchValue,
+}: {
+  label: string;
+  options: PhoneCountryOption[];
+  scrollable?: boolean;
+  searchValue?: string;
+}) {
+  return (
+    <PhoneNumberInputPreviewItem label={label}>
+      <div className="phone-number-country-example">
+        <PhoneNumberInput countrySelectable />
+        <PhoneCountryMenu
+          options={options}
+          scrollable={scrollable}
+          searchValue={searchValue}
+        />
+      </div>
+    </PhoneNumberInputPreviewItem>
   );
 }
 
@@ -1641,7 +2143,7 @@ export function CheckboxPage() {
         title="Checkbox"
       />
       <div className="component-grid one">
-        <ExampleCard title="Sizes">
+        <ExampleCard title="Sizes: Desktop">
           <div className="checkbox-size-grid">
             {checkboxSizeRows.map((item) => (
               <CheckboxPreviewItem
@@ -1886,6 +2388,101 @@ export function ChipPage() {
                 ))}
               </div>
             </section>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+export function SegmentedControlPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Segmented controls present a compact set of closely related choices and keep the current selection visible."
+        eyebrow="Components"
+        title="Segmented Controls"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Breakpoints">
+          <div className="segmented-preview-row">
+            <SegmentedControlPreviewItem label="desktop">
+              <SegmentedControl
+                aria-label="Desktop segmented control preview"
+                items={getSegmentedControlItems(2)}
+              />
+            </SegmentedControlPreviewItem>
+            <SegmentedControlPreviewItem label="mobile">
+              <div className="segmented-mobile-frame">
+                <SegmentedControl
+                  aria-label="Mobile segmented control preview"
+                  items={getSegmentedControlItems(2)}
+                  size="mobile"
+                />
+              </div>
+            </SegmentedControlPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Types">
+          <div className="segmented-preview-row">
+            {[2, 3, 4, 5].map((count) => (
+              <SegmentedControlPreviewItem
+                key={`segments-${count}`}
+                label={`${count}-segments`}
+              >
+                <SegmentedControl
+                  aria-label={`${count} segment preview`}
+                  items={getSegmentedControlItems(count)}
+                />
+              </SegmentedControlPreviewItem>
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Mode">
+          <div className="segmented-preview-row">
+            <SegmentedControlPreviewItem label="selected">
+              <SegmentedControl
+                aria-label="Selected segment preview"
+                items={getSegmentedControlItems(2)}
+                value="segment-1"
+              />
+            </SegmentedControlPreviewItem>
+            <SegmentedControlPreviewItem label="unselected">
+              <SegmentedControl
+                aria-label="Unselected segment preview"
+                items={getSegmentedControlItems(2)}
+                value="segment-2"
+              />
+            </SegmentedControlPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="segmented-preview-row">
+            {(["default", "hover", "focus"] as const).map((state) => (
+              <SegmentedControlStateItem key={state} state={state} />
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Edge Cases">
+          <div className="segmented-preview-row">
+            <SegmentedControlPreviewItem
+              label="truncation"
+              note="Long labels truncate on a single line with an ellipsis."
+            >
+              <SegmentedControl
+                aria-label="Segmented control truncation preview"
+                className="w-[329px]"
+                equalWidth
+                items={getSegmentedControlItems(2, [
+                  segmentedControlLongLabel,
+                  "Services, Always at Your Fingertips",
+                ])}
+              />
+            </SegmentedControlPreviewItem>
           </div>
         </ExampleCard>
       </div>
@@ -2365,34 +2962,6 @@ export function SeparatorPage() {
   );
 }
 
-export function SelectionPage() {
-  return (
-    <div className="docs-page">
-      <PageHeader
-        description="Selectable card rows for account, role, or profile switching surfaces."
-        eyebrow="Custom Components"
-        title="Selection"
-      />
-      <div className="component-grid">
-        <ExampleCard
-          title="Selection cards"
-        >
-          <div className="control-stack" style={{ maxWidth: 380, width: "100%" }}>
-            <SelectionCard layout="desktop">Administrator companie</SelectionCard>
-            <SelectionCard layout="desktop" selected>
-              Contabil
-            </SelectionCard>
-            <SelectionCard layout="mobile">Reprezentant</SelectionCard>
-            <SelectionCard layout="mobile" selected>
-              Inspector
-            </SelectionCard>
-          </div>
-        </ExampleCard>
-      </div>
-    </div>
-  );
-}
-
 export function TagsPage() {
   return (
     <div className="docs-page">
@@ -2691,6 +3260,370 @@ export function InputTextPage() {
                 placeholder="Placeholder"
               />
             </TextInputPreviewItem>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+export function InputNumericPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Numeric inputs collect quantities, amounts, and financial values with consistent sizing, validation tones, unit adornments, and assistive messages."
+        eyebrow="Components"
+        title="Input: Numeric"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Styles">
+          <div className="numeric-input-preview-row">
+            <NumericInputPreviewItem label="default">
+              <NumericInput placeholder="12345" />
+            </NumericInputPreviewItem>
+            <NumericInputPreviewItem label="destructive">
+              <NumericInput placeholder="12345" tone="destructive" />
+            </NumericInputPreviewItem>
+            <NumericInputPreviewItem label="success">
+              <NumericInput placeholder="12345" tone="success" />
+            </NumericInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Sizes">
+          <div className="numeric-input-preview-row">
+            <NumericInputPreviewItem label="medium">
+              <NumericInput inputSize="md" placeholder="12345" />
+            </NumericInputPreviewItem>
+            <NumericInputPreviewItem label="large">
+              <NumericInput placeholder="12345" />
+            </NumericInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Variations">
+          <div className="numeric-input-preview-stack">
+            <div>
+              <h3 className="numeric-input-preview-subtitle">Medium</h3>
+              <NumericInputVariationSet inputSize="md" />
+            </div>
+            <div>
+              <h3 className="numeric-input-preview-subtitle">Large</h3>
+              <NumericInputVariationSet inputSize="lg" />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="numeric-input-state-grid">
+            {numericInputTones.map(({ label, tone }) => (
+              <NumericInputStateColumn key={label} label={label} tone={tone} />
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Assistive text conveys additional guidance about the input field, such as how the value will be used."
+          title="Assistive text"
+        >
+          <div className="numeric-input-preview-row">
+            <NumericInputPreviewItem label="default">
+              <NumericInput
+                assistiveText="Helper message displayed here"
+                placeholder="12345"
+                suffix="lei"
+              />
+            </NumericInputPreviewItem>
+            <NumericInputPreviewItem label="destructive">
+              <NumericInput
+                assistiveText="Error message displayed here"
+                placeholder="12345"
+                suffix="lei"
+                tone="destructive"
+              />
+            </NumericInputPreviewItem>
+            <NumericInputPreviewItem label="success">
+              <NumericInput
+                assistiveText="Success message displayed here"
+                placeholder="12345"
+                suffix="lei"
+                tone="success"
+              />
+            </NumericInputPreviewItem>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+export function InputDatePage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Date inputs collect calendar dates with consistent manual-entry formatting, validation states, calendar affordances, and assistive messages."
+        eyebrow="Components"
+        title="Input: Date"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Styles">
+          <div className="date-input-preview-row">
+            <DateInputPreviewItem label="default">
+              <DateInput />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem label="destructive">
+              <DateInput tone="destructive" />
+            </DateInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Sizes">
+          <div className="date-input-preview-row">
+            <DateInputSizeExample inputSize="md" label="medium" />
+            <DateInputSizeExample inputSize="lg" label="large" />
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="date-input-state-grid">
+            {dateInputTones.map(({ label, tone }) => (
+              <DateInputStateColumn key={label} label={label} tone={tone} />
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="These examples document the intended manual-entry flow for dates and segment validation."
+          title="Behavior"
+        >
+          <div className="date-input-preview-row">
+            <DateInputPreviewItem
+              label="default"
+              note="The placeholder should guide users on the date format."
+            >
+              <DateInput />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem
+              label="focus: empty"
+              note="The placeholder remains visible while the empty input is focused."
+            >
+              <DateInput previewState="focus" />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem
+              label="focus: date-populated"
+              note="After a valid day, the slash separator is inserted and focus moves to month entry."
+            >
+              <DateInput defaultValue="15/" previewState="focus" />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem
+              label="focus: month-populated"
+              note="After a valid month, the slash separator is inserted and focus moves to year entry."
+            >
+              <DateInput defaultValue="15/04/" previewState="focus" />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem label="focus: fully-populated">
+              <DateInput defaultValue="15/04/2025" previewState="focus" />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem
+              label="backspace"
+              note="Backspace should erase within the segment or return to the previous segment."
+            >
+              <DateInput defaultValue="15/04/20" previewState="focus" />
+            </DateInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Each date segment should validate while the user types so invalid values are caught immediately."
+          title="Validation"
+        >
+          <div className="date-input-preview-row">
+            <DateInputPreviewItem label="DD-error">
+              <DateInput
+                assistiveText="Day must be between 01 and 31"
+                defaultValue="45"
+                previewState="focus"
+                tone="destructive"
+              />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem label="MM-error">
+              <DateInput
+                assistiveText="Month must be between 01 and 12"
+                defaultValue="15/18"
+                previewState="focus"
+                tone="destructive"
+              />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem label="YYYY-error">
+              <DateInput
+                assistiveText="Enter a valid year"
+                defaultValue="15/04/1550"
+                previewState="focus"
+                tone="destructive"
+              />
+            </DateInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Assistive text conveys additional guidance about the input field and should stay concise."
+          title="Assistive text"
+        >
+          <div className="date-input-preview-row">
+            <DateInputPreviewItem label="default">
+              <DateInput assistiveText="Helper message displayed here" />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem label="destructive">
+              <DateInput
+                assistiveText="Error message displayed here"
+                tone="destructive"
+              />
+            </DateInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Long labels and assistive text should truncate inside the field width."
+          title="Edge Cases"
+        >
+          <div className="date-input-preview-row">
+            <DateInputPreviewItem
+              label="label"
+              note="The top label should truncate on the first line."
+            >
+              <DateInput label="Moldova's digital evolution is at the heart of seamless public service delivery" />
+            </DateInputPreviewItem>
+            <DateInputPreviewItem
+              label="assistive-text"
+              note="The assistive text should truncate on the second line."
+            >
+              <DateInput assistiveText="Moldova's digital evolution is at the heart of seamless public service delivery, providing citizens with easy access to essential information." />
+            </DateInputPreviewItem>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+export function InputPhoneNumberPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Phone number inputs collect national or international phone values with a country code prefix, validation tones, selector states, and assistive messages."
+        eyebrow="Components"
+        title="Input: Phone Number"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Types">
+          <div className="phone-number-input-preview-row">
+            <PhoneNumberInputPreviewItem label="local">
+              <PhoneNumberInput />
+            </PhoneNumberInputPreviewItem>
+            <PhoneNumberInputPreviewItem label="international">
+              <PhoneNumberInput countrySelectable />
+            </PhoneNumberInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Styles">
+          <div className="phone-number-input-preview-row">
+            {phoneNumberInputTones.map(({ label, tone }) => (
+              <PhoneNumberInputPreviewItem key={label} label={label}>
+                <PhoneNumberInput tone={tone} />
+              </PhoneNumberInputPreviewItem>
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Sizes">
+          <div className="phone-number-input-preview-row">
+            <PhoneNumberInputSizeExample inputSize="md" label="medium" />
+            <PhoneNumberInputSizeExample inputSize="lg" label="large" />
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="phone-number-input-state-grid">
+            {phoneNumberInputTones.map(({ label, tone }) => (
+              <PhoneNumberInputStateColumn key={label} label={label} tone={tone} />
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Country selection is shown as a composed menu preview. Filtering, search, and selection behavior should remain product logic unless a generic selector API is introduced."
+          title="Country selector"
+        >
+          <div className="phone-number-input-country-grid">
+            <PhoneCountrySelectorExample
+              label="default"
+              options={phoneCountryOptions}
+            />
+            <PhoneCountrySelectorExample
+              label="scrolled"
+              options={scrolledPhoneCountryOptions}
+              scrollable
+            />
+            <PhoneCountrySelectorExample
+              label="filtered"
+              options={filteredPhoneCountryOptions}
+              searchValue="Mo"
+            />
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Assistive text conveys additional guidance about the input field and should stay concise."
+          title="Assistive text"
+        >
+          <div className="phone-number-input-preview-row">
+            <PhoneNumberInputPreviewItem label="default">
+              <PhoneNumberInput assistiveText="Helper message displayed here" />
+            </PhoneNumberInputPreviewItem>
+            <PhoneNumberInputPreviewItem label="warning">
+              <PhoneNumberInput
+                assistiveText="Warning message displayed here"
+                tone="warning"
+              />
+            </PhoneNumberInputPreviewItem>
+            <PhoneNumberInputPreviewItem label="destructive">
+              <PhoneNumberInput
+                assistiveText="Error message displayed here"
+                tone="destructive"
+              />
+            </PhoneNumberInputPreviewItem>
+            <PhoneNumberInputPreviewItem label="success">
+              <PhoneNumberInput
+                assistiveText="Success message displayed here"
+                tone="success"
+              />
+            </PhoneNumberInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="The clear button appears when the field is focused or populated and clear behavior is supplied by the product."
+          title="Edge Cases"
+        >
+          <div className="phone-number-input-preview-row">
+            <PhoneNumberInputPreviewItem
+              label="focus"
+              note="A populated focused field may show a clear affordance."
+            >
+              <PhoneNumberInput
+                clearable
+                defaultValue="69  123"
+                onClear={() => undefined}
+                previewState="focus"
+              />
+            </PhoneNumberInputPreviewItem>
+            <PhoneNumberInputPreviewItem
+              label="assistive-text"
+              note="The assistive text should truncate on the second line."
+            >
+              <PhoneNumberInput assistiveText="Moldova's digital evolution is at the heart of seamless public service delivery, providing citizens with easy access to essential information." />
+            </PhoneNumberInputPreviewItem>
           </div>
         </ExampleCard>
       </div>
@@ -3697,76 +4630,556 @@ export function TableCardPage() {
 
 export const TablesPage = TablePage;
 
-export function OverlaysTabsPage() {
+type TabsPreviewMode = "selected" | "unselected";
+type TabsPreviewSize = NonNullable<ComponentProps<typeof TabsList>["size"]>;
+
+function TabsPreviewItem({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="tabs-preview-item">
+      <span>{label}</span>
+      {children}
+    </div>
+  );
+}
+
+function TabsPageIcon() {
+  return <MudIcon name="Outlined/20/page-text" size="md" />;
+}
+
+function TabsExample({
+  badge = false,
+  className,
+  icon = false,
+  mode = "selected",
+  previewState,
+  showOverflowIndicator = false,
+  size = "md",
+  tabCount = 2,
+}: {
+  badge?: boolean;
+  className?: string;
+  icon?: boolean;
+  mode?: TabsPreviewMode;
+  previewState?: ComponentProps<typeof TabsTrigger>["previewState"];
+  showOverflowIndicator?: boolean;
+  size?: TabsPreviewSize;
+  tabCount?: number;
+}) {
+  const activeValue =
+    mode === "selected" ? "tab-1" : `tab-${Math.min(tabCount, 3)}`;
+
+  return (
+    <Tabs className={className} defaultValue={activeValue}>
+      <TabsList size={size} showOverflowIndicator={showOverflowIndicator}>
+        {Array.from({ length: tabCount }, (_, index) => {
+          const value = `tab-${index + 1}`;
+          const isPrimaryPreviewTab = index === 0;
+
+          return (
+            <TabsTrigger
+              badge={isPrimaryPreviewTab && badge ? 1 : undefined}
+              key={value}
+              leadingIcon={isPrimaryPreviewTab && icon ? <TabsPageIcon /> : undefined}
+              previewState={isPrimaryPreviewTab ? previewState : undefined}
+              value={value}
+            >
+              Label
+            </TabsTrigger>
+          );
+        })}
+      </TabsList>
+    </Tabs>
+  );
+}
+
+function TabsVariationSet({ size }: { size: TabsPreviewSize }) {
+  return (
+    <div className="tabs-preview-stack">
+      <p className="tabs-preview-subtitle">
+        {size === "sm" ? "Mobile" : "Desktop"}
+      </p>
+      <div className="tabs-preview-row">
+        <TabsPreviewItem label="regular: selected">
+          <TabsExample size={size} />
+        </TabsPreviewItem>
+        <TabsPreviewItem label="icon: selected">
+          <TabsExample icon size={size} />
+        </TabsPreviewItem>
+        <TabsPreviewItem label="badge: selected">
+          <TabsExample badge size={size} />
+        </TabsPreviewItem>
+        <TabsPreviewItem label="icon, badge: selected">
+          <TabsExample badge icon size={size} />
+        </TabsPreviewItem>
+      </div>
+      <div className="tabs-preview-row">
+        <TabsPreviewItem label="regular: unselected">
+          <TabsExample mode="unselected" size={size} />
+        </TabsPreviewItem>
+        <TabsPreviewItem label="icon: unselected">
+          <TabsExample icon mode="unselected" size={size} />
+        </TabsPreviewItem>
+        <TabsPreviewItem label="badge: unselected">
+          <TabsExample badge mode="unselected" size={size} />
+        </TabsPreviewItem>
+        <TabsPreviewItem label="icon, badge: unselected">
+          <TabsExample badge icon mode="unselected" size={size} />
+        </TabsPreviewItem>
+      </div>
+    </div>
+  );
+}
+
+export function TabsPage() {
   return (
     <div className="docs-page">
       <PageHeader
-        description="Overlay and tab primitives use Radix behavior with MUD-clone styling."
+        description="Tabs let users switch between closely related views while keeping the active selection visible."
         eyebrow="Components"
-        title="Overlays & Tabs"
+        title="Tabs"
       />
-      <div className="component-grid">
-        <ExampleCard title="Modal and dialog">
-          <div className="inline-demo">
-            <Modal>
-              <ModalTrigger asChild>
-                <Button variant="outline-neutral">Deschide modal</Button>
-              </ModalTrigger>
-              <ModalContent>
-                <ModalHeader>
-                  <ModalTitle>Detalii control</ModalTitle>
-                  <ModalDescription>
-                    Exemplu compact pentru verificarea modalului MUD-clone.
-                  </ModalDescription>
-                </ModalHeader>
-                <ModalBody>
-                  <DetailRow label="Companie">EcoConstruct Cahul</DetailRow>
-                  <DetailRow label="Statut">
-                    <Tag tone="warning" variant="outlined">
-                      În proces
-                    </Tag>
-                  </DetailRow>
-                </ModalBody>
-                <ModalFooter>
-                  <Button variant="outline-neutral">Anulează</Button>
-                  <Button>Confirmă</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="secondary">Deschide dialog</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Confirmare</DialogTitle>
-                  <DialogDescription>
-                    Dialogul folosește același strat de fundații și focus.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <Button variant="outline-neutral">Renunță</Button>
-                  <Button>Aplică</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+      <div className="component-grid one">
+        <ExampleCard title="Breakpoints">
+          <div className="tabs-preview-row">
+            <TabsPreviewItem label="desktop">
+              <TabsExample tabCount={5} />
+            </TabsPreviewItem>
+            <TabsPreviewItem label="mobile">
+              <TabsExample size="sm" tabCount={5} />
+            </TabsPreviewItem>
           </div>
         </ExampleCard>
 
-        <ExampleCard title="Tabs">
-          <Tabs defaultValue="active">
-            <TabsList>
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="done">Finalizate</TabsTrigger>
-            </TabsList>
-            <TabsContent value="active">
-              <div className="tab-panel">2 controale active</div>
-            </TabsContent>
-            <TabsContent value="done">
-              <div className="tab-panel">1 control finalizat</div>
-            </TabsContent>
-          </Tabs>
+        <ExampleCard title="Variations">
+          <TabsVariationSet size="md" />
+          <TabsVariationSet size="sm" />
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="tabs-preview-row">
+            <TabsPreviewItem label="selected">
+              <TabsExample />
+            </TabsPreviewItem>
+            <TabsPreviewItem label="unselected">
+              <TabsExample mode="unselected" />
+            </TabsPreviewItem>
+            <TabsPreviewItem label="selected: focus">
+              <TabsExample previewState="focus" />
+            </TabsPreviewItem>
+            <TabsPreviewItem label="unselected: focus">
+              <TabsExample mode="unselected" previewState="focus" tabCount={3} />
+            </TabsPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Tabs w/ Overflow">
+          <div className="tabs-preview-row">
+            <TabsPreviewItem label="overflowing: right">
+              <div className="tabs-overflow-frame">
+                <TabsExample showOverflowIndicator tabCount={5} />
+              </div>
+            </TabsPreviewItem>
+            <TabsPreviewItem label="overflowing: right">
+              <div className="tabs-overflow-frame">
+                <TabsExample showOverflowIndicator tabCount={5} />
+              </div>
+            </TabsPreviewItem>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+const tooltipLongText =
+  "Moldova's digital evolution is at the heart of seamless public service delivery.";
+
+function TooltipPreviewItem({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="tooltip-preview-item">
+      <span>{label}</span>
+      {children}
+    </div>
+  );
+}
+
+function TooltipInfoButton({ focus = false, hover = false }: { focus?: boolean; hover?: boolean }) {
+  return (
+    <Button
+      aria-label="More information"
+      className="tooltip-info-button"
+      data-focus-preview={focus ? true : undefined}
+      data-hover-preview={hover ? true : undefined}
+      size="icon-sm"
+      type="button"
+      variant="ghost"
+    >
+      <MudIcon name="Filled/16/circle-info-filled" size="sm" />
+    </Button>
+  );
+}
+
+export function TooltipPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Tooltips provide brief contextual information on hover or focus without adding persistent content to the interface."
+        eyebrow="Components"
+        title="Tooltip"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Sizes">
+          <div className="tooltip-preview-grid tooltip-preview-grid-compact">
+            <TooltipPreviewItem label="large">
+              <TooltipBubble />
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="small">
+              <TooltipBubble size="sm" />
+            </TooltipPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Variations">
+          <div className="tooltip-preview-grid tooltip-preview-grid-compact">
+            <TooltipPreviewItem label="arrow-down">
+              <TooltipBubble />
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="arrow-up">
+              <TooltipBubble arrowPosition="top" />
+            </TooltipPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Specifications">
+          <div className="tooltip-preview-grid">
+            <TooltipPreviewItem label="content">
+              <TooltipBubble
+                align="start"
+                className="w-[240px]"
+                content={tooltipLongText}
+              />
+              <p className="tooltip-preview-note">
+                Tooltip content should stay brief and wrap without truncating the
+                message.
+              </p>
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="max-width">
+              <TooltipBubble
+                align="start"
+                className="w-[300px]"
+                content={`${tooltipLongText} providing citizens with easy`}
+              />
+              <p className="tooltip-preview-note">
+                Keep the maximum width at 300px so the tooltip remains scannable.
+              </p>
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="min-width">
+              <TooltipBubble
+                align="start"
+                className="w-[150px]"
+                content="Hello"
+              />
+            </TooltipPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Position">
+          <div className="tooltip-preview-grid">
+            <TooltipPreviewItem label="left">
+              <TooltipBubble
+                align="start"
+                content={tooltipLongText}
+              />
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="middle">
+              <TooltipBubble content={tooltipLongText} />
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="right">
+              <TooltipBubble
+                align="end"
+                content={tooltipLongText}
+              />
+            </TooltipPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="The interactive wrapper opens on hover and focus. These examples keep the visible state pinned for preview."
+          title="Appearance and Dismissal"
+        >
+          <div className="tooltip-preview-grid tooltip-preview-grid-compact">
+            <TooltipPreviewItem label="hover">
+              <div className="tooltip-trigger-demo">
+                <TooltipBubble content={tooltipLongText} />
+                <TooltipInfoButton hover />
+              </div>
+              <p className="tooltip-preview-note">
+                Hover tooltips dismiss when the pointer leaves the trigger.
+              </p>
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="focus">
+              <div className="tooltip-trigger-demo">
+                <TooltipBubble content={tooltipLongText} />
+                <TooltipInfoButton focus />
+              </div>
+              <p className="tooltip-preview-note">
+                Focus tooltips dismiss when focus moves away.
+              </p>
+            </TooltipPreviewItem>
+            <TooltipPreviewItem label="interactive">
+              <Tooltip content={tooltipLongText}>
+                <TooltipInfoButton />
+              </Tooltip>
+              <p className="tooltip-preview-note">
+                Move over or focus the trigger to show the tooltip.
+              </p>
+            </TooltipPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Coach Tooltips">
+          <div className="tooltip-preview-grid tooltip-preview-grid-compact">
+            <TooltipPreviewItem label="w/ close-button">
+              <TooltipBubble closeButton />
+            </TooltipPreviewItem>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+function ModalPreviewCloseButton({
+  state = "default",
+}: {
+  state?: "default" | "hover" | "focus";
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      className="modal-preview-close"
+      data-state={state}
+    >
+      <MudIcon name="Outlined/16/cross-large" size="sm" />
+    </span>
+  );
+}
+
+const modalPreviewParagraphs = [
+  "You are about to proceed with this action, which may affect your access to certain government services.",
+  "Please review the details carefully before confirming. If you continue, any changes made will be final and may require additional steps to reverse.",
+];
+
+function ModalStaticPreview({
+  action = "primary",
+  image = false,
+  mobile = false,
+  noFooter = false,
+  scroll = false,
+  size = "medium",
+}: {
+  action?: "primary" | "destructive";
+  image?: boolean;
+  mobile?: boolean;
+  noFooter?: boolean;
+  scroll?: boolean;
+  size?: "medium" | "small";
+}) {
+  const buttonSize = size === "small" ? "md" : "lg";
+
+  return (
+    <div
+      className="modal-preview-card"
+      data-mobile={mobile ? true : undefined}
+      data-scroll={scroll ? true : undefined}
+      data-size={size}
+    >
+      {image && (
+        <div className="modal-preview-image" aria-hidden="true">
+          <div />
+        </div>
+      )}
+      <div className="modal-preview-header">
+        <h3>Confirm Your Action</h3>
+        <ModalPreviewCloseButton />
+      </div>
+      <div className="modal-preview-body">
+        {modalPreviewParagraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+        {scroll && (
+          <>
+            <p>
+              Additional content stays inside the modal body while the header
+              and footer remain anchored for long confirmation flows.
+            </p>
+            <p>
+              This keeps actions visible without expanding the modal beyond the
+              viewport height.
+            </p>
+          </>
+        )}
+      </div>
+      {!noFooter && (
+        <div className="modal-preview-footer">
+          <Button radius="pill" size={buttonSize} variant="outline-neutral">
+            Button
+          </Button>
+          <Button
+            radius="pill"
+            size={buttonSize}
+            variant={action === "destructive" ? "destructive" : "primary"}
+          >
+            Confirm & Proceed
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ModalCloseStatePreview() {
+  return (
+    <div className="modal-close-state-grid">
+      <div className="modal-close-state-item">
+        <span>default</span>
+        <ModalPreviewCloseButton />
+      </div>
+      <div className="modal-close-state-item">
+        <span>hover</span>
+        <ModalPreviewCloseButton state="hover" />
+      </div>
+      <div className="modal-close-state-item">
+        <span>focus</span>
+        <ModalPreviewCloseButton state="focus" />
+      </div>
+    </div>
+  );
+}
+
+function ModalLivePreview({ size }: { size: "medium" | "small" }) {
+  const isSmall = size === "small";
+  const buttonSize = isSmall ? "md" : "lg";
+
+  return (
+    <Modal>
+      <ModalTrigger asChild>
+        <Button>Open {size} modal</Button>
+      </ModalTrigger>
+      <ModalContent size={isSmall ? "sm" : "md"}>
+        <ModalHeader>
+          <ModalTitle>Confirm Your Action</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+          <ModalDescription className="m-0">
+            {modalPreviewParagraphs[0]}
+          </ModalDescription>
+          <p className="m-0">{modalPreviewParagraphs[1]}</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button radius="pill" size={buttonSize} variant="outline-neutral">
+            Button
+          </Button>
+          <Button radius="pill" size={buttonSize}>
+            Confirm & Proceed
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+export function ModalPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Modal interrupts the current task with focused content and disables the rest of the page until it is dismissed."
+        eyebrow="Components"
+        title="Modal"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Breakpoints">
+          <div className="modal-preview-grid">
+            <div className="modal-preview-item">
+              <span>desktop</span>
+              <ModalStaticPreview />
+            </div>
+            <div className="modal-preview-item">
+              <span>mobile</span>
+              <ModalStaticPreview mobile />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Sizes: Desktop">
+          <div className="modal-preview-grid">
+            <div className="modal-preview-item">
+              <span>medium</span>
+              <ModalStaticPreview />
+            </div>
+            <div className="modal-preview-item">
+              <span>small</span>
+              <ModalStaticPreview size="small" />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Types">
+          <div className="modal-preview-grid">
+            <div className="modal-preview-item">
+              <span>primary action</span>
+              <ModalStaticPreview />
+            </div>
+            <div className="modal-preview-item">
+              <span>destructive action</span>
+              <ModalStaticPreview action="destructive" />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Variations">
+          <div className="modal-preview-grid">
+            <div className="modal-preview-item">
+              <span>image</span>
+              <ModalStaticPreview image />
+            </div>
+            <div className="modal-preview-item">
+              <span>footer: n/a</span>
+              <ModalStaticPreview noFooter />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <ModalCloseStatePreview />
+        </ExampleCard>
+
+        <ExampleCard title="Scrollbar Content">
+          <div className="modal-preview-grid">
+            <div className="modal-preview-item">
+              <span>long content</span>
+              <ModalStaticPreview scroll />
+            </div>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Preview">
+          <div className="modal-live-preview">
+            <ModalLivePreview size="medium" />
+            <ModalLivePreview size="small" />
+          </div>
         </ExampleCard>
       </div>
     </div>

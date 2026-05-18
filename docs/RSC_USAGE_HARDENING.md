@@ -28,12 +28,12 @@ The standalone repo's `src` directory already owns the migrated foundations and
 core primitives:
 
 - Foundations, Onest fonts, MUD icons, and MUD logos.
-- `Avatar`, `Badge`, `Button`, `DetailRow`, `Icon`, `Input`, `Link`,
-  `RadioGroup`, `SectionHeading`, `Switch`, `Tabs`, `TableCard`, `Tag`, and
+- `Avatar`, `Badge`, `Button`, `DateInput`, `DetailRow`, `Icon`, `Input`,
+  `Link`, `NumericInput`, `PhoneNumberInput`, `RadioGroup`, `SectionHeading`,
+  `SegmentedControl`, `Switch`, `Tabs`, `TableCard`, `Tag`, `Tooltip`, and
   `Textarea`.
-- Subpath primitives for `Checkbox`, `Dialog`, `DropdownMenu`, `Menu`,
-  `Modal`, `MudIcon`, `MudLogo`, `Pagination`, `SearchInput`, `Select`, and
-  `Table`.
+- Subpath primitives for `Checkbox`, `DropdownMenu`, `Menu`, `Modal`,
+  `MudIcon`, `MudLogo`, `Pagination`, `SearchInput`, `Select`, and `Table`.
 
 `MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were pulled back to RSC
 because they encode dashboard and control-domain behavior. They are no longer
@@ -70,8 +70,9 @@ Direct `@mud-clone` usage already exists in active RSC pages:
 - `src/app/pages/Documente.tsx` uses `Button`, `TableCard`, `Tag`, `Link`,
   `Select`, `Table`, `Pagination`, and `Modal` through `@mud-clone` or
   component subpaths.
-- `src/app/pages/Cereri.tsx` uses `Input`, `Textarea`, `Dialog`, and `DropdownMenu`
-  through `@mud-clone` or component subpaths.
+- Compact confirmation flows that previously used the old MUD-clone `Dialog`
+  export should move to `Modal` or remain local to RSC; standalone MUD-clone no
+  longer ships `Dialog`.
 - `src/app/components/dashboard/MetricCard.tsx` and
   `src/app/components/controls/ControlCardSmall.tsx` are RSC-owned product
   components, not MUD-clone primitives.

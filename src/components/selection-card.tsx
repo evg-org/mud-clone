@@ -3,8 +3,18 @@ import * as React from "react";
 import { MudIcon } from "./mud-icon";
 import { cn } from "./utils";
 
+/**
+ * @deprecated SelectionCard is RSC-specific. New usage should live in the
+ * consuming product app, and this compatibility type will be removed from
+ * MUD-clone in a future cleanup.
+ */
 type SelectionCardLayout = "desktop" | "mobile" | "responsive";
 
+/**
+ * @deprecated SelectionCard is RSC-specific. New usage should live in the
+ * consuming product app, and this compatibility type will be removed from
+ * MUD-clone in a future cleanup.
+ */
 type SelectionCardProps = Omit<React.ComponentProps<"button">, "children"> & {
   children: React.ReactNode;
   layout?: SelectionCardLayout;
@@ -46,6 +56,11 @@ const indicatorSizeClassName: Record<SelectionCardLayout, string> = {
     "size-[var(--spacing-24)] [&_[data-slot=mud-icon]]:size-[var(--spacing-20)] md:size-[var(--spacing-20)] md:[&_[data-slot=mud-icon]]:size-[var(--spacing-16)]",
 };
 
+/**
+ * @deprecated SelectionCard is RSC-specific. New usage should live in the
+ * consuming product app, and this compatibility component will be removed from
+ * MUD-clone in a future cleanup.
+ */
 function SelectionCard({
   children,
   className,
