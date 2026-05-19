@@ -53,6 +53,7 @@ export const navGroups = [
       navSeparator,
       { href: "/tooltip", label: "Tooltip", needsReview: false },
       { href: "/separator", label: "Separator", needsReview: false },
+      { href: "/pagination", label: "Pagination", needsReview: false },
       { href: "/table", label: "Table", needsReview: false },
       { href: "/menu", label: "Menu", needsReview: false },
       { href: "/modal", label: "Modal", needsReview: false },

@@ -383,6 +383,7 @@ Reviewed components with completed prototype-wide usage audit:
 | `TableCard` | Reviewed | Complete | Adopted | Manual | Active small-screen record-list alternatives use `TableCard`; row content uses `TableCardRow`, which composes `DetailRow`. |
 | `DetailRow` | Reviewed | Complete | Adopted with exceptions | Manual | Active label/value rows use `DetailRow` directly or through `TableCardRow`; timeline/progress/icon grids are documented non-detail-row exceptions. |
 | `Separator` | Reviewed | Complete | Adopted with exceptions | Manual | Active standalone component separators use reviewed `Separator`; primitive-specific separators inside command/context/menu/breadcrumb/OTP legacy internals remain deferred. |
+| `Pagination` | Reviewed | Pending prototype audit | Adopted for new work | Manual | Canonical paged record-set navigation; preview page documents breakpoints, states, pagination logic, overflow interaction, and accessibility. |
 | `SectionHeading` | Reviewed | Complete | Adopted with exceptions | Manual | Active section title/count/action rows use `SectionHeading`; content titles, modal labels, and editorial/public section headings are documented non-section-heading exceptions. |
 
 Reviewed components and foundations that still need prototype-wide usage audit:
@@ -396,7 +397,6 @@ prototype-wide usage audit:
 
 | Component | Review status | Prototype usage audit | Adoption status | Recommended audit priority | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `Pagination` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for paged record sets; verify usage where pagination appears. |
 | `PhoneNumberInput` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for phone number fields with country-code prefix and validation states; audit when phone entry appears in active product forms. |
 | `Modal` | Reviewed against Figma Modal | Not started | Partial/unknown | Medium | Canonical overlay component. The previous `Dialog` package export was removed because Figma does not define a separate dialog primitive. |
 | `SegmentedControl` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for compact single-choice mode switches with two-to-five segments; audit when segmented filters or mode switches appear in active product screens. |
@@ -771,8 +771,8 @@ generalized MUD-clone component with a fresh API.
    of migrating them mechanically.
 2. Audit Tailwind shadow utilities component-by-component, starting with
    MUD-clone controls before legacy shadcn primitives.
-3. Continue formal review for the next unreviewed components: `Pagination`,
-   `Modal`, or `Tooltip`.
+3. Continue formal review for the next unreviewed components:
+   `PhoneNumberInput`, `SegmentedControl`, or `Tooltip`.
 4. Later, remove `--app-space-*`, `--app-radius-*`, and `--app-shadow-*`
    compatibility aliases once no external or historical references need them.
 

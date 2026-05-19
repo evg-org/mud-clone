@@ -57,7 +57,7 @@ component file.
 | Local primitive | Upstream anchors | Notes |
 | --- | --- | --- |
 | `DetailRow` | `Components/table.html`, `Components/scss/components/_table.scss`, typography and spacing tokens | Reusable label/value row for cards, details pages, tables on small screens, and modals. |
-| `Pagination` | Button, link, icon, typography, spacing, and focus tokens | Reusable paged record-set navigation created for RSC and promoted to MUD-clone. Subpath-only because it loads `MudIcon`. |
+| `Pagination` | Link, icon, typography, spacing, radius, color, and focus tokens | Reusable paged record-set navigation created for RSC and promoted to MUD-clone. Subpath-only because it loads `MudIcon`. |
 | `SectionHeading` | Typography, spacing, and color tokens | Reusable section title and title/count pattern created for RSC and promoted to MUD-clone. |
 | `TableCard` | `Components/table.html`, `Components/scss/components/_table.scss`, typography, spacing, radius, and border tokens | Small-screen alternative view for tabular records. |
 

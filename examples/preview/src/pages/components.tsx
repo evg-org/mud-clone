@@ -77,6 +77,15 @@ import {
 } from "@mud-clone/components/modal";
 import { MudIcon } from "@mud-clone/components/mud-icon";
 import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@mud-clone/components/pagination";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -2957,6 +2966,234 @@ export function SeparatorPage() {
             </div>
           </div>
         </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+type PaginationPageValue = number | "...";
+
+type PaginationDemoProps = {
+  activePage: number;
+  compact?: boolean;
+  overflowMenu?: ReactNode;
+  overflowActive?: boolean;
+  pages: PaginationPageValue[];
+  showNext?: boolean;
+  showPrevious?: boolean;
+};
+
+function PaginationDemo({
+  activePage,
+  compact = false,
+  overflowMenu,
+  overflowActive = false,
+  pages,
+  showNext = true,
+  showPrevious = true,
+}: PaginationDemoProps) {
+  const controlSize = compact ? "control-sm" : "control";
+  const ellipsisSize = compact ? "sm" : "default";
+  const pageSize = compact ? "page-sm" : "page";
+
+  return (
+    <Pagination className="justify-start">
+      <PaginationContent
+        className={
+          compact
+            ? "pagination-preview-content compact"
+            : "pagination-preview-content"
+        }
+      >
+        {showPrevious && (
+          <PaginationItem className="pagination-preview-control-before">
+            <PaginationPrevious href="#" size={controlSize} />
+          </PaginationItem>
+        )}
+        {pages.map((page, index) => {
+          const isActiveOverflow = overflowActive && index === 1;
+
+          return (
+            <PaginationItem key={`${page}-${index}`}>
+              {page === "..." ? (
+                isActiveOverflow && overflowMenu ? (
+                  <div className="pagination-overflow-anchor">
+                    <PaginationEllipsis size={ellipsisSize} previewState="hover" />
+                    <div className="pagination-overflow-menu" aria-hidden="true">
+                      {overflowMenu}
+                    </div>
+                  </div>
+                ) : (
+                  <PaginationEllipsis
+                    size={ellipsisSize}
+                    previewState={isActiveOverflow ? "hover" : undefined}
+                  />
+                )
+              ) : (
+                <PaginationLink
+                  href="#"
+                  isActive={page === activePage}
+                  size={pageSize}
+                >
+                  {page}
+                </PaginationLink>
+              )}
+            </PaginationItem>
+          );
+        })}
+        {showNext && (
+          <PaginationItem className="pagination-preview-control-after">
+            <PaginationNext href="#" size={controlSize} />
+          </PaginationItem>
+        )}
+      </PaginationContent>
+    </Pagination>
+  );
+}
+
+function PaginationPreviewLabel({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="pagination-preview-item">
+      <span className="pagination-preview-label">{label}</span>
+      {children}
+    </div>
+  );
+}
+
+export function PaginationPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="Pagination organizes content into logical, manageable groups, dividing it across pages based on the relevance of results. It offers a clear, structured way for users to navigate through information."
+        eyebrow="Components"
+        title="Pagination"
+      />
+
+      <div className="component-grid one">
+        <ExampleCard title="Breakpoints">
+          <div className="pagination-breakpoint-grid">
+            <PaginationPreviewLabel label="desktop">
+              <PaginationDemo
+                activePage={1}
+                pages={[1, 2, 3, 4, 5, 6, 7]}
+                showPrevious={false}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="mobile">
+              <PaginationDemo
+                activePage={1}
+                compact
+                pages={[1, 2, 3, 4, 5]}
+                showPrevious={false}
+              />
+            </PaginationPreviewLabel>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="pagination-state-grid">
+            <PaginationPreviewLabel label="selected">
+              <PaginationLink href="#" isActive>
+                1
+              </PaginationLink>
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="selected: focus">
+              <PaginationLink href="#" isActive previewState="focus">
+                1
+              </PaginationLink>
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="unselected">
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="unselected: hover">
+              <PaginationLink href="#" previewState="hover">
+                1
+              </PaginationLink>
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="unselected: focus">
+              <PaginationLink href="#" previewState="focus">
+                1
+              </PaginationLink>
+            </PaginationPreviewLabel>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="When pages are truncated, the minimum visible pagination range is five slots. Avoid showing pagination when there is only one page."
+          title="Pagination logic"
+        >
+          <div className="pagination-logic-grid">
+            <PaginationPreviewLabel label="first-page">
+              <PaginationDemo
+                activePage={1}
+                pages={[1, 2, 3, 4, 5, 6, 7]}
+                showPrevious={false}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="first-page: leading-overflow">
+              <PaginationDemo
+                activePage={1}
+                pages={[1, 2, 3, 4, 5, "...", 27]}
+                showPrevious={false}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="last-page">
+              <PaginationDemo
+                activePage={7}
+                pages={[1, 2, 3, 4, 5, 6, 7]}
+                showNext={false}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="last-page: trailing-overflow">
+              <PaginationDemo
+                activePage={27}
+                pages={[1, "...", 23, 24, 25, 26, 27]}
+                showNext={false}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="leading-overflow">
+              <PaginationDemo
+                activePage={3}
+                pages={[1, 2, 3, 4, 5, "...", 27]}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="leading-and-trailing-overflow">
+              <PaginationDemo
+                activePage={15}
+                pages={[1, "...", 14, 15, 16, "...", 27]}
+              />
+            </PaginationPreviewLabel>
+            <PaginationPreviewLabel label="trailing-overflow">
+              <PaginationDemo
+                activePage={25}
+                pages={[1, "...", 23, 24, 25, 26, 27]}
+              />
+            </PaginationPreviewLabel>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Interacting with an overflow element reveals a compact page jump menu."
+          title="Overflow interaction"
+        >
+          <div className="pagination-overflow-preview">
+            <PaginationDemo
+              activePage={9}
+              overflowMenu={["2", "3", "4", "5", "6", "7"].map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+              overflowActive
+              pages={[1, "...", 8, 9, 10, "...", 20]}
+            />
+          </div>
+        </ExampleCard>
+
       </div>
     </div>
   );
