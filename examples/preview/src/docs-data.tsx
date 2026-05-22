@@ -1,7 +1,7 @@
 import { Tag } from "@mud-clone";
 import { MudIcon } from "@mud-clone/components/mud-icon";
 
-export const defaultRoute = "/colors";
+export const defaultRoute = "/intro";
 
 const navSeparator = {
   href: "",
@@ -11,6 +11,12 @@ const navSeparator = {
 };
 
 export const navGroups = [
+  {
+    label: "Overview",
+    items: [
+      { href: "/intro", label: "Intro", needsReview: false },
+    ],
+  },
   {
     label: "Foundations",
     items: [

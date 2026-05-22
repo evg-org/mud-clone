@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ComponentType, MouseEvent } from "react";
 import { Separator } from "@mud-clone";
+import { MudIcon } from "@mud-clone/components/mud-icon";
 import { MudLogo } from "@mud-clone/components/mud-logo";
 import { defaultRoute, navGroups } from "./docs-data";
+import { IntroPage } from "./pages/intro";
 import {
   AssetsPage,
   BordersRadiusPage,
@@ -75,6 +77,7 @@ type NavItemChunk =
     };
 
 const routes: DocsRoute[] = [
+  { component: IntroPage, href: "/intro", label: "Intro" },
   { component: ColorsPage, href: "/colors", label: "Colors" },
   { component: TypographyPage, href: "/typography", label: "Typography" },
   { component: SpacingPage, href: "/spacing", label: "Spacing" },
@@ -268,12 +271,77 @@ function DocsNavLink({
   );
 }
 
+function DocsNavigation({
+  activeHref,
+  browserBasePath,
+  navigate,
+}: {
+  activeHref: string;
+  browserBasePath: string;
+  navigate: (event: MouseEvent<HTMLAnchorElement>, href: string) => void;
+}) {
+  return (
+    <nav className="docs-nav">
+      {navGroups.map((group) => (
+        <div className="docs-nav-group" key={group.label}>
+          <p>{group.label}</p>
+          {chunkNavItems(group.items).map((chunk) => {
+            if (chunk.type === "separator") {
+              return (
+                <Separator
+                  className="docs-nav-separator"
+                  key={`${group.label}-${chunk.key}`}
+                  thickness="extra-thin"
+                  tone="subtle"
+                />
+              );
+            }
+
+            if (chunk.type === "grouped") {
+              return (
+                <div
+                  className="docs-nav-visual-group"
+                  data-visual-group={chunk.visualGroup}
+                  key={`${group.label}-${chunk.visualGroup}`}
+                >
+                  {chunk.items.map((item) => (
+                    <DocsNavLink
+                      activeHref={activeHref}
+                      browserBasePath={browserBasePath}
+                      item={item}
+                      key={item.href}
+                      navigate={navigate}
+                    />
+                  ))}
+                </div>
+              );
+            }
+
+            return (
+              <DocsNavLink
+                activeHref={activeHref}
+                browserBasePath={browserBasePath}
+                item={chunk.item}
+                key={chunk.item.href}
+                navigate={navigate}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </nav>
+  );
+}
+
 export function MudClonePreview({ basePath }: MudClonePreviewProps = {}) {
   const browserBasePath = normalizeBasePath(basePath);
   const mainRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const navCloseButtonRef = useRef<HTMLButtonElement>(null);
   const [activeHref, setActiveHref] = useState(() =>
     normalizeRoute(window.location.pathname, browserBasePath),
   );
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const scrollToPageStart = useCallback(() => {
     mainRef.current?.scrollTo({ top: 0 });
@@ -299,6 +367,7 @@ export function MudClonePreview({ basePath }: MudClonePreviewProps = {}) {
       }
 
       setActiveHref(normalizedHref);
+      setIsNavOpen(false);
       scrollToPageStart();
     };
 
@@ -315,6 +384,59 @@ export function MudClonePreview({ basePath }: MudClonePreviewProps = {}) {
   );
   const ActivePage = activeRoute.component;
 
+  const openNav = useCallback(() => {
+    setIsNavOpen(true);
+  }, []);
+
+  const closeNav = useCallback(() => {
+    setIsNavOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isNavOpen) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    navCloseButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsNavOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      menuButtonRef.current?.focus();
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isNavOpen]);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 901px)");
+
+    const handleDesktopQueryChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        setIsNavOpen(false);
+      }
+    };
+
+    if (desktopQuery.matches) {
+      setIsNavOpen(false);
+    }
+
+    desktopQuery.addEventListener("change", handleDesktopQueryChange);
+
+    return () => {
+      desktopQuery.removeEventListener("change", handleDesktopQueryChange);
+    };
+  }, []);
+
   function navigate(event: MouseEvent<HTMLAnchorElement>, href: string) {
     event.preventDefault();
 
@@ -323,11 +445,39 @@ export function MudClonePreview({ basePath }: MudClonePreviewProps = {}) {
       setActiveHref(href);
     }
 
+    setIsNavOpen(false);
     scrollToPageStart();
   }
 
   return (
     <div className="docs-app">
+      <header className="docs-mobile-header">
+        <button
+          ref={menuButtonRef}
+          aria-controls="preview-mobile-navigation"
+          aria-expanded={isNavOpen}
+          aria-label="Open Preview navigation"
+          className="docs-mobile-menu-button"
+          onClick={openNav}
+          type="button"
+        >
+          <MudIcon name="Outlined/24/menu" size="md" />
+        </button>
+
+        <a
+          aria-label="MUD-clone preview home"
+          className="docs-mobile-brand"
+          href={toBrowserHref(defaultRoute, browserBasePath)}
+          onClick={(event) => navigate(event, defaultRoute)}
+        >
+          <MudLogo className="docs-logo" name="government-logo" />
+          <span>
+            <span>Preview</span>
+            <strong>MUD-clone</strong>
+          </span>
+        </a>
+      </header>
+
       <aside className="docs-sidebar" aria-label="Preview navigation">
         <a
           aria-label="MUD-clone preview home"
@@ -337,61 +487,67 @@ export function MudClonePreview({ basePath }: MudClonePreviewProps = {}) {
         >
           <MudLogo className="docs-logo" name="government-logo" />
           <span>
-            <span>MUD-clone</span>
-            <strong>Preview</strong>
+            <span>Preview</span>
+            <strong>MUD-clone</strong>
           </span>
         </a>
 
-        <nav className="docs-nav">
-          {navGroups.map((group) => (
-            <div className="docs-nav-group" key={group.label}>
-              <p>{group.label}</p>
-              {chunkNavItems(group.items).map((chunk) => {
-                if (chunk.type === "separator") {
-                  return (
-                    <Separator
-                      className="docs-nav-separator"
-                      key={`${group.label}-${chunk.key}`}
-                      thickness="extra-thin"
-                      tone="subtle"
-                    />
-                  );
-                }
-
-                if (chunk.type === "grouped") {
-                  return (
-                    <div
-                      className="docs-nav-visual-group"
-                      data-visual-group={chunk.visualGroup}
-                      key={`${group.label}-${chunk.visualGroup}`}
-                    >
-                      {chunk.items.map((item) => (
-                        <DocsNavLink
-                          activeHref={activeHref}
-                          browserBasePath={browserBasePath}
-                          item={item}
-                          key={item.href}
-                          navigate={navigate}
-                        />
-                      ))}
-                    </div>
-                  );
-                }
-
-                return (
-                  <DocsNavLink
-                    activeHref={activeHref}
-                    browserBasePath={browserBasePath}
-                    item={chunk.item}
-                    key={chunk.item.href}
-                    navigate={navigate}
-                  />
-                );
-              })}
-            </div>
-          ))}
-        </nav>
+        <DocsNavigation
+          activeHref={activeHref}
+          browserBasePath={browserBasePath}
+          navigate={navigate}
+        />
       </aside>
+
+      {isNavOpen && (
+        <>
+          <button
+            aria-label="Close Preview navigation"
+            className="docs-mobile-backdrop"
+            onClick={closeNav}
+            tabIndex={-1}
+            type="button"
+          />
+          <aside
+            aria-label="Preview navigation"
+            aria-modal="true"
+            className="docs-mobile-drawer"
+            id="preview-mobile-navigation"
+            role="dialog"
+          >
+            <div className="docs-mobile-drawer-header">
+              <a
+                aria-label="MUD-clone preview home"
+                className="docs-sidebar-brand"
+                href={toBrowserHref(defaultRoute, browserBasePath)}
+                onClick={(event) => navigate(event, defaultRoute)}
+              >
+                <MudLogo className="docs-logo" name="government-logo" />
+                <span>
+                  <span>Preview</span>
+                  <strong>MUD-clone</strong>
+                </span>
+              </a>
+
+              <button
+                ref={navCloseButtonRef}
+                aria-label="Close Preview navigation"
+                className="docs-mobile-close-button"
+                onClick={closeNav}
+                type="button"
+              >
+                <MudIcon name="Outlined/24/cross-large" size="md" />
+              </button>
+            </div>
+
+            <DocsNavigation
+              activeHref={activeHref}
+              browserBasePath={browserBasePath}
+              navigate={navigate}
+            />
+          </aside>
+        </>
+      )}
 
       <main className="docs-main" ref={mainRef}>
         <ActivePage />

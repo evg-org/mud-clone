@@ -187,6 +187,7 @@ http://localhost:5173
 
 Common direct preview paths:
 
+- `/intro`
 - `/colors`
 - `/typography`
 - `/buttons`

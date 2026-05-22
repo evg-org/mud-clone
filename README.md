@@ -224,9 +224,9 @@ npm run dev:preview
 npm run build:preview
 ```
 
-The preview is the canonical visual catalog for this phase. It covers
-foundations, component states, and composed reusable patterns. Storybook is
-intentionally deferred until package usage, type output, exports, and handoff
+The preview is the canonical visual catalog for this phase. It covers an intro
+page, foundations, component states, and composed reusable patterns. Storybook
+is intentionally deferred until package usage, type output, exports, and handoff
 docs are stable; if added later, use it for isolated state review and visual
 regression, not as a replacement for the preview.
 
