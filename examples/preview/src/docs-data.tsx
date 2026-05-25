@@ -56,6 +56,7 @@ export const navGroups = [
       { href: "/input-date", label: "Input: Date", needsReview: false },
       { href: "/input-phone-number", label: "Input: Phone Number", needsReview: false },
       { href: "/input-search", label: "Input: Search", needsReview: false },
+      { href: "/file-input", label: "Input: File", needsReview: false },
       navSeparator,
       { href: "/tooltip", label: "Tooltip", needsReview: false },
       { href: "/separator", label: "Separator", needsReview: false },

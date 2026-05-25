@@ -28,8 +28,8 @@ The standalone repo's `src` directory already owns the migrated foundations and
 core primitives:
 
 - Foundations, Onest fonts, MUD icons, and MUD logos.
-- `Avatar`, `Badge`, `Button`, `DateInput`, `DetailRow`, `Icon`, `Input`,
-  `Link`, `NumericInput`, `PhoneNumberInput`, `RadioGroup`, `SectionHeading`,
+- `Avatar`, `Badge`, `Button`, `DateInput`, `DetailRow`, `FileInput`,
+  `FileInputItem`, `Icon`, `Input`, `Link`, `NumericInput`, `PhoneNumberInput`, `RadioGroup`, `SectionHeading`,
   `SegmentedControl`, `Switch`, `Tabs`, `TableCard`, `Tag`, `Tooltip`, and
   `Textarea`.
 - Subpath primitives for `Checkbox`, `DropdownMenu`, `Menu`, `Modal`,

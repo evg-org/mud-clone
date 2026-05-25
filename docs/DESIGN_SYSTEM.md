@@ -86,6 +86,7 @@ Root exports:
 - `Button`
 - `DateInput`
 - `DetailRow`
+- `FileInput` and `FileInputItem`
 - `Icon`
 - `Input`
 - `Link`
@@ -166,8 +167,9 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
 - Segmented controls: use `SegmentedControl` for compact single-choice mode
   switches with concise labels.
 - Switches: use `Switch`.
-- Text, numeric, phone, and date inputs/search: use `Input`, `NumericInput`,
-  `PhoneNumberInput`, `DateInput`, `Textarea`, and `SearchInput`.
+- Text, numeric, phone, date, search, and file inputs: use `Input`,
+  `NumericInput`, `PhoneNumberInput`, `DateInput`, `Textarea`, `SearchInput`,
+  and `FileInput`. Use `FileInputItem` for uploaded file rows.
 - Icons and logos: use `MudIcon` and `MudLogo`; do not paste inline SVGs for
   MUD-provided assets.
 - Typography: use semantic text tokens or established text primitives. Do not

@@ -76,7 +76,7 @@ When implementing new designs in RSC:
   dots.
 - Use `Modal` or `Tooltip` for overlays and contextual help.
 - Use `Input`, `NumericInput`, `PhoneNumberInput`, `DateInput`, `Textarea`,
-  `SearchInput`, `Checkbox`, `RadioGroup`, `SegmentedControl`, `Switch`, and
+  `SearchInput`, `FileInput`, `FileInputItem`, `Checkbox`, `RadioGroup`, `SegmentedControl`, `Switch`, and
   `Tabs` instead of recreating controls in pages.
 - Use `MudIcon` and `MudLogo` for MUD-provided assets.
 

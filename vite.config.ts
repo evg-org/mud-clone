@@ -12,6 +12,7 @@ const componentEntries = {
   "components/date-input": "src/components/date-input.tsx",
   "components/detail-row": "src/components/detail-row.tsx",
   "components/dropdown-menu": "src/components/dropdown-menu.tsx",
+  "components/file-input": "src/components/file-input.tsx",
   "components/icon": "src/components/icon.tsx",
   "components/input": "src/components/input.tsx",
   "components/link": "src/components/link.tsx",

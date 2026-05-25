@@ -82,6 +82,10 @@
       "types": "./dist/components/dropdown-menu.d.ts",
       "import": "./dist/components/dropdown-menu.js"
     },
+    "./components/file-input": {
+      "types": "./dist/components/file-input.d.ts",
+      "import": "./dist/components/file-input.js"
+    },
     "./components/icon": {
       "types": "./dist/components/icon.d.ts",
       "import": "./dist/components/icon.js"

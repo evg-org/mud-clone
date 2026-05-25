@@ -21,6 +21,8 @@ import {
   CheckboxField,
   DateInput,
   DetailRow,
+  FileInput,
+  FileInputItem,
   FilterChip,
   InputChip,
   Link,
@@ -1565,6 +1567,123 @@ function SearchInputStateColumn({ shape }: { shape: SearchInputShape }) {
             value={state.value}
           />
         </SearchInputPreviewItem>
+      ))}
+    </div>
+  );
+}
+
+type FileInputPreviewState = ComponentProps<typeof FileInput>["previewState"];
+type FileInputItemState = ComponentProps<typeof FileInputItem>["state"];
+
+const fileInputExampleIconSrc = new URL(
+  "../../../../src/assets/mud/images/upload-icon-example.svg",
+  import.meta.url,
+).href;
+
+const fileInputZoneStateRows: {
+  disabled?: boolean;
+  label: string;
+  previewState?: FileInputPreviewState;
+}[] = [
+  { label: "default" },
+  { label: "hover", previewState: "hover" },
+  { label: "active", previewState: "active" },
+  { label: "focus", previewState: "focus" },
+  { disabled: true, label: "disabled" },
+];
+
+const fileInputItemStateRows: {
+  errorMessage?: ReactNode;
+  fileSize?: string;
+  label: string;
+  state: FileInputItemState;
+}[] = [
+  { label: "uploading", state: "uploading" },
+  { label: "success", state: "success" },
+  { label: "uploaded", state: "uploaded" },
+  { errorMessage: null, fileSize: "102.8 MB", label: "error", state: "error" },
+  {
+    errorMessage: "File exceeds size limit, max size is 100 MB",
+    fileSize: "102.8 MB",
+    label: "error-message",
+    state: "error",
+  },
+];
+
+function FileInputPreviewItem({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="file-input-preview-item">
+      <span>{label}</span>
+      {children}
+    </div>
+  );
+}
+
+function FileInputUploadGroup({
+  imagePreview = false,
+  multiple = false,
+}: {
+  imagePreview?: boolean;
+  multiple?: boolean;
+}) {
+  return (
+    <div className="file-input-upload-group">
+      <div className="file-input-upload-copy">
+        <strong>Upload files</strong>
+        <span>Supported formats: jpg, png, pdf. Maximum size: 100 MB</span>
+      </div>
+      <Button className="w-[106px] justify-self-start" radius="sm" size="md">
+        Choose file
+      </Button>
+      <div className="file-input-file-list">
+        <FileInputItem
+          fileName="Filename.pdf"
+          fileSize="1.8 MB"
+          thumbnail={
+            imagePreview ? (
+              <img
+                alt=""
+                className="file-input-preview-thumbnail"
+                draggable={false}
+                src={fileInputExampleIconSrc}
+              />
+            ) : undefined
+          }
+        />
+        {multiple && <FileInputItem fileName="Filename.pdf" fileSize="1.8 MB" />}
+      </div>
+      {imagePreview && (
+        <p className="file-input-preview-note">
+          Uploaded images can show a live preview thumbnail before recognition.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function FileInputZoneStateGrid() {
+  return (
+    <div className="file-input-zone-state-grid">
+      {fileInputZoneStateRows.map((state) => (
+        <FileInputPreviewItem key={state.label} label={state.label}>
+          <FileInput
+            disabled={state.disabled}
+            inputProps={{ multiple: true }}
+            previewState={state.previewState}
+          />
+          {!state.disabled && (
+            <div className="file-input-file-list">
+              <FileInputItem fileName="Filename.pdf" fileSize="1.8 MB" />
+              <FileInputItem fileName="Filename.pdf" fileSize="1.8 MB" />
+            </div>
+          )}
+        </FileInputPreviewItem>
       ))}
     </div>
   );
@@ -4037,6 +4156,69 @@ export function InputSearchPage() {
             <SearchInputStateColumn shape="rectangular" />
             <SearchInputStateColumn shape="circular" />
           </div>
+        </ExampleCard>
+      </div>
+    </div>
+  );
+}
+
+export function FileInputPage() {
+  return (
+    <div className="docs-page">
+      <PageHeader
+        description="File inputs let users select, upload, and review one or more files through button-based flows or drag-and-drop zones."
+        eyebrow="Components"
+        title="Input: File"
+      />
+      <div className="component-grid one">
+        <ExampleCard
+          description="Button-based upload flows pair a normal command button with one or more uploaded file rows."
+          title="Upload Button"
+        >
+          <div className="file-input-preview-row">
+            <FileInputPreviewItem label="single-upload">
+              <FileInputUploadGroup />
+            </FileInputPreviewItem>
+            <FileInputPreviewItem label="multiple-upload">
+              <FileInputUploadGroup multiple />
+            </FileInputPreviewItem>
+            <FileInputPreviewItem label="image-preview">
+              <FileInputUploadGroup imagePreview multiple />
+            </FileInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="File Items">
+          <div className="file-input-item-state-grid">
+            {fileInputItemStateRows.map((item) => (
+              <FileInputPreviewItem key={item.label} label={item.label}>
+                <FileInputItem
+                  errorMessage={item.errorMessage}
+                  fileName="Filename.pdf"
+                  fileSize={item.fileSize}
+                  state={item.state}
+                />
+              </FileInputPreviewItem>
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="The drop zone gives users a larger target for drag-and-drop uploads while preserving the same file list pattern."
+          title="Drag and Drop Zone"
+        >
+          <div className="file-input-preview-row">
+            <FileInputPreviewItem label="desktop">
+              <FileInput inputProps={{ multiple: true }} />
+            </FileInputPreviewItem>
+            <FileInputPreviewItem label="mobile">
+              <FileInput className="file-input-preview-mobile" inputProps={{ multiple: true }} />
+            </FileInputPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <FileInputZoneStateGrid />
         </ExampleCard>
       </div>
     </div>

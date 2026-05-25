@@ -1354,6 +1354,99 @@
   gap: var(--spacing-24);
 }
 
+.file-input-preview-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 588px));
+  gap: var(--spacing-32) var(--spacing-64);
+  align-items: start;
+}
+
+.file-input-preview-item {
+  display: grid;
+  width: min(100%, 588px);
+  min-width: 0;
+  gap: var(--spacing-16);
+  align-content: start;
+}
+
+.file-input-preview-item > span {
+  color: var(--color-text-base-secondary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-caption-md-500-font-size);
+  font-weight: var(--text-body-sm-500-font-weight);
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.file-input-preview-mobile {
+  max-width: 343px;
+}
+
+.file-input-upload-group {
+  display: grid;
+  width: min(100%, 588px);
+  min-width: 0;
+  gap: var(--spacing-16);
+}
+
+.file-input-upload-copy {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.file-input-upload-copy strong {
+  color: var(--color-text-base-default);
+  font-size: var(--text-body-md-500-font-size);
+  font-weight: var(--text-body-md-500-font-weight);
+  line-height: var(--text-body-md-500-line-height);
+}
+
+.file-input-upload-copy span,
+.file-input-preview-note {
+  color: var(--color-text-base-tertiary);
+  font-size: var(--text-body-sm-font-size);
+  font-weight: var(--text-body-sm-font-weight);
+  line-height: var(--text-body-sm-line-height);
+}
+
+.file-input-preview-note {
+  max-width: 280px;
+  margin: var(--spacing-8) 0 0;
+}
+
+.file-input-file-list {
+  display: grid;
+  min-width: 0;
+  gap: var(--spacing-8);
+}
+
+.file-input-preview-thumbnail {
+  display: block;
+  width: 24px;
+  height: 32px;
+}
+
+.file-input-item-state-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 343px), 343px));
+  gap: var(--spacing-32) var(--spacing-64);
+  align-items: start;
+}
+
+.file-input-item-state-grid .file-input-preview-item {
+  width: min(100%, 343px);
+}
+
+.file-input-zone-state-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(280px, 588px));
+  gap: var(--spacing-40) var(--spacing-64);
+  align-items: start;
+}
+
 .select-input-preview-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 282px));
@@ -3241,6 +3334,9 @@
   .phone-number-input-country-grid,
   .search-input-preview-row,
   .search-input-state-grid,
+  .file-input-preview-row,
+  .file-input-item-state-grid,
+  .file-input-zone-state-grid,
   .select-input-preview-row,
   .select-input-state-grid,
   .text-area-preview-row,
@@ -3257,6 +3353,7 @@
   .date-input-preview-item,
   .phone-number-input-preview-item,
   .search-input-preview-item,
+  .file-input-preview-item,
   .select-input-preview-item,
   .text-area-preview-item,
   .menu-preview-example {

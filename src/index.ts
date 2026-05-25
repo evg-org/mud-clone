@@ -86,6 +86,18 @@ export type {
   TextInputProps,
 } from "./components/input";
 export {
+  FileInput,
+  FileInputItem,
+  fileInputItemVariants,
+  fileInputZoneVariants,
+} from "./components/file-input";
+export type {
+  FileInputItemProps,
+  FileInputItemState,
+  FileInputPreviewState,
+  FileInputProps,
+} from "./components/file-input";
+export {
   NumericInput,
   numericInputControlVariants,
 } from "./components/numeric-input";
