@@ -6,6 +6,12 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { MudIcon } from "./mud-icon";
 import { cn } from "./utils";
 
+const inputChipRemoveIconSvg =
+  '<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.61969 5.21967C5.91259 4.92678 6.38746 4.92678 6.68035 5.21967L10.4 8.93934L14.1197 5.21967C14.4126 4.92678 14.8875 4.92678 15.1804 5.21967C15.4732 5.51256 15.4732 5.98744 15.1804 6.28033L11.4607 10L15.1804 13.7197C15.4732 14.0126 15.4732 14.4874 15.1804 14.7803C14.8875 15.0732 14.4126 15.0732 14.1197 14.7803L10.4 11.0607L6.68035 14.7803C6.38746 15.0732 5.91259 15.0732 5.61969 14.7803C5.3268 14.4874 5.3268 14.0126 5.61969 13.7197L9.33936 10L5.61969 6.28033C5.3268 5.98744 5.3268 5.51256 5.61969 5.21967Z" fill="black"/></svg>';
+const inputChipRemoveIconMask = `url("data:image/svg+xml,${encodeURIComponent(
+  inputChipRemoveIconSvg,
+)}")`;
+
 type ChipPreviewState = "default" | "focus" | "hover";
 type FilterChipSelectionMode = "single" | "multiple";
 
@@ -150,10 +156,21 @@ function InputChip({
       "pointer-events-none text-[var(--color-icon-disabled-on-disabled)]",
   );
   const closeIcon = (
-    <MudIcon
+    <span
       aria-hidden="true"
-      className="size-[var(--spacing-20)]"
-      name="Outlined/20/cross-small"
+      className="size-[var(--spacing-20)] shrink-0"
+      data-slot="input-chip-remove-icon"
+      style={{
+        WebkitMaskImage: inputChipRemoveIconMask,
+        WebkitMaskPosition: "center",
+        WebkitMaskRepeat: "no-repeat",
+        WebkitMaskSize: "contain",
+        backgroundColor: "currentColor",
+        maskImage: inputChipRemoveIconMask,
+        maskPosition: "center",
+        maskRepeat: "no-repeat",
+        maskSize: "contain",
+      }}
     />
   );
 
