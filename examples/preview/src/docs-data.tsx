@@ -64,6 +64,7 @@ export const navGroups = [
       { href: "/table", label: "Table", needsReview: false },
       { href: "/menu", label: "Menu", needsReview: false },
       { href: "/modal", label: "Modal", needsReview: false },
+      { href: "/toast-message", label: "Toast Message", needsReview: false },
     ],
   },
   {

@@ -45,8 +45,9 @@ Checked against upstream `main` on 2026-05-12.
 | `Switch` | `Components/switch.html`, `Components/scss/components/forms/_switch.scss`, `Components/js/toggler.js` | Root-safe primitive because it does not load the MUD icon registry. |
 | `Table` | `Components/table.html`, `Components/scss/components/_table.scss` | Large-screen table primitives, including wrapper, header, row, sortable-header patterns, local long-content clamps for table titles and values, and `TagGroup` wrapping inside tag cells. |
 | `Tabs` | Figma `Tabs`, `Components/tabs.html`, `Components/scss/components/forms/_tabs.scss` | Root-safe primitive for tabbed views, including desktop/mobile sizing, selected underline, focus ring, icon, badge, and overflow indicator states. |
-| `Tag` | `Components/tags.html`, `Components/scss/components/forms/_tags.scss` | Use for status labels and semantic chips. Local implementation covers status-tag and info-tag variants. |
+| `Tag` | `Components/tags.html`, `Components/scss/components/forms/_tags.scss` | Use for status labels and semantic chips. Local implementation covers status-tag and info-tag variants and includes optional `truncate` for constrained layouts. |
 | `Tooltip` | Figma `Tooltip`, typography, shadow, radius, spacing, and icon tokens | Tooltip bubble and hover/focus wrapper for short contextual hints, including large/small sizes, top/bottom arrows, start/center/end arrow alignment, close-button coach tooltip variant, and target-size guidance. |
+| `Toast` | Figma `Toast Message`, typography, color, spacing, radius, icon, and motion tokens | Toast feedback surface for info, success, warning, and error messages with heading/text-only variants, optional action link, optional dismiss button, desktop/mobile placement guidance, stacking guidance, and truncation behavior. Keep queues, timers, portals, and notification routing in the consuming app. |
 | `Textarea` | `Components/textarea.html`, `Components/scss/components/forms/_input.scss`, `Components/css/main.css` | Shared multi-line text input shell aligned with input typography, border, focus, invalid, disabled, and placeholder states. |
 
 ## MUD-clone Extensions

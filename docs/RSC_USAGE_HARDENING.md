@@ -33,7 +33,8 @@ core primitives:
   `SegmentedControl`, `Switch`, `Tabs`, `TableCard`, `Tag`, `Tooltip`, and
   `Textarea`.
 - Subpath primitives for `Checkbox`, `DropdownMenu`, `Menu`, `Modal`,
-  `MudIcon`, `MudLogo`, `Pagination`, `SearchInput`, `Select`, and `Table`.
+  `MudIcon`, `MudLogo`, `Pagination`, `SearchInput`, `Select`, `Table`, and
+  `Toast`.
 
 `MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were pulled back to RSC
 because they encode dashboard and control-domain behavior. They are no longer

@@ -55,6 +55,7 @@ import {
   TextArea,
   TextInput,
 } from "@mud-clone";
+import { Toast } from "@mud-clone/components/toast";
 import {
   Menu,
   MenuCheckboxItem,
@@ -3395,21 +3396,44 @@ export function TagsPage() {
         </ExampleCard>
 
         <ExampleCard
+          description="Use `truncate` only for constrained contexts like narrow table cells."
+          title="Tag truncation"
+        >
+          <div className="tag-preview-row">
+            <TagPreviewItem label="truncate=false">
+              <Tag tone="neutral" variant="subtle">
+                Etichetă prelungită pentru stare fără tăiere vizuală
+              </Tag>
+            </TagPreviewItem>
+            <TagPreviewItem label="truncate=true">
+              <Tag
+                className="max-w-[220px]"
+                tone="neutral"
+                variant="subtle"
+                truncate
+              >
+                Etichetă prelungită pentru stare cu tăiere vizuală
+              </Tag>
+            </TagPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
           description="Horizontal tag groups use 8px spacing between tags."
           title="Tag group"
         >
           <div className="tag-preview-row">
             <TagGroup>
-              <Tag tone="accent" variant="strong">
+              <Tag tone="accent" variant="strong" truncate={false}>
                 Label
               </Tag>
-              <Tag tone="neutral" variant="subtle">
+              <Tag tone="neutral" variant="subtle" truncate={false}>
                 Label
               </Tag>
-              <Tag tone="neutral" variant="subtle">
+              <Tag tone="neutral" variant="subtle" truncate={false}>
                 Label
               </Tag>
-              <Tag tone="neutral" variant="subtle">
+              <Tag tone="neutral" variant="subtle" truncate={false}>
                 Label
               </Tag>
             </TagGroup>
@@ -3449,6 +3473,12 @@ export function TagsPage() {
                   <InfoTag variant="subtle">
                     <MudIcon name="Outlined/16/time" size="sm" />
                     Info
+                  </InfoTag>
+                </TagPreviewItem>
+                <TagPreviewItem label="truncate=true">
+                  <InfoTag className="max-w-[220px]" truncate>
+                    <MudIcon name="Outlined/16/time" size="sm" />
+                    Informație extinsă pentru tag de metadată
                   </InfoTag>
                 </TagPreviewItem>
               </div>
@@ -4820,7 +4850,7 @@ function TableLongTextDemo() {
               <Tag size="md" tone="positive" variant="outlined">
                 Finalizat
               </Tag>
-              <Tag size="md" tone="neutral" variant="subtle">
+              <Tag size="md" tone="neutral" variant="subtle" truncate>
                 Control repetat cu text lung
               </Tag>
             </TagGroup>
@@ -4906,8 +4936,8 @@ export function TablePage() {
               <Link href="#">Link</Link>
             </TableDataTypePreview>
             <TableDataTypePreview dataType="tag" label="tag" width={100}>
-              <Tag size="md" tone="neutral" variant="subtle">
-                Label
+              <Tag size="md" tone="neutral" variant="subtle" truncate>
+                Etichetă de control foarte lungă pentru acțiuni
               </Tag>
             </TableDataTypePreview>
             <TableDataTypePreview dataType="checkbox" label="checkbox" width={68}>
@@ -5517,6 +5547,219 @@ function ModalLivePreview({ size }: { size: "medium" | "small" }) {
         </ModalFooter>
       </ModalContent>
     </Modal>
+  );
+}
+
+const toastTones = ["info", "warning", "success", "error"] as const;
+
+function ToastActionLink() {
+  return (
+    <a href="#toast-message" onClick={(event) => event.preventDefault()}>
+      Click here
+    </a>
+  );
+}
+
+function ToastPreviewItem({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="toast-preview-item">
+      <span>{label}</span>
+      {children}
+    </div>
+  );
+}
+
+function ToastScreenPreview({
+  mobile = false,
+  stack = false,
+}: {
+  mobile?: boolean;
+  stack?: boolean;
+}) {
+  return (
+    <div className={mobile ? "toast-mobile-frame" : "toast-desktop-frame"}>
+      <div className="toast-screen-surface">
+        <div className="toast-screen-toolbar" />
+        <div
+          className={`toast-screen-stack ${
+            mobile ? "toast-screen-stack-mobile" : "toast-screen-stack-desktop"
+          }`}
+        >
+          {stack && (
+            <Toast
+              dismissible={false}
+              heading="Message heading"
+              tone="success"
+            >
+              We inform you about service changes.
+            </Toast>
+          )}
+          <Toast heading="Message heading">
+            We inform you about service changes.
+          </Toast>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ToastPage() {
+  return (
+    <div className="docs-page" id="toast-message">
+      <PageHeader
+        description="Toast messages provide brief contextual feedback after an event. The component covers the visual surface; placement, timing, queues, and product-specific notification logic stay in the consuming app."
+        eyebrow="Components"
+        title="Toast Message"
+      />
+      <div className="component-grid one">
+        <ExampleCard title="Breakpoints">
+          <div className="toast-breakpoint-grid">
+            <ToastPreviewItem label="desktop">
+              <ToastScreenPreview />
+            </ToastPreviewItem>
+            <ToastPreviewItem label="mobile">
+              <ToastScreenPreview mobile />
+            </ToastPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Each tone maps to a semantic message type: info, warning, success, or error."
+          title="Styles"
+        >
+          <div className="toast-preview-row">
+            {toastTones.map((tone) => (
+              <ToastPreviewItem key={tone} label={tone}>
+                <Toast heading="Message heading" tone={tone}>
+                  We inform you about service changes.
+                </Toast>
+              </ToastPreviewItem>
+            ))}
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Variations">
+          <div className="toast-preview-grid">
+            <ToastPreviewItem label="w/ heading">
+              <Toast heading="Message heading">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="w/ link">
+              <Toast action={<ToastActionLink />} heading="Message heading">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="close: n/a">
+              <Toast dismissible={false} heading="Message heading">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="text-only">
+              <Toast>We inform you about service changes.</Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="text-only w/ link">
+              <Toast action={<ToastActionLink />}>
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="text-only close: n/a">
+              <Toast dismissible={false}>
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="States">
+          <div className="toast-preview-row">
+            <ToastPreviewItem label="default">
+              <Toast heading="Message heading">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="hover">
+              <Toast heading="Message heading" previewState="hover">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="focus">
+              <Toast heading="Message heading" previewState="focus">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard
+          description="Desktop toasts appear at the top-right. Mobile toasts sit near the bottom above persistent navigation or system UI."
+          title="Placement"
+        >
+          <div className="toast-breakpoint-grid">
+            <ToastPreviewItem label="default-placement: desktop">
+              <ToastScreenPreview />
+            </ToastPreviewItem>
+            <ToastPreviewItem label="default-placement: mobile">
+              <ToastScreenPreview mobile />
+            </ToastPreviewItem>
+            <ToastPreviewItem label="vertical-stack: desktop">
+              <ToastScreenPreview stack />
+            </ToastPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Behavior">
+          <div className="toast-preview-grid">
+            <ToastPreviewItem label="auto-dismissive">
+              <Toast dismissible={false} heading="Message heading" tone="success">
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="manually-dismissive">
+              <Toast
+                action={<ToastActionLink />}
+                heading="Message heading"
+                tone="warning"
+              >
+                We inform you about service changes.
+              </Toast>
+            </ToastPreviewItem>
+          </div>
+        </ExampleCard>
+
+        <ExampleCard title="Truncation">
+          <div className="toast-preview-grid">
+            <ToastPreviewItem label="heading">
+              <Toast
+                dismissible={false}
+                heading="Your session is about to expire due to inactivity. Save your changes or continue your activity to stay signed in."
+                tone="warning"
+              >
+                For your security, we will automatically log you out in 2
+                minutes.
+              </Toast>
+            </ToastPreviewItem>
+            <ToastPreviewItem label="body">
+              <Toast
+                dismissible={false}
+                heading="Your session has expired"
+                tone="warning"
+              >
+                For your security, we will automatically log you out in 2
+                minutes. Save your changes or continue your activity to stay
+                signed in.
+              </Toast>
+            </ToastPreviewItem>
+          </div>
+        </ExampleCard>
+      </div>
+    </div>
   );
 }
 

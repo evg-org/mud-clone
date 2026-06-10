@@ -6,7 +6,7 @@ import { cn } from "./utils";
 
 const tagVariants = cva(
   [
-    "inline-flex h-[24px] min-w-[32px] w-fit shrink-0 select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--border-radius-4)] border border-transparent px-[var(--spacing-8)] py-0",
+    "inline-flex h-[24px] select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--border-radius-4)] border border-transparent px-[var(--spacing-8)] py-0",
     "gap-[var(--spacing-0)] [font-family:var(--app-font-family-sans)] [font-size:var(--text-body-sm-500-font-size)] [font-weight:var(--text-body-sm-500-font-weight)] [letter-spacing:0] [line-height:20px]",
     "transition-[color,background-color,border-color]",
     "[&>svg]:pointer-events-none [&>svg]:size-[var(--spacing-16)] [&>svg]:shrink-0",
@@ -55,7 +55,7 @@ const tagVariants = cva(
 
 const infoTagVariants = cva(
   [
-    "inline-flex h-[24px] min-w-[32px] w-fit shrink-0 select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--border-radius-4)] px-[var(--spacing-6)] py-0",
+    "inline-flex h-[24px] select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--border-radius-4)] px-[var(--spacing-6)] py-0",
     "gap-[var(--spacing-0)] border border-transparent [font-family:var(--app-font-family-sans)] [font-size:var(--text-body-sm-font-size)] [font-weight:var(--text-body-sm-font-weight)] [letter-spacing:0] [line-height:20px]",
     "transition-[color,background-color,border-color]",
     "[&>svg]:pointer-events-none [&>svg]:size-[var(--spacing-16)] [&>svg]:shrink-0",
@@ -76,47 +76,102 @@ const infoTagVariants = cva(
   },
 );
 
+function isTagIcon(child: React.ReactNode): child is React.ReactElement {
+  return (
+    React.isValidElement(child) &&
+    ((child.props as { "data-slot"?: string })["data-slot"] === "mud-icon" ||
+      child.type === "svg")
+  );
+}
+
+function getTagChildren(children: React.ReactNode, truncate: boolean) {
+  if (!truncate) {
+    return children;
+  }
+
+  const childNodes = React.Children.toArray(children);
+  const hasLeadingIcon = isTagIcon(childNodes[0]);
+  const iconNode = hasLeadingIcon ? childNodes[0] : null;
+  const labelNodes = hasLeadingIcon ? childNodes.slice(1) : childNodes;
+
+  if (!labelNodes.length) {
+    return iconNode;
+  }
+
+  return (
+    <>
+      {iconNode}
+      <span
+        data-slot="tag-label"
+        className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap"
+      >
+        {labelNodes}
+      </span>
+    </>
+  );
+}
+
 function Tag({
   className,
+  children: tagChildren,
   size,
   tone,
   variant,
   asChild = false,
+  truncate = false,
   ...props
 }: React.ComponentProps<"span"> &
   VariantProps<typeof tagVariants> & {
     asChild?: boolean;
+    truncate?: boolean;
   }) {
   const Comp = asChild ? Slot : "span";
+  const children = getTagChildren(tagChildren, !asChild && truncate);
 
   return (
     <Comp
       data-slot="tag"
       data-variant={variant ?? "subtle"}
-      className={cn(tagVariants({ tone, size, variant }), className)}
+      className={cn(
+        tagVariants({ tone, size, variant }),
+        truncate ? "min-w-0 max-w-full" : "w-fit shrink-0 min-w-[32px]",
+        className,
+      )}
       {...props}
-    />
+    >
+      {children}
+    </Comp>
   );
 }
 
 function InfoTag({
   className,
+  children: tagChildren,
   variant,
   asChild = false,
+  truncate = false,
   ...props
 }: React.ComponentProps<"span"> &
   VariantProps<typeof infoTagVariants> & {
     asChild?: boolean;
+    truncate?: boolean;
   }) {
   const Comp = asChild ? Slot : "span";
+  const children = getTagChildren(tagChildren, !asChild && truncate);
 
   return (
     <Comp
       data-slot="info-tag"
       data-variant={variant ?? "strong"}
-      className={cn(infoTagVariants({ variant }), className)}
+      className={cn(
+        infoTagVariants({ variant }),
+        truncate ? "min-w-0 max-w-full" : "w-fit shrink-0 min-w-[32px]",
+        className,
+      )}
       {...props}
-    />
+    >
+      {children}
+    </Comp>
   );
 }
 

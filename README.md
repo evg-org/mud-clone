@@ -93,6 +93,7 @@ tables, selects, overlays, menus, pagination, and less common product patterns:
 ```tsx
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "mud-clone/components/select";
 import { Table, TableHead, TableHeader, TableRow } from "mud-clone/components/table";
+import { Toast } from "mud-clone/components/toast";
 import { MudLogo } from "mud-clone/components/mud-logo";
 ```
 
@@ -115,7 +116,7 @@ Status is based on the current preview navigation review flags.
 | --- | --- | --- |
 | Foundations: colors, typography, spacing, radius, elevation, icons | Stable | Use as the current token and asset baseline. |
 | Assets foundation page | Needs review | Asset inventory is present, but final supported asset set may still be pruned. |
-| Core components: Accordion, Avatar, Badge, Button, Checkbox, Chip, Date Input, Input: File, Link, Menu, Numeric Input, Radio Group, Search, Segmented Control, Select, Separator, Switch, Table, Tabs, Tag, Text inputs, Tooltip | Stable | Use these for new internal development. |
+| Core components: Accordion, Avatar, Badge, Button, Checkbox, Chip, Date Input, Input: File, Link, Menu, Numeric Input, Radio Group, Search, Segmented Control, Select, Separator, Switch, Table, Tabs, Tag, Text inputs, Toast Message, Tooltip | Stable | Use these for new internal development. |
 | Reusable patterns: Detail Row, Section Heading, Table Card | Stable | Preferred for repeated detail, section title, and responsive table-card layouts. |
 | Modal | Stable | Figma-backed Modal is the package overlay component. The former Dialog export was removed because Figma defines Modal, not a separate dialog primitive. |
 | Pulled-back components | RSC-owned | `MetricCard`, `MetricCardGrid`, and `ControlCardSmall` were removed from MUD-clone because they encode RSC dashboard/control-domain behavior. Create a fresh generalized card API if a reusable pattern is needed later. |

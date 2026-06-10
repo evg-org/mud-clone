@@ -42,6 +42,7 @@ import {
   TagsPage,
   TabsPage,
   TooltipPage,
+  ToastPage,
 } from "./pages/components";
 import {
   DetailRowsPage,
@@ -116,6 +117,7 @@ const routes: DocsRoute[] = [
   { component: TablePage, href: "/table", label: "Table" },
   { component: MenuPage, href: "/menu", label: "Menu" },
   { component: ModalPage, href: "/modal", label: "Modal" },
+  { component: ToastPage, href: "/toast-message", label: "Toast Message" },
   { component: SectionHeadingPage, href: "/section-heading", label: "Section Heading" },
   { component: DetailRowsPage, href: "/detail-row", label: "Detail Row" },
   { component: TableCardPage, href: "/table-card", label: "Table Card" },
@@ -159,6 +161,8 @@ const routeAliases = new Map([
   ["/components/tables", "/table"],
   ["/components/table-card", "/table-card"],
   ["/components/modal", "/modal"],
+  ["/components/toast", "/toast-message"],
+  ["/components/toast-message", "/toast-message"],
   ["/components/overlays", "/modal"],
   ["/components/overlays-tabs", "/modal"],
   ["/overlays", "/modal"],

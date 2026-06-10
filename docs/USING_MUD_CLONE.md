@@ -90,6 +90,9 @@ export function ExampleForm() {
       <Tag tone="warning" variant="outlined">
         In process
       </Tag>
+      <Tag tone="brand" variant="outlined" truncate>
+        A very long status label that should stay inside a narrow container.
+      </Tag>
       <Button type="submit">Submit</Button>
     </form>
   );
@@ -102,6 +105,7 @@ larger component groups:
 ```tsx
 import { MudIcon } from "mud-clone/components/mud-icon";
 import { MudLogo } from "mud-clone/components/mud-logo";
+import { Toast } from "mud-clone/components/toast";
 import {
   Select,
   SelectContent,

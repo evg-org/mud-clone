@@ -36,6 +36,7 @@ const componentEntries = {
   "components/tabs": "src/components/tabs.tsx",
   "components/tag": "src/components/tag.tsx",
   "components/tooltip": "src/components/tooltip.tsx",
+  "components/toast": "src/components/toast.tsx",
   "components/textarea": "src/components/textarea.tsx",
 } satisfies Record<string, string>;
 

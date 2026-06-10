@@ -400,6 +400,7 @@ prototype-wide usage audit:
 | `PhoneNumberInput` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for phone number fields with country-code prefix and validation states; audit when phone entry appears in active product forms. |
 | `Modal` | Reviewed against Figma Modal | Not started | Partial/unknown | Medium | Canonical overlay component. The previous `Dialog` package export was removed because Figma does not define a separate dialog primitive. |
 | `SegmentedControl` | Not reviewed in this audit | Not started | Partial/unknown | Medium | Exists for compact single-choice mode switches with two-to-five segments; audit when segmented filters or mode switches appear in active product screens. |
+| `Toast` | Reviewed against Figma Toast Message | Not started | Partial/unknown | Medium | Canonical toast feedback surface. Queueing, auto-dismiss timers, placement portals, and notification workflow behavior remain app-owned. |
 | `Tooltip` | Not reviewed in this audit | Not started | Partial/unknown | Low | Exists for brief contextual hints and static tooltip previews; audit when tooltip/help affordances appear in active product screens. |
 
 Pulled-back components:

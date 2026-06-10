@@ -178,6 +178,10 @@
       "types": "./dist/components/tooltip.d.ts",
       "import": "./dist/components/tooltip.js"
     },
+    "./components/toast": {
+      "types": "./dist/components/toast.d.ts",
+      "import": "./dist/components/toast.js"
+    },
     "./components/textarea": {
       "types": "./dist/components/textarea.d.ts",
       "import": "./dist/components/textarea.js"

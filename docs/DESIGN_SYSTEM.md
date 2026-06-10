@@ -114,6 +114,7 @@ Subpath-only exports:
 - `@mud-clone/components/search-input`
 - `@mud-clone/components/select`
 - `@mud-clone/components/table`
+- `@mud-clone/components/toast`
 - `@mud-clone/styles/design-system.css`
 - `@mud-clone/styles/fonts.css`
 
@@ -154,7 +155,10 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
   dropdown, selected, hover, focus, or disabled states in pages.
 - Status labels and semantic chips: use `Tag` for statuses such as planned, in
   process, finalized, signed, or validation states. Use `Badge` only for
-  compact counters, notification dots, or short numeric indicators.
+  compact counters, notification dots, or short numeric indicators. `Tag` now
+  supports `truncate` for constrained layouts (set `truncate` to `true`), while
+  the default behavior keeps full labels untruncated and allows horizontal
+  growth when space allows.
 - Modals: use `Modal` for overlay flows, including compact confirmations.
   MUD-clone does not ship a separate dialog primitive because Figma defines
   Modal as the overlay component.
@@ -162,6 +166,9 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
 - Tooltips: use `Tooltip` for brief contextual hints on hover/focus and
   `TooltipBubble` for static documentation/previews. Keep rich walkthrough or
   product-tour state in the consuming app.
+- Toast messages: use `Toast` from `@mud-clone/components/toast` for brief
+  event feedback. Keep toast queues, timers, portals, routing, and
+  product-specific notification behavior in the consuming app.
 - Checkboxes: use `Checkbox`.
 - Radio controls: use `RadioGroup` and `RadioGroupItem`.
 - Segmented controls: use `SegmentedControl` for compact single-choice mode
@@ -227,7 +234,7 @@ Before finishing UI work, check:
 - Are compact action/contextual menus using `Menu` primitives?
 - Are statuses using `Tag`, and counters/dots using `Badge`?
 - Are selects/dropdowns using `Select`?
-- Are modal/overlay patterns using `Modal` or `Tooltip`?
+- Are modal/overlay/feedback patterns using `Modal`, `Tooltip`, or `Toast`?
 - Are icons/logos coming from `MudIcon` or `MudLogo`?
 - Are typography, shadows, borders, spacing, and colors token-based?
 
