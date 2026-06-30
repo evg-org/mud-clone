@@ -210,6 +210,13 @@ export type {
   TooltipSide,
   TooltipSize,
 } from "./components/tooltip";
+export { Toast, toastVariants } from "./components/toast";
+export type {
+  ToastPreviewState,
+  ToastProps,
+  ToastState,
+  ToastTone,
+} from "./components/toast";
 export { TextArea, Textarea, textareaVariants } from "./components/textarea";
 export type {
   TextAreaProps,

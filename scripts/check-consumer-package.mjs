@@ -180,9 +180,10 @@ async function createConsumerApp(tarballPath) {
   await writeFile(
     resolve(consumerRoot, "index.mjs"),
     `import { existsSync } from "node:fs";
-import { Button, Tag, TextInput } from "mud-clone";
+import { Button, Tag, TextInput, Toast } from "mud-clone";
 import { MudIcon } from "mud-clone/components/mud-icon";
 import { MudLogo, getMudLogoUrl } from "mud-clone/components/mud-logo";
+import { Toast as SubpathToast } from "mud-clone/components/toast";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -217,11 +218,22 @@ const markup = renderToStaticMarkup(
       }),
     }),
     React.createElement(Tag, { color: "#578242" }, "Active"),
+    React.createElement(Toast, { heading: "Root toast" }, "Root import works."),
+    React.createElement(
+      SubpathToast,
+      { heading: "Subpath toast" },
+      "Subpath import works.",
+    ),
     React.createElement(Button, { type: "button" }, "Submit"),
   ),
 );
 
-if (!markup.includes("Search") || !markup.includes("#578242")) {
+if (
+  !markup.includes("Search") ||
+  !markup.includes("#578242") ||
+  !markup.includes("Root toast") ||
+  !markup.includes("Subpath toast")
+) {
   throw new Error("Rendered package markup did not include expected content.");
 }
 
@@ -233,7 +245,7 @@ console.log("consumer smoke passed");
     `import "mud-clone/styles/fonts.css";
 import "mud-clone/styles/design-system.css";
 
-import { Button, Tag, TextInput } from "mud-clone";
+import { Button, Tag, TextInput, Toast } from "mud-clone";
 import { MudIcon } from "mud-clone/components/mud-icon";
 import { MudLogo } from "mud-clone/components/mud-logo";
 import {
@@ -244,6 +256,7 @@ import {
   TableHeader,
   TableRow,
 } from "mud-clone/components/table";
+import { Toast as SubpathToast } from "mud-clone/components/toast";
 
 export function UsageSmoke() {
   return (
@@ -269,6 +282,8 @@ export function UsageSmoke() {
           </TableRow>
         </TableBody>
       </Table>
+      <Toast heading="Root toast">Root import works.</Toast>
+      <SubpathToast heading="Subpath toast">Subpath import works.</SubpathToast>
       <Button type="button">Submit</Button>
     </main>
   );
@@ -280,7 +295,7 @@ export function UsageSmoke() {
     `import "mud-clone/styles/fonts.css";
 import "mud-clone/styles/design-system.css";
 
-import { Button, Tag, TextInput } from "mud-clone";
+import { Button, Tag, TextInput, Toast } from "mud-clone";
 import { MudIcon } from "mud-clone/components/mud-icon";
 import { MudLogo } from "mud-clone/components/mud-logo";
 import {
@@ -290,6 +305,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "mud-clone/components/select";
+import { Toast as SubpathToast } from "mud-clone/components/toast";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
@@ -321,6 +337,12 @@ function App() {
       ),
     ),
     React.createElement(Tag, { color: "#578242" }, "Active"),
+    React.createElement(Toast, { heading: "Root toast" }, "Root import works."),
+    React.createElement(
+      SubpathToast,
+      { heading: "Subpath toast" },
+      "Subpath import works.",
+    ),
     React.createElement(Button, { type: "button" }, "Submit"),
   );
 }
