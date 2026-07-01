@@ -126,6 +126,14 @@ function CheckboxField({
 }: CheckboxFieldProps) {
   const hasSupportingText = Boolean(supportingText);
   const hasError = Boolean(errorMessage) || invalid;
+  const labelTextSize =
+    inputSize === "sm"
+      ? "[font-size:var(--text-body-sm-500-font-size)] [font-weight:var(--text-body-sm-500-font-weight)] [line-height:var(--text-body-sm-500-line-height)]"
+      : "[font-size:var(--text-body-md-500-font-size)] [font-weight:var(--text-body-md-500-font-weight)] [line-height:var(--text-body-md-500-line-height)]";
+  const supportingTextSize =
+    inputSize === "sm"
+      ? "[font-size:var(--text-caption-md-font-size)] [line-height:var(--text-caption-md-line-height)]"
+      : "[font-size:var(--text-body-sm-font-size)] [line-height:var(--text-body-sm-line-height)]";
 
   return (
     <label
@@ -155,7 +163,8 @@ function CheckboxField({
       <span className="grid min-w-0 gap-[var(--spacing-4)]">
         <span
           className={cn(
-            "min-w-0 [font-family:var(--app-font-family-sans)] [font-size:var(--text-body-md-font-size)] [font-weight:var(--text-body-md-font-weight)] [line-height:var(--text-body-md-line-height)] [color:var(--color-text-base-default)]",
+            "min-w-0 [font-family:var(--app-font-family-sans)] [color:var(--color-text-base-default)]",
+            labelTextSize,
             disabled && "[color:var(--color-text-disabled-default)]",
           )}
         >
@@ -164,7 +173,8 @@ function CheckboxField({
         {supportingText ? (
           <span
             className={cn(
-              "max-w-[300px] [font-family:var(--app-font-family-sans)] [font-size:var(--text-body-sm-font-size)] [font-weight:var(--text-body-sm-font-weight)] [line-height:var(--text-body-sm-line-height)] [color:var(--color-text-base-tertiary)]",
+              "max-w-[300px] [font-family:var(--app-font-family-sans)] [font-weight:var(--text-body-sm-font-weight)] [color:var(--color-text-base-tertiary)]",
+              supportingTextSize,
               disabled && "[color:var(--color-text-disabled-default)]",
             )}
           >
