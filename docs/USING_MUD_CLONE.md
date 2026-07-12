@@ -1,70 +1,70 @@
 # Using MUD-clone In Another Project
 
-This guide is for anyone who needs to use `mud-clone` in a separate React/Vite
-project: designers, developers, product managers, reviewers, or other project
-contributors.
+This guide is for anyone who needs to use `@evg-org/mud-clone` in a separate
+React/Vite project.
 
-`mud-clone` is currently distributed from a public GitHub repository. It is not
-published to npm. Install it from GitHub using the tag below. The repository is
-public, but the package remains `UNLICENSED`; do not treat public visibility as
-open-source reuse permission.
+`@evg-org/mud-clone` is the scoped package identity for versioned releases. The
+repository is public, but the package remains `private: true` and `UNLICENSED`
+until legal and publication approval is granted. Do not treat public repository
+visibility as open-source reuse permission.
+
+The first scoped package release is:
+
+```text
+@evg-org/mud-clone@1.0.0
+```
+
+The rename from `mud-clone` to `@evg-org/mud-clone` is a one-time manual
+consumer migration. After that migration, automated dependency update PRs can
+track SemVer releases.
 
 ## What You Need
 
 - A React/Vite project.
-- Node.js, npm, and Git installed.
-- Network access to GitHub:
-  `https://github.com/evg-org/mud-clone`.
+- Node.js and npm installed.
+- Access to the package registry selected for `@evg-org/mud-clone`.
 
-If you are not the person who manages the project code, share this document
-with that person. They can follow the setup steps below.
+## 1. Install MUD-clone
 
-The current package tag is:
-
-```text
-v0.0.1-prototype.2
-```
-
-## 1. Confirm Repository Access
-
-From your terminal, verify that the public repository is reachable:
+After the scoped package is published, install the package from the selected
+registry:
 
 ```bash
-git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.2
+npm install @evg-org/mud-clone@^1.0.0
 ```
 
-If this fails, confirm network access to GitHub and that the tag exists.
-
-## 2. Install MUD-clone In Your Project
-
-In the project that should use MUD-clone, install the tagged package:
-
-```bash
-npm install git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.2
-```
-
-This adds `mud-clone` to your `package.json`. It should look like this:
+This adds the scoped package to your `package.json`:
 
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#v0.0.1-prototype.2"
+    "@evg-org/mud-clone": "^1.0.0"
   }
 }
 ```
 
-Keep the tag in the dependency string. Do not depend on `main` unless you are
-intentionally testing unreleased design-system work.
+For same-machine development before publication, use a local file dependency:
 
-## 3. Import The Styles Once
+```json
+{
+  "dependencies": {
+    "@evg-org/mud-clone": "file:../mud-clone"
+  }
+}
+```
+
+Do not depend on the `main` branch unless you are intentionally testing
+unreleased design-system work.
+
+## 2. Import The Styles Once
 
 Import the MUD-clone font and design-system CSS once near the root of your app.
 For a Vite app, this is usually `src/main.tsx`, `src/main.jsx`, or
 `src/main.ts`.
 
 ```tsx
-import "mud-clone/styles/fonts.css";
-import "mud-clone/styles/design-system.css";
+import "@evg-org/mud-clone/styles/fonts.css";
+import "@evg-org/mud-clone/styles/design-system.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -76,12 +76,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
 
 If your app has custom CSS overrides, import those after the MUD-clone CSS.
 
-## 4. Use Components
+## 3. Use Components
 
 Use root imports for common components:
 
 ```tsx
-import { Button, Tag, TextInput } from "mud-clone";
+import { Button, Tag, TextInput } from "@evg-org/mud-clone";
 
 export function ExampleForm() {
   return (
@@ -103,24 +103,24 @@ Use subpath imports for icons, logos, tables, selects, overlays, and other
 larger component groups:
 
 ```tsx
-import { MudIcon } from "mud-clone/components/mud-icon";
-import { MudLogo } from "mud-clone/components/mud-logo";
-import { Toast } from "mud-clone/components/toast";
+import { MudIcon } from "@evg-org/mud-clone/components/mud-icon";
+import { MudLogo } from "@evg-org/mud-clone/components/mud-logo";
+import { Toast } from "@evg-org/mud-clone/components/toast";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "mud-clone/components/select";
+} from "@evg-org/mud-clone/components/select";
 ```
 
 Small smoke-test component:
 
 ```tsx
-import { Button, Tag, TextInput } from "mud-clone";
-import { MudIcon } from "mud-clone/components/mud-icon";
-import { MudLogo } from "mud-clone/components/mud-logo";
+import { Button, Tag, TextInput } from "@evg-org/mud-clone";
+import { MudIcon } from "@evg-org/mud-clone/components/mud-icon";
+import { MudLogo } from "@evg-org/mud-clone/components/mud-logo";
 
 export function MudCloneSmokeTest() {
   return (
@@ -141,7 +141,7 @@ export function MudCloneSmokeTest() {
 }
 ```
 
-## 5. Verify It Works In The Project
+## 4. Verify It Works In The Project
 
 Run the project locally:
 
@@ -172,7 +172,7 @@ npm run typecheck
 ## Open The MUD-clone Preview Pages
 
 The preview pages live in the `mud-clone` repository itself. They are not part
-of the project that consumes `mud-clone` as a dependency.
+of the project that consumes `@evg-org/mud-clone` as a dependency.
 
 To open the preview pages locally, clone and run the MUD-clone preview:
 
@@ -214,18 +214,15 @@ The hosted GitHub Pages preview is live at:
 https://evg-org.github.io/mud-clone/
 ```
 
-If that URL returns 404 during a deployment window, use the local preview
-workflow above and check the latest GitHub Actions Pages run.
-
 ## Updating To A New Version
 
-When a new MUD-clone package tag is shared, update the tag in the consuming
-project's `package.json`:
+When a new MUD-clone release is available, update the package version in the
+consuming project's `package.json`:
 
 ```json
 {
   "dependencies": {
-    "mud-clone": "git+https://github.com/evg-org/mud-clone.git#NEW_TAG"
+    "@evg-org/mud-clone": "^1.1.0"
   }
 }
 ```
@@ -238,26 +235,9 @@ npm install
 
 Commit the updated `package.json` and lockfile in the consuming project.
 
-## GitHub Actions Or CI
-
-If your project builds in GitHub Actions, no deploy key or repository read token
-is needed for the public HTTPS Git dependency. CI still needs normal outbound
-network access to GitHub and npm.
-
 ## Troubleshooting
 
-### Repository install fails
-
-Confirm the public repository URL and tag:
-
-```bash
-git ls-remote --tags https://github.com/evg-org/mud-clone.git refs/tags/v0.0.1-prototype.2
-```
-
-If the command fails, check network access to GitHub and that the requested tag
-exists.
-
-### `Cannot find module "mud-clone"`
+### `Cannot find module "@evg-org/mud-clone"`
 
 Reinstall dependencies:
 
@@ -265,15 +245,16 @@ Reinstall dependencies:
 npm install
 ```
 
-If it still fails, delete `node_modules` and the lockfile, then install again.
+If it still fails, confirm the package has been published to the selected
+registry and that the consuming project has registry access.
 
 ### CSS or fonts do not apply
 
 Confirm both CSS imports exist near the app root:
 
 ```tsx
-import "mud-clone/styles/fonts.css";
-import "mud-clone/styles/design-system.css";
+import "@evg-org/mud-clone/styles/fonts.css";
+import "@evg-org/mud-clone/styles/design-system.css";
 ```
 
 Custom app CSS should come after these imports.
@@ -283,22 +264,23 @@ Custom app CSS should come after these imports.
 Use the documented components:
 
 ```tsx
-import { MudIcon } from "mud-clone/components/mud-icon";
-import { MudLogo } from "mud-clone/components/mud-logo";
+import { MudIcon } from "@evg-org/mud-clone/components/mud-icon";
+import { MudLogo } from "@evg-org/mud-clone/components/mud-logo";
 ```
 
 Then check the browser network tab for missing assets.
 
 ### React version mismatch
 
-The current package expects React 18. If your project uses a different
-React major version, align with the MUD-clone maintainer before continuing.
+The current package expects React 18. If your project uses a different React
+major version, align with the MUD-clone maintainer before continuing.
 
 ## Do Not Do This
 
 - Do not copy files from `mud-clone/src` into your project.
-- Do not import from `mud-clone/src` or `mud-clone/dist` directly.
-- Do not edit files inside `node_modules/mud-clone`.
+- Do not import from `@evg-org/mud-clone/src` or
+  `@evg-org/mud-clone/dist` directly.
+- Do not edit files inside `node_modules/@evg-org/mud-clone`.
 - Do not depend on the `main` branch unless you are testing unreleased changes.
 
-Use the package imports and the tagged Git dependency instead.
+Use package imports and versioned releases instead.

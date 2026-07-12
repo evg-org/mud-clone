@@ -49,17 +49,18 @@ Use this workflow for reusable component work:
    non-color foundation variables for spacing, radius, type, shadows, focus,
    and sizing. Do not add new `--app-color-*` aliases.
 4. Add or update the package export in `mud-clone/package.json`.
-5. Add the component to the root `@mud-clone` barrel only when it is
+5. Add the component to the root `@evg-org/mud-clone` barrel only when it is
    lightweight and does not load the MUD icon/logo registry.
 6. Prefer subpaths for asset-heavy components and uncommon patterns.
 7. If RSC still imports the old path, keep `src/app/components/ui/...` as a
-   compatibility shim that re-exports from `@mud-clone`.
+   compatibility shim that re-exports from `@evg-org/mud-clone`.
 8. Update docs when ownership, export policy, source references, or intentional
    differences change.
-9. If MUD icon or logo assets changed, run `npm run generate:assets`.
-10. Run `npm run check`.
-11. Run `npm run build` from the package root.
-12. Remove generated `dist` unless the task explicitly needs build artifacts.
+9. Add a Changeset when the change affects package consumers.
+10. If MUD icon or logo assets changed, run `npm run generate:assets`.
+11. Run `npm run check`.
+12. Run `npm run build` from the package root.
+13. Remove generated `dist` unless the task explicitly needs build artifacts.
 
 ## Applying New Designs
 
@@ -109,6 +110,7 @@ Before finishing a design-system change:
 - Upstream MUD references were checked and recorded when relevant.
 - Intentional differences were recorded in `MIGRATION_NOTES.md`.
 - Exports follow the root-versus-subpath policy.
+- Release-affecting changes include a Changeset with consumer-facing notes.
 - Generated asset registries are up to date when MUD icons or logos changed.
 - Components use tokens instead of raw CSS values where tokens exist.
 - `npm run build` passes.

@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const packageName = "@evg-org/mud-clone";
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const tempRoot = await mkdtemp(resolve(tmpdir(), "mud-clone-consumer-"));
 const consumerRoot = resolve(tempRoot, "consumer");
@@ -150,7 +151,7 @@ async function createConsumerApp(tarballPath) {
       typecheck: "tsc -p tsconfig.json",
     },
     dependencies: {
-      "mud-clone": `file:${tarballPath}`,
+      [packageName]: `file:${tarballPath}`,
       react: "18.3.1",
       "react-dom": "18.3.1",
     },
@@ -180,16 +181,16 @@ async function createConsumerApp(tarballPath) {
   await writeFile(
     resolve(consumerRoot, "index.mjs"),
     `import { existsSync } from "node:fs";
-import { Button, Tag, TextInput, Toast } from "mud-clone";
-import { MudIcon } from "mud-clone/components/mud-icon";
-import { MudLogo, getMudLogoUrl } from "mud-clone/components/mud-logo";
-import { Toast as SubpathToast } from "mud-clone/components/toast";
+import { Button, Tag, TextInput, Toast } from "${packageName}";
+import { MudIcon } from "${packageName}/components/mud-icon";
+import { MudLogo, getMudLogoUrl } from "${packageName}/components/mud-logo";
+import { Toast as SubpathToast } from "${packageName}/components/toast";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 for (const cssExport of [
-  "mud-clone/styles/fonts.css",
-  "mud-clone/styles/design-system.css",
+  "${packageName}/styles/fonts.css",
+  "${packageName}/styles/design-system.css",
 ]) {
   const resolved = new URL(import.meta.resolve(cssExport));
 
@@ -242,12 +243,12 @@ console.log("consumer smoke passed");
   );
   await writeFile(
     resolve(consumerRoot, "usage.tsx"),
-    `import "mud-clone/styles/fonts.css";
-import "mud-clone/styles/design-system.css";
+    `import "${packageName}/styles/fonts.css";
+import "${packageName}/styles/design-system.css";
 
-import { Button, Tag, TextInput, Toast } from "mud-clone";
-import { MudIcon } from "mud-clone/components/mud-icon";
-import { MudLogo } from "mud-clone/components/mud-logo";
+import { Button, Tag, TextInput, Toast } from "${packageName}";
+import { MudIcon } from "${packageName}/components/mud-icon";
+import { MudLogo } from "${packageName}/components/mud-logo";
 import {
   Table,
   TableBody,
@@ -255,8 +256,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "mud-clone/components/table";
-import { Toast as SubpathToast } from "mud-clone/components/toast";
+} from "${packageName}/components/table";
+import { Toast as SubpathToast } from "${packageName}/components/toast";
 
 export function UsageSmoke() {
   return (
@@ -292,20 +293,20 @@ export function UsageSmoke() {
   );
   await writeFile(
     resolve(consumerRoot, "src/main.jsx"),
-    `import "mud-clone/styles/fonts.css";
-import "mud-clone/styles/design-system.css";
+    `import "${packageName}/styles/fonts.css";
+import "${packageName}/styles/design-system.css";
 
-import { Button, Tag, TextInput, Toast } from "mud-clone";
-import { MudIcon } from "mud-clone/components/mud-icon";
-import { MudLogo } from "mud-clone/components/mud-logo";
+import { Button, Tag, TextInput, Toast } from "${packageName}";
+import { MudIcon } from "${packageName}/components/mud-icon";
+import { MudLogo } from "${packageName}/components/mud-logo";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "mud-clone/components/select";
-import { Toast as SubpathToast } from "mud-clone/components/toast";
+} from "${packageName}/components/select";
+import { Toast as SubpathToast } from "${packageName}/components/toast";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
@@ -382,7 +383,7 @@ try {
   const tarballPath = await packPackage();
 
   await createConsumerApp(tarballPath);
-  await run(npmCommand, ["install", "--silent", "--no-audit", "--no-fund"], {
+  await run(npmCommand, ["install", "--no-audit", "--no-fund", "--prefer-offline"], {
     cwd: consumerRoot,
     timeoutMs: 300_000,
   });

@@ -70,8 +70,8 @@ must live here.
 
 ## Export Policy
 
-Use the root `@mud-clone` barrel only for lightweight components that do not
-load asset registries.
+Use the root `@evg-org/mud-clone` barrel only for lightweight components that
+do not load asset registries.
 
 Use component subpaths for components that load MUD icon/logo registries or are
 otherwise better kept isolated from unrelated imports.
@@ -104,26 +104,26 @@ Root exports:
 
 Subpath-only exports:
 
-- `@mud-clone/components/checkbox`
-- `@mud-clone/components/dropdown-menu`
-- `@mud-clone/components/menu`
-- `@mud-clone/components/modal`
-- `@mud-clone/components/mud-icon`
-- `@mud-clone/components/mud-logo`
-- `@mud-clone/components/pagination`
-- `@mud-clone/components/search-input`
-- `@mud-clone/components/select`
-- `@mud-clone/components/table`
-- `@mud-clone/components/toast`
-- `@mud-clone/styles/design-system.css`
-- `@mud-clone/styles/fonts.css`
+- `@evg-org/mud-clone/components/checkbox`
+- `@evg-org/mud-clone/components/dropdown-menu`
+- `@evg-org/mud-clone/components/menu`
+- `@evg-org/mud-clone/components/modal`
+- `@evg-org/mud-clone/components/mud-icon`
+- `@evg-org/mud-clone/components/mud-logo`
+- `@evg-org/mud-clone/components/pagination`
+- `@evg-org/mud-clone/components/search-input`
+- `@evg-org/mud-clone/components/select`
+- `@evg-org/mud-clone/components/table`
+- `@evg-org/mud-clone/components/toast`
+- `@evg-org/mud-clone/styles/design-system.css`
+- `@evg-org/mud-clone/styles/fonts.css`
 
 Deprecated compatibility-only subpath export:
 
-- `@mud-clone/components/selection-card` remains available to avoid breaking
-  existing imports, but `SelectionCard` is RSC-specific and should not be used
-  for new MUD-clone work. New usage should live in the consuming product app;
-  this export will be removed from MUD-clone in a future cleanup.
+- `@evg-org/mud-clone/components/selection-card` remains available to avoid
+  breaking existing imports, but `SelectionCard` is RSC-specific and should not
+  be used for new MUD-clone work. New usage should live in the consuming
+  product app; this export will be removed from MUD-clone in a future cleanup.
 
 ## Primitive Usage Rules
 
@@ -150,7 +150,7 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
 - Detail rows: use `DetailRow` for label/value rows in cards, details pages,
   and modals.
 - Pagination: use `Pagination` and related primitives from
-  `@mud-clone/components/pagination` for paged record sets.
+  `@evg-org/mud-clone/components/pagination` for paged record sets.
 - Selects and dropdown-like inputs: use `Select`; do not hand-code trigger,
   dropdown, selected, hover, focus, or disabled states in pages.
 - Status labels and semantic chips: use `Tag` for statuses such as planned, in
@@ -166,8 +166,8 @@ existing primitive. Do not recreate these patterns ad hoc in product pages.
 - Tooltips: use `Tooltip` for brief contextual hints on hover/focus and
   `TooltipBubble` for static documentation/previews. Keep rich walkthrough or
   product-tour state in the consuming app.
-- Toast messages: use `Toast` from `@mud-clone/components/toast` for brief
-  event feedback. Keep toast queues, timers, portals, routing, and
+- Toast messages: use `Toast` from `@evg-org/mud-clone/components/toast` for
+  brief event feedback. Keep toast queues, timers, portals, routing, and
   product-specific notification behavior in the consuming app.
 - Checkboxes: use `Checkbox`.
 - Radio controls: use `RadioGroup` and `RadioGroupItem`.
