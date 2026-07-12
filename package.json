@@ -2,6 +2,14 @@
   "name": "@evg-org/mud-clone",
   "version": "1.0.0",
   "description": "React implementation of the Moldova government MUD design system, extended for reusable product patterns.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evg-org/mud-clone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/evg-org/mud-clone/issues"
+  },
+  "homepage": "https://github.com/evg-org/mud-clone#readme",
   "license": "UNLICENSED",
   "type": "module",
   "main": "./dist/index.js",
