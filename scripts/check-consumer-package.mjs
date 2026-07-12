@@ -383,7 +383,7 @@ try {
   const tarballPath = await packPackage();
 
   await createConsumerApp(tarballPath);
-  await run(npmCommand, ["install", "--no-audit", "--no-fund", "--offline"], {
+  await run(npmCommand, ["install", "--no-audit", "--no-fund", "--prefer-offline"], {
     cwd: consumerRoot,
     timeoutMs: 300_000,
   });
