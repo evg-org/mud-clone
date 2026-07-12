@@ -9,8 +9,30 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageName = "@evg-org/mud-clone";
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const tempRoot = await mkdtemp(resolve(tmpdir(), "mud-clone-consumer-"));
-const consumerRoot = resolve(tempRoot, "consumer");
 const npmCache = resolve(tempRoot, "npm-cache");
+const reactConsumerMatrix = [
+  {
+    label: "react-18.2",
+    react: "18.2.0",
+    reactDom: "18.2.0",
+    typesReact: "18.3.28",
+    typesReactDom: "18.3.7",
+  },
+  {
+    label: "react-18.3",
+    react: "18.3.1",
+    reactDom: "18.3.1",
+    typesReact: "18.3.28",
+    typesReactDom: "18.3.7",
+  },
+  {
+    label: "react-19.0",
+    react: "19.0.0",
+    reactDom: "19.0.0",
+    typesReact: "19.0.0",
+    typesReactDom: "19.0.0",
+  },
+];
 
 async function run(command, args, { cwd, env = {}, timeoutMs = 180_000 } = {}) {
   const display = [command, ...args].join(" ");
@@ -140,7 +162,7 @@ async function packPackage() {
   return tarballPath;
 }
 
-async function createConsumerApp(tarballPath) {
+async function createConsumerApp(tarballPath, consumerRoot, reactConsumer) {
   await mkdir(resolve(consumerRoot, "src"), { recursive: true });
   await writeJson(resolve(consumerRoot, "package.json"), {
     private: true,
@@ -152,12 +174,12 @@ async function createConsumerApp(tarballPath) {
     },
     dependencies: {
       [packageName]: `file:${tarballPath}`,
-      react: "18.3.1",
-      "react-dom": "18.3.1",
+      react: reactConsumer.react,
+      "react-dom": reactConsumer.reactDom,
     },
     devDependencies: {
-      "@types/react": "18.3.28",
-      "@types/react-dom": "18.3.7",
+      "@types/react": reactConsumer.typesReact,
+      "@types/react-dom": reactConsumer.typesReactDom,
       typescript: "5.9.3",
       vite: "6.3.5",
     },
@@ -353,7 +375,7 @@ createRoot(document.getElementById("root")).render(React.createElement(App));
   );
 }
 
-async function validateBuiltConsumerAssets() {
+async function validateBuiltConsumerAssets(consumerRoot) {
   const assetRoot = resolve(consumerRoot, "dist/assets");
   const files = await walkFiles(assetRoot);
   const relativeNames = files.map((file) => file.slice(assetRoot.length + 1));
@@ -379,22 +401,31 @@ async function validateBuiltConsumerAssets() {
 }
 
 try {
-  console.log(`Using temp consumer workspace: ${consumerRoot}`);
+  console.log(`Using temp consumer workspace: ${tempRoot}`);
   const tarballPath = await packPackage();
 
-  await createConsumerApp(tarballPath);
-  await run(npmCommand, ["install", "--no-audit", "--no-fund", "--prefer-offline"], {
-    cwd: consumerRoot,
-    timeoutMs: 300_000,
-  });
-  await run(npmCommand, ["run", "--silent", "smoke"], { cwd: consumerRoot });
-  await run(npmCommand, ["run", "--silent", "typecheck"], { cwd: consumerRoot });
-  await run(npmCommand, ["run", "--silent", "build"], { cwd: consumerRoot });
-  await validateBuiltConsumerAssets();
+  for (const reactConsumer of reactConsumerMatrix) {
+    const consumerRoot = resolve(tempRoot, `consumer-${reactConsumer.label}`);
+
+    console.log(
+      `Validating packed consumer with React ${reactConsumer.react} and React DOM ${reactConsumer.reactDom}.`,
+    );
+
+    await createConsumerApp(tarballPath, consumerRoot, reactConsumer);
+    await run(npmCommand, ["install", "--no-audit", "--no-fund", "--prefer-offline"], {
+      cwd: consumerRoot,
+      timeoutMs: 300_000,
+    });
+    await run(npmCommand, ["run", "--silent", "smoke"], { cwd: consumerRoot });
+    await run(npmCommand, ["run", "--silent", "typecheck"], { cwd: consumerRoot });
+    await run(npmCommand, ["run", "--silent", "build"], { cwd: consumerRoot });
+    await validateBuiltConsumerAssets(consumerRoot);
+  }
+
   console.log("Clean consumer package validation passed.");
   await rm(tempRoot, { force: true, recursive: true });
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);
-  console.error(`Temp consumer workspace retained for inspection: ${consumerRoot}`);
+  console.error(`Temp consumer workspace retained for inspection: ${tempRoot}`);
   process.exit(1);
 }

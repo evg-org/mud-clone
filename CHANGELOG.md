@@ -1,5 +1,11 @@
 # @evg-org/mud-clone
 
+## 1.0.1
+
+### Patch Changes
+
+- Loosen React peer dependency range for consuming apps.
+
 ## 1.0.0
 
 Initial scoped package release baseline for MUD-clone.

@@ -278,8 +278,9 @@ Then check the browser network tab for missing assets.
 
 ### React version mismatch
 
-The current package expects React 18. If your project uses a different React
-major version, align with the MUD-clone maintainer before continuing.
+The current package supports React 18.2+ and React 19. If your project uses a
+different React major version, align with the MUD-clone maintainer before
+continuing.
 
 ## Do Not Do This
 

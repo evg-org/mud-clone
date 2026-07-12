@@ -1,6 +1,6 @@
 {
   "name": "@evg-org/mud-clone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React implementation of the Moldova government MUD design system, extended for reusable product patterns.",
   "repository": {
     "type": "git",
@@ -224,8 +224,8 @@
     "tailwind-merge": "3.2.0"
   },
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
