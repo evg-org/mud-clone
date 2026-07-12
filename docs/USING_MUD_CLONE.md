@@ -4,9 +4,8 @@ This guide is for anyone who needs to use `@evg-org/mud-clone` in a separate
 React/Vite project.
 
 `@evg-org/mud-clone` is the scoped package identity for versioned releases. The
-repository is public, but the package remains `private: true` and `UNLICENSED`
-until legal and publication approval is granted. Do not treat public repository
-visibility as open-source reuse permission.
+repository is public and the package is `UNLICENSED`. Do not treat public
+repository or registry visibility as open-source reuse permission.
 
 The first scoped package release is:
 

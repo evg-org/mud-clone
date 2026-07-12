@@ -29,10 +29,11 @@ workspace link that points at this package root:
 }
 ```
 
-The first scoped registry release is `@evg-org/mud-clone@1.0.0`. The package
-keeps `private: true` until legal and publication approval is granted, so do not
-publish to npm until that approval is recorded. After publication, consuming
-apps should install the scoped package from the chosen registry:
+The first scoped registry release is `@evg-org/mud-clone@1.0.0`. Package
+metadata is publish-enabled, but registry publication is still a manual release
+owner action that requires npm access and approval for the exact version being
+published. After publication, consuming apps should install the scoped package
+from the chosen registry:
 
 ```bash
 npm install @evg-org/mud-clone@^1.0.0

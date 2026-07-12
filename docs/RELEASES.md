@@ -2,9 +2,9 @@
 
 MUD-clone releases use the scoped package name `@evg-org/mud-clone`.
 
-The package remains `private: true` until legal and publication approval is
-granted. Do not remove that flag or run a registry publish until approval is
-recorded.
+Package metadata is publish-enabled, but registry publication must remain a
+manual release owner action. Do not run a registry publish until npm access,
+registry target, and approval for the exact version are confirmed.
 
 ## Version Policy
 
@@ -39,8 +39,8 @@ npm run version
 npm run release
 ```
 
-`npm run release` must only be used after `private: true` is removed with
-legal/publication approval and the registry token is configured.
+`npm run release` must only be used after the registry token is configured and
+approval for the exact version is recorded.
 
 ## Release Readiness
 
@@ -57,4 +57,3 @@ the preview build, a clean packed-consumer app, and the npm tarball contents.
 The package rename from `mud-clone` to `@evg-org/mud-clone` is a one-time manual
 consumer migration. After consumers adopt the scoped package, automated update
 PRs can track SemVer releases.
-

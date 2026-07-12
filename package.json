@@ -1,6 +1,5 @@
 {
   "name": "@evg-org/mud-clone",
-  "private": true,
   "version": "1.0.0",
   "description": "React implementation of the Moldova government MUD design system, extended for reusable product patterns.",
   "license": "UNLICENSED",
