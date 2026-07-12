@@ -237,9 +237,11 @@ regression, not as a replacement for the preview.
 npm run check            # generated assets, package exports, color aliases, typography aliases
 npm run build            # library JS, declaration files, CSS assets, font assets, build validation
 npm run check:consumer   # build, pack, install, typecheck, and bundle a clean temp consumer app
-npm run check:release    # full release-readiness gate for CI and release candidates
+npm run check:consumer:packed # pack the current dist and validate it in a clean temp consumer app
+npm run check:release    # full release-readiness gate; builds once, then validates the packed output
 npm run build:types      # declaration-only TypeScript output
 npm run build:preview    # production preview build
+npm run pack:dry-run     # inspect the current built package tarball without running lifecycle scripts
 npm run changeset        # create release notes and a SemVer bump entry
 npm run version          # apply pending Changesets to package metadata and changelog
 npm run release          # publish after legal/publication approval and token setup
@@ -248,6 +250,11 @@ npm run build:playground # compatibility alias for build:preview
 npm run dev:playground   # compatibility alias for dev:preview
 npm run prepare          # lifecycle hook used by private Git installs
 ```
+
+`check:release` intentionally packs with lifecycle scripts disabled after the
+single package build. This keeps the release gate focused on the exact built
+`dist` output while preserving `prepare` for real publish and Git install
+workflows.
 
 ## Documentation
 

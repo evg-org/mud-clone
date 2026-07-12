@@ -121,7 +121,7 @@ function assert(condition, message) {
 async function packPackage() {
   const { stdout } = await run(
     npmCommand,
-    ["pack", "--silent", "--pack-destination", tempRoot],
+    ["pack", "--silent", "--ignore-scripts", "--pack-destination", tempRoot],
     {
       cwd: packageRoot,
       env: {
