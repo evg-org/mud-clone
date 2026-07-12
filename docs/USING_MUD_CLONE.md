@@ -21,12 +21,19 @@ track SemVer releases.
 
 - A React/Vite project.
 - Node.js and npm installed.
-- Access to the package registry selected for `@evg-org/mud-clone`.
+- Access to GitHub Packages for the `@evg-org` scope. Local installs need a
+  GitHub token with `read:packages`.
 
 ## 1. Install MUD-clone
 
-After the scoped package is published, install the package from the selected
-registry:
+After the scoped package is published, configure npm for GitHub Packages:
+
+```ini
+@evg-org:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+Then install the package:
 
 ```bash
 npm install @evg-org/mud-clone@^1.0.0

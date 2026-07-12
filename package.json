@@ -20,7 +20,7 @@
     "README.md"
   ],
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "sideEffects": [
     "**/*.css",

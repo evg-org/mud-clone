@@ -29,11 +29,21 @@ workspace link that points at this package root:
 }
 ```
 
-The first scoped registry release is `@evg-org/mud-clone@1.0.0`. Package
-metadata is publish-enabled, but registry publication is still a manual release
-owner action that requires npm access and approval for the exact version being
-published. After publication, consuming apps should install the scoped package
-from the chosen registry:
+The first scoped registry release is `@evg-org/mud-clone@1.0.0`. The package is
+published to GitHub Packages, not the public npmjs registry. Package metadata is
+publish-enabled, but registry publication is still a manual release owner action
+that requires GitHub package access and approval for the exact version being
+published.
+
+Configure npm for the `@evg-org` scope before installing from GitHub Packages:
+
+```ini
+@evg-org:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+After publication, consuming apps should install the scoped package from GitHub
+Packages:
 
 ```bash
 npm install @evg-org/mud-clone@^1.0.0

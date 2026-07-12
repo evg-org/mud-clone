@@ -3,8 +3,13 @@
 MUD-clone releases use the scoped package name `@evg-org/mud-clone`.
 
 Package metadata is publish-enabled, but registry publication must remain a
-manual release owner action. Do not run a registry publish until npm access,
-registry target, and approval for the exact version are confirmed.
+manual release owner action. The selected registry is GitHub Packages at
+`https://npm.pkg.github.com`. Do not run a registry publish until GitHub package
+access and approval for the exact version are confirmed.
+
+Publish auth requires a GitHub token with `write:packages`. Consumers installing
+from GitHub Packages need registry access for the `@evg-org` scope and a token
+with `read:packages`.
 
 ## Version Policy
 
@@ -39,8 +44,8 @@ npm run version
 npm run release
 ```
 
-`npm run release` must only be used after the registry token is configured and
-approval for the exact version is recorded.
+`npm run release` must only be used after the GitHub Packages token is
+configured and approval for the exact version is recorded.
 
 ## Release Readiness
 
