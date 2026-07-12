@@ -7,7 +7,7 @@ Last checked: 2026-07-12.
 
 ## Current Assessment
 
-Status: **scoped package release-ready pending legal/publication approval**.
+Status: **publish-gate ready pending npm access and manual registry publish**.
 
 Standalone packaging work is intentionally on hold while RSC usage hardening is
 active. Current promotion priorities and RSC source-of-truth rules are tracked
@@ -18,8 +18,8 @@ the current audit did not find direct imports from RSC app paths inside
 `mud-clone/src`. The package now has explicit dependency metadata, generated
 asset registries, declaration output, built package export paths, a
 package-owned Vite build check, a preview, scoped package identity, Changesets,
-and release-readiness CI. The main remaining work is legal and publication
-approval before removing `private: true`.
+and release-readiness CI. The main remaining work is npm registry access and a
+deliberate manual publish of the approved version.
 
 ## Two-Repository Usage Plan
 
@@ -37,8 +37,8 @@ The extraction flow should be:
 
 1. Continue hardening `mud-clone/` inside the RSC repository until reusable
    foundations, assets, and reviewed components live there consistently.
-2. Finish remaining standalone readiness items: legal clearance and registry
-   publication approval.
+2. Finish remaining standalone readiness items: registry access and explicit
+   approval for the package version being published.
 3. Create the separate MUD-clone GitHub repository. Done:
    [`evg-org/mud-clone`](https://github.com/evg-org/mud-clone.git).
 4. Copy or move the `mud-clone` package contents into that repository. Done:
@@ -75,14 +75,14 @@ Workflow rules after the split:
 | Vite coupling | Reduced | `MudLogo` uses a generated source registry. `MudIcon` still uses Vite `import.meta.glob` for lazy icon URL loading, and the package build normalizes emitted icon/logo URLs so consumers resolve package-owned assets instead of app-root `/assets` paths. | Keep generated registries and build asset normalization in sync; revisit only if a future package target cannot consume `new URL` asset references. |
 | Package exports | Ready for internal handoff | `mud-clone/package.json` exports the root barrel, every current component subpath, and the CSS foundation files from built `dist` paths. Type conditions point to matching declaration files. | Revisit only if the public package name or output layout changes. |
 | Package dependencies | Mostly ready | `mud-clone/package.json` now lists React peers and the current Radix, CVA, utility, and icon dependencies used by source files. Versions match the parent app baseline. | Revisit peer-versus-direct dependency policy before publication. |
-| Package scripts/files | Release-ready pending approval | `mud-clone/package.json` now declares a narrowed publish allowlist, `sideEffects`, asset generation/check scripts, declaration generation, build asset copying, build output validation, package build, clean consumer validation, preview scripts, Changesets scripts, and `check:release`. | Revisit only if the registry target changes. |
+| Package scripts/files | Release-ready | `mud-clone/package.json` now declares a narrowed publish allowlist, `sideEffects`, asset generation/check scripts, declaration generation, build asset copying, build output validation, package build, clean consumer validation, preview scripts, Changesets scripts, and `check:release`. | Revisit only if the registry target changes. |
 | Package build | Mostly ready | `mud-clone/vite.config.ts` can build the root barrel and current component subpaths as an ES module library bundle. `npm run build` also emits declarations, copies CSS/font assets, and validates exported build artifacts. | Verify a clean consumer install before release. |
 | CSS and font assets | Mostly ready | CSS uses relative font URLs to copied Onest files under `mud-clone/src/assets/fonts/onest`; the package build now copies styles to `dist/styles` and fonts to `dist/assets/fonts`. | Verify asset URL behavior again in a clean consuming app before release. |
 | Icon and logo assets | Mostly ready | MUD assets are copied under `mud-clone/src/assets/mud` and resolved by generated registries consumed by `MudIcon`/`MudLogo`. | Decide whether to ship all copied assets or prune to a documented supported set. |
 | Documentation | Good baseline | `DESIGN_SYSTEM.md`, `COMPONENT_SOURCES.md`, `MIGRATION_NOTES.md`, and `CONTRIBUTING.md` exist. | Add install/import examples and standalone package usage docs. |
 | Examples/preview | In progress | `examples/preview` is a package-owned, page-based Vite reference surface that imports MUD-clone primitives through `@mud-clone` aliases and documents foundations, components, and reusable RSC patterns. | Keep adding focused page routes when new reusable primitives are added. |
-| Attribution/license | Documented, needs approval before release | `ATTRIBUTION.md` records upstream MUD, copied assets, Onest font, and license cautions. The package remains `UNLICENSED` and `private`. | Get explicit legal/publication clearance before open-source licensing or package publication. |
-| Package name | Decided | Current `name` is `@evg-org/mud-clone`, `private` is `true`, and `version` is `1.0.0`. | Remove `private: true` only after publication approval. |
+| Attribution/license | Documented, needs approval before release | `ATTRIBUTION.md` records upstream MUD, copied assets, Onest font, and license cautions. The package remains `UNLICENSED`. | Get explicit legal/publication clearance before open-source licensing or package publication. |
+| Package name | Decided | Current `name` is `@evg-org/mud-clone`, `version` is `1.0.0`, and package metadata is publish-enabled. | Publish only after npm access and release owner approval are confirmed. |
 | Versioning/release process | Configured | Changesets, `CHANGELOG.md`, SemVer policy, `check:release`, and release-readiness CI are in place. | Configure registry token and publish only after approval. |
 
 ## External Dependencies Found In Source
@@ -135,13 +135,15 @@ need an explicit dependency policy before standalone extraction.
   components, and TypeScript declarations.
 - [x] Final package name is `@evg-org/mud-clone`.
 - [x] Versioning, changelog, and release-readiness workflow are configured.
-- [ ] Legal/publication clearance for standalone release is confirmed.
+- [x] Package metadata is publish-enabled by omitting `private: true`.
+- [ ] npm registry access is configured for the release owner.
+- [ ] Registry publication of `@evg-org/mud-clone@1.0.0` is completed.
 
 ## Recommended Next Steps When Standalone Work Resumes
 
 1. Repeat `npm run check:release` before each release candidate.
-2. Confirm legal/publication clearance for standalone release.
-3. Remove `private: true` only after approval.
+2. Confirm npm registry access and approval for the exact version.
+3. Publish the approved package version manually.
 4. Expand the preview as new reusable primitives are added.
 
 ## Declaration And Export Path Decision
