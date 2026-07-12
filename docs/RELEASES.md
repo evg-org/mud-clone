@@ -53,6 +53,9 @@ npm run check:release
 The gate validates generated asset registries, package exports, color and
 typography token usage, built declarations, copied CSS/font/icon/logo assets,
 the preview build, a clean packed-consumer app, and the npm tarball contents.
+It builds the package once, then packs and consumer-tests the resulting `dist`
+output with lifecycle scripts disabled so `prepare` does not rebuild during the
+release gate.
 
 The package rename from `mud-clone` to `@evg-org/mud-clone` is a one-time manual
 consumer migration. After consumers adopt the scoped package, automated update
