@@ -59,6 +59,7 @@ MUD-clone components:
 ```tsx
 import "@evg-org/mud-clone/styles/fonts.css";
 import "@evg-org/mud-clone/styles/design-system.css";
+import "@evg-org/mud-clone/styles/components.css";
 ```
 
 Use root imports for the convenience component surface:
@@ -112,11 +113,14 @@ CSS exports are:
 ```tsx
 import "@evg-org/mud-clone/styles/fonts.css";
 import "@evg-org/mud-clone/styles/design-system.css";
+import "@evg-org/mud-clone/styles/components.css";
 ```
 
 The font CSS references package-owned Onest files copied into `dist/assets` by
-`npm run build`. MUD icons and logos resolve package-owned assets and should be
-used through `MudIcon` and `MudLogo`.
+`npm run build`. The component CSS contains the compiled utility rules used by
+MUD-clone components, so consumers do not need to configure Tailwind to scan the
+package. MUD icons and logos resolve package-owned assets and should be used
+through `MudIcon` and `MudLogo`.
 
 ## Component Status
 
@@ -148,7 +152,7 @@ import {
 
 export function PermitSearchForm() {
   return (
-    <form className="grid gap-[var(--spacing-16)]">
+    <form style={{ display: "grid", gap: "var(--spacing-16)" }}>
       <TextInput
         clearable
         label="Request number"
@@ -215,7 +219,7 @@ import { MudIcon } from "@evg-org/mud-clone/components/mud-icon";
 
 export function StatusSummary() {
   return (
-    <div className="flex items-center gap-[var(--spacing-12)]">
+    <div style={{ alignItems: "center", display: "flex", gap: "var(--spacing-12)" }}>
       <Tag tone="positive" variant="outlined">
         <MudIcon name="Outlined/16/checkmark-small" size="sm" />
         Finalized
@@ -249,6 +253,7 @@ npm run build            # library JS, declaration files, CSS assets, font asset
 npm run check:consumer   # build, pack, install, typecheck, and bundle a clean temp consumer app
 npm run check:consumer:packed # pack the current dist and validate it in a clean temp consumer app
 npm run check:release    # full release-readiness gate; builds once, then validates the packed output
+npm run build:component-styles # compiled component utility CSS for package consumers
 npm run build:types      # declaration-only TypeScript output
 npm run build:preview    # production preview build
 npm run pack:dry-run     # inspect the current built package tarball without running lifecycle scripts

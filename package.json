@@ -36,8 +36,9 @@
     "src/assets/**/*"
   ],
   "scripts": {
-    "build": "npm run check:assets && npm run check:colors && npm run check:typography && vite build --config ./vite.config.ts && npm run build:types && npm run copy:build-assets && npm run check:build-output",
+    "build": "npm run check:assets && npm run check:colors && npm run check:typography && vite build --config ./vite.config.ts && npm run build:types && npm run copy:build-assets && npm run build:component-styles && npm run check:build-output",
     "build:playground": "npm run build:preview",
+    "build:component-styles": "vite build --config ./vite.component-styles.config.ts",
     "build:preview": "vite build --config ./examples/preview/vite.config.ts",
     "build:types": "tsc -p ./tsconfig.declarations.json && npm run fix:declarations",
     "check": "npm run check:assets && npm run check:exports && npm run check:colors && npm run check:typography",
@@ -205,6 +206,7 @@
       "types": "./dist/components/textarea.d.ts",
       "import": "./dist/components/textarea.js"
     },
+    "./styles/components.css": "./dist/styles/components.css",
     "./styles/design-system.css": "./dist/styles/design-system.css",
     "./styles/fonts.css": "./dist/styles/fonts.css"
   },

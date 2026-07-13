@@ -134,13 +134,14 @@ dependency will fail for the same reason.
 
 ## 4. Import The Styles Once
 
-Import the MUD-clone font and design-system CSS once near the root of your app.
-For a Vite app, this is usually `src/main.tsx`, `src/main.jsx`, or
+Import the MUD-clone font, design-system, and component CSS once near the root
+of your app. For a Vite app, this is usually `src/main.tsx`, `src/main.jsx`, or
 `src/main.ts`.
 
 ```tsx
 import "@evg-org/mud-clone/styles/fonts.css";
 import "@evg-org/mud-clone/styles/design-system.css";
+import "@evg-org/mud-clone/styles/components.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -150,7 +151,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
 ```
 
-If your app has custom CSS overrides, import those after the MUD-clone CSS.
+The component CSS is compiled and package-owned. Your app does not need to
+configure Tailwind to scan `@evg-org/mud-clone` in `node_modules`. If your app
+has custom CSS overrides, import those after the MUD-clone CSS.
 
 ## 5. Use Components
 
@@ -228,6 +231,8 @@ npm run dev
 Check these things in the browser:
 
 - MUD-clone components render.
+- Component layout, spacing, hover, focus, and responsive states match the
+  MUD-clone preview.
 - The Onest font loads.
 - `MudIcon` icons render.
 - `MudLogo` logos render.
@@ -332,11 +337,12 @@ registry and that the consuming project has registry access.
 
 ### CSS or fonts do not apply
 
-Confirm both CSS imports exist near the app root:
+Confirm all three CSS imports exist near the app root:
 
 ```tsx
 import "@evg-org/mud-clone/styles/fonts.css";
 import "@evg-org/mud-clone/styles/design-system.css";
+import "@evg-org/mud-clone/styles/components.css";
 ```
 
 Custom app CSS should come after these imports.
@@ -364,6 +370,9 @@ continuing.
 - Do not import from `@evg-org/mud-clone/src` or
   `@evg-org/mud-clone/dist` directly.
 - Do not edit files inside `node_modules/@evg-org/mud-clone`.
+- Do not configure Tailwind to scan `@evg-org/mud-clone` unless you are
+  intentionally debugging package internals; import `styles/components.css`
+  instead.
 - Do not depend on the `main` branch unless you are testing unreleased changes.
 
 Use package imports and versioned releases instead.
