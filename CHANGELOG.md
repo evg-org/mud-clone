@@ -5,6 +5,8 @@
 ### Patch Changes
 
 - Loosen React peer dependency range for consuming apps.
+- Add a package-owned compiled `styles/components.css` export so consumers do
+  not need Tailwind source scanning for MUD-clone component styling.
 
 ## 1.0.0
 
