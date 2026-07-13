@@ -7,10 +7,16 @@ React/Vite project.
 repository is public and the package is `UNLICENSED`. Do not treat public
 repository or registry visibility as open-source reuse permission.
 
-The first scoped package release is:
+The first scoped package release was:
 
 ```text
 @evg-org/mud-clone@1.0.0
+```
+
+The current patch release used in access checks is:
+
+```text
+@evg-org/mud-clone@1.0.1
 ```
 
 The rename from `mud-clone` to `@evg-org/mud-clone` is a one-time manual
@@ -21,19 +27,35 @@ track SemVer releases.
 
 - A React/Vite project.
 - Node.js and npm installed.
-- Access to GitHub Packages for the `@evg-org` scope. Local installs need a
-  GitHub token with `read:packages`.
+- A valid GitHub Packages npm token. Local installs need a personal access token
+  classic with `read:packages`. GitHub Actions should provide a token through
+  `NODE_AUTH_TOKEN`.
 
 ## 1. Install MUD-clone
 
-After the scoped package is published, configure npm for GitHub Packages:
+In the consuming app repository, commit a project `.npmrc` that routes only the
+`@evg-org` scope to GitHub Packages:
 
 ```ini
 @evg-org:registry=https://npm.pkg.github.com
+```
+
+Do not commit an auth token to the repository.
+
+For local developer installs, add the token line to your user-level `~/.npmrc`:
+
+```ini
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-Then install the package:
+Then export a GitHub personal access token classic with `read:packages` before
+installing:
+
+```bash
+export GITHUB_TOKEN=YOUR_GITHUB_PAT_CLASSIC_WITH_READ_PACKAGES
+```
+
+Install the package:
 
 ```bash
 npm install @evg-org/mud-clone@^1.0.0
@@ -62,7 +84,55 @@ For same-machine development before publication, use a local file dependency:
 Do not depend on the `main` branch unless you are intentionally testing
 unreleased design-system work.
 
-## 2. Import The Styles Once
+## 2. Configure GitHub Actions
+
+For GitHub Actions consumers, use `actions/setup-node` to create the runner
+`.npmrc`, then pass a token through `NODE_AUTH_TOKEN` on the install step:
+
+```yaml
+permissions:
+  contents: read
+  packages: read
+
+steps:
+  - uses: actions/checkout@v6
+
+  - uses: actions/setup-node@v4
+    with:
+      node-version: 20
+      registry-url: https://npm.pkg.github.com
+      scope: "@evg-org"
+
+  - run: npm ci
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+For same-organization public package installs, `GITHUB_TOKEN` with
+`packages: read` is usually enough. If your workflow still receives `E401` or
+`E403`, create a repository or organization secret that contains a personal
+access token classic with `read:packages`, then use that secret as
+`NODE_AUTH_TOKEN`.
+
+## 3. Verify Access
+
+Before changing imports, verify that npm can read the package from GitHub
+Packages:
+
+```bash
+npm view @evg-org/mud-clone@1.0.1 version --registry=https://npm.pkg.github.com
+```
+
+Expected output:
+
+```text
+1.0.1
+```
+
+If this command fails, fix package registry/authentication first. Installing the
+dependency will fail for the same reason.
+
+## 4. Import The Styles Once
 
 Import the MUD-clone font and design-system CSS once near the root of your app.
 For a Vite app, this is usually `src/main.tsx`, `src/main.jsx`, or
@@ -82,7 +152,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
 
 If your app has custom CSS overrides, import those after the MUD-clone CSS.
 
-## 3. Use Components
+## 5. Use Components
 
 Use root imports for common components:
 
@@ -147,7 +217,7 @@ export function MudCloneSmokeTest() {
 }
 ```
 
-## 4. Verify It Works In The Project
+## 6. Verify It Works In The Project
 
 Run the project locally:
 
@@ -242,6 +312,12 @@ npm install
 Commit the updated `package.json` and lockfile in the consuming project.
 
 ## Troubleshooting
+
+| Error | Likely cause | Fix |
+| --- | --- | --- |
+| `E401 Unauthorized` | npm reached GitHub Packages but no valid token was provided. | Check that `GITHUB_TOKEN` or `NODE_AUTH_TOKEN` is set for the same command that runs `npm install`, `npm ci`, or `npm view`. For local installs, keep the auth token line in `~/.npmrc`, not the repo `.npmrc`. |
+| `E403 Forbidden` | The token is valid but does not have package read access. | Use a personal access token classic with `read:packages`, or in GitHub Actions ensure `permissions: packages: read` is present. |
+| npm tries `registry.npmjs.org` or reports package not found | The `@evg-org` scope is not mapped to GitHub Packages. | Add `@evg-org:registry=https://npm.pkg.github.com` to the consuming repo `.npmrc`, then reinstall. |
 
 ### `Cannot find module "@evg-org/mud-clone"`
 
