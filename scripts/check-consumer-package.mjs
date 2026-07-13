@@ -213,6 +213,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 for (const cssExport of [
   "${packageName}/styles/fonts.css",
   "${packageName}/styles/design-system.css",
+  "${packageName}/styles/components.css",
 ]) {
   const resolved = new URL(import.meta.resolve(cssExport));
 
@@ -267,6 +268,7 @@ console.log("consumer smoke passed");
     resolve(consumerRoot, "usage.tsx"),
     `import "${packageName}/styles/fonts.css";
 import "${packageName}/styles/design-system.css";
+import "${packageName}/styles/components.css";
 
 import { Button, Tag, TextInput, Toast } from "${packageName}";
 import { MudIcon } from "${packageName}/components/mud-icon";
@@ -317,6 +319,7 @@ export function UsageSmoke() {
     resolve(consumerRoot, "src/main.jsx"),
     `import "${packageName}/styles/fonts.css";
 import "${packageName}/styles/design-system.css";
+import "${packageName}/styles/components.css";
 
 import { Button, Tag, TextInput, Toast } from "${packageName}";
 import { MudIcon } from "${packageName}/components/mud-icon";
@@ -379,7 +382,8 @@ async function validateBuiltConsumerAssets(consumerRoot) {
   const assetRoot = resolve(consumerRoot, "dist/assets");
   const files = await walkFiles(assetRoot);
   const relativeNames = files.map((file) => file.slice(assetRoot.length + 1));
-  const hasCss = relativeNames.some((file) => file.endsWith(".css"));
+  const cssFiles = files.filter((file) => file.endsWith(".css"));
+  const hasCss = cssFiles.length > 0;
   const hasFont = relativeNames.some((file) => file.endsWith(".woff"));
   const hasGovLogo = relativeNames.some((file) => file.includes("gov") && file.endsWith(".svg"));
   const hasSearchIcon = relativeNames.some((file) => file.includes("search"));
@@ -388,6 +392,22 @@ async function validateBuiltConsumerAssets(consumerRoot) {
   assert(hasFont, "Consumer Vite build did not emit Onest font assets.");
   assert(hasGovLogo, "Consumer Vite build did not emit a MUD logo asset.");
   assert(hasSearchIcon, "Consumer Vite build did not emit a MUD search icon asset.");
+
+  const bundledCss = (await Promise.all(cssFiles.map((file) => readFile(file, "utf8")))).join(
+    "\n",
+  );
+
+  assert(
+    !bundledCss.includes("@source") && !bundledCss.includes("@import"),
+    "Consumer bundle contains uncompiled package CSS directives.",
+  );
+
+  for (const expectedRule of ["display:flex", "display:grid", "display:inline-flex"]) {
+    assert(
+      bundledCss.includes(expectedRule),
+      `Consumer bundle is missing package component CSS output: ${expectedRule}`,
+    );
+  }
 
   const jsFiles = files.filter((file) => file.endsWith(".js"));
   for (const file of jsFiles) {

@@ -1,0 +1,9 @@
+/* Compiled component utilities for package consumers.
+   This file is built into dist/styles/components.css with Tailwind utilities only,
+   so consumers do not need to scan MUD-clone source or dist files. */
+@layer utilities;
+
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@source "../components/**/*.{ts,tsx}";
+@source "../index.ts";

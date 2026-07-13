@@ -93,6 +93,23 @@ if (!existsSync(fontsCssPath)) {
   }
 }
 
+const componentsCssPath = resolve(packageRoot, "dist/styles/components.css");
+if (!existsSync(componentsCssPath)) {
+  failures.push("dist/styles/components.css is missing");
+} else {
+  const componentsCss = readFileSync(componentsCssPath, "utf8");
+
+  if (componentsCss.includes("@source") || componentsCss.includes("tailwindcss/")) {
+    failures.push("dist/styles/components.css contains uncompiled Tailwind directives");
+  }
+
+  for (const expectedRule of ["display:flex", "display:grid", "display:inline-flex"]) {
+    if (!componentsCss.includes(expectedRule)) {
+      failures.push(`dist/styles/components.css is missing utility output: ${expectedRule}`);
+    }
+  }
+}
+
 if (failures.length > 0) {
   console.error("Package build output check failed:");
   for (const failure of failures) {

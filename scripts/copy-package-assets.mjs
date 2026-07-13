@@ -148,4 +148,4 @@ await rewriteMudLogoRegistry();
 await rewriteMudIconUrlModules();
 await assertNoRootAssetUrls();
 
-console.log("Package CSS, font, and MUD assets copied to dist.");
+console.log("Package source CSS, font, and MUD assets copied to dist.");
