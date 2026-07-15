@@ -1,5 +1,11 @@
 # @evg-org/mud-clone
 
+## 1.0.2
+
+### Patch Changes
+
+- Fix packaged MUD icon asset URLs so Vite consumers render CSS mask icons from package-owned data URLs instead of optimized dependency paths.
+
 ## 1.0.1
 
 ### Patch Changes

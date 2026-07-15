@@ -1,5 +1,6 @@
+import { Buffer } from "node:buffer";
 import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { basename, dirname, relative, resolve, sep } from "node:path";
+import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -105,21 +106,23 @@ async function rewriteMudIconUrlModules() {
       continue;
     }
 
-    const svgFileName = basename(file, ".js");
+    const svgFile = file.slice(0, -".js".length);
+    const svgContent = await readFile(svgFile);
+    const dataUrl = `data:image/svg+xml;base64,${Buffer.from(svgContent).toString("base64")}`;
     const content =
-      `const url = new URL(${JSON.stringify(`./${svgFileName}`)}, import.meta.url).href;\n` +
+      `const url = ${JSON.stringify(dataUrl)};\n` +
       "export { url as default };\n";
 
     await writeFile(file, content);
   }
 }
 
-async function assertNoRootAssetUrls() {
+async function assertNoInvalidAssetUrls() {
+  const iconUrlModuleFiles = (await walkFiles(resolve(packageRoot, "dist/assets/mud/icons")))
+    .filter((file) => file.endsWith(".svg.js"));
   const filesToCheck = [
     resolve(packageRoot, "dist/generated/mud-logos.js"),
-    ...(await walkFiles(resolve(packageRoot, "dist/assets/mud/icons"))).filter((file) =>
-      file.endsWith(".svg.js"),
-    ),
+    ...iconUrlModuleFiles,
   ];
 
   for (const file of filesToCheck) {
@@ -129,6 +132,23 @@ async function assertNoRootAssetUrls() {
       throw new Error(
         `${toPosixPath(relative(packageRoot, file))} contains an app-root asset URL.`,
       );
+    }
+  }
+
+  for (const file of iconUrlModuleFiles) {
+    const content = await readFile(file, "utf8");
+    const relativeFile = toPosixPath(relative(packageRoot, file));
+
+    if (!content.includes("data:image/svg+xml;base64,")) {
+      throw new Error(`${relativeFile} does not export an encoded SVG data URL.`);
+    }
+
+    if (content.includes("new URL(")) {
+      throw new Error(`${relativeFile} contains a runtime-relative SVG URL.`);
+    }
+
+    if (content.includes("/node_modules/.vite/deps/")) {
+      throw new Error(`${relativeFile} contains a Vite dependency SVG URL.`);
     }
   }
 }
@@ -146,6 +166,6 @@ await copyDirectory(
 );
 await rewriteMudLogoRegistry();
 await rewriteMudIconUrlModules();
-await assertNoRootAssetUrls();
+await assertNoInvalidAssetUrls();
 
 console.log("Package source CSS, font, and MUD assets copied to dist.");

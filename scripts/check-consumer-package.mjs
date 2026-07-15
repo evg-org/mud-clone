@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { tmpdir } from "node:os";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageName = "@evg-org/mud-clone";
@@ -378,6 +378,36 @@ createRoot(document.getElementById("root")).render(React.createElement(App));
   );
 }
 
+async function validateInstalledMudIconModule(consumerRoot) {
+  const iconModulePath = resolve(
+    consumerRoot,
+    "node_modules",
+    ...packageName.split("/"),
+    "dist/assets/mud/icons/Outlined/20/search.svg.js",
+  );
+
+  assert(existsSync(iconModulePath), `Packed MUD icon URL module is missing: ${iconModulePath}`);
+
+  const content = await readFile(iconModulePath, "utf8");
+
+  assert(
+    content.includes("data:image/svg+xml;base64,"),
+    "Packed MUD icon URL module does not contain an encoded SVG data URL.",
+  );
+  assert(
+    !content.includes("new URL("),
+    "Packed MUD icon URL module still contains a runtime-relative SVG URL.",
+  );
+
+  const iconModule = await import(pathToFileURL(iconModulePath).href);
+
+  assert(
+    typeof iconModule.default === "string" &&
+      iconModule.default.startsWith("data:image/svg+xml;base64,"),
+    "Packed MUD icon URL module default export is not an encoded SVG data URL.",
+  );
+}
+
 async function validateBuiltConsumerAssets(consumerRoot) {
   const assetRoot = resolve(consumerRoot, "dist/assets");
   const files = await walkFiles(assetRoot);
@@ -386,12 +416,10 @@ async function validateBuiltConsumerAssets(consumerRoot) {
   const hasCss = cssFiles.length > 0;
   const hasFont = relativeNames.some((file) => file.endsWith(".woff"));
   const hasGovLogo = relativeNames.some((file) => file.includes("gov") && file.endsWith(".svg"));
-  const hasSearchIcon = relativeNames.some((file) => file.includes("search"));
 
   assert(hasCss, "Consumer Vite build did not emit CSS.");
   assert(hasFont, "Consumer Vite build did not emit Onest font assets.");
   assert(hasGovLogo, "Consumer Vite build did not emit a MUD logo asset.");
-  assert(hasSearchIcon, "Consumer Vite build did not emit a MUD search icon asset.");
 
   const bundledCss = (await Promise.all(cssFiles.map((file) => readFile(file, "utf8")))).join(
     "\n",
@@ -410,6 +438,23 @@ async function validateBuiltConsumerAssets(consumerRoot) {
   }
 
   const jsFiles = files.filter((file) => file.endsWith(".js"));
+  const bundledJs = (await Promise.all(jsFiles.map((file) => readFile(file, "utf8")))).join(
+    "\n",
+  );
+
+  assert(
+    bundledJs.includes("data:image/svg+xml;base64,"),
+    "Consumer Vite build did not include an encoded MUD icon data URL.",
+  );
+  assert(
+    !bundledJs.includes("/node_modules/.vite/deps/"),
+    "Consumer Vite build contains a Vite dependency asset URL.",
+  );
+  assert(
+    !/new URL\(["']\.\/[^"']+\.svg["'],\s*import\.meta\.url\)/.test(bundledJs),
+    "Consumer Vite build contains a runtime-relative MUD icon SVG URL.",
+  );
+
   for (const file of jsFiles) {
     const content = await readFile(file, "utf8");
 
@@ -436,6 +481,7 @@ try {
       cwd: consumerRoot,
       timeoutMs: 300_000,
     });
+    await validateInstalledMudIconModule(consumerRoot);
     await run(npmCommand, ["run", "--silent", "smoke"], { cwd: consumerRoot });
     await run(npmCommand, ["run", "--silent", "typecheck"], { cwd: consumerRoot });
     await run(npmCommand, ["run", "--silent", "build"], { cwd: consumerRoot });

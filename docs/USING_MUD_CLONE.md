@@ -16,7 +16,7 @@ The first scoped package release was:
 The current patch release used in access checks is:
 
 ```text
-@evg-org/mud-clone@1.0.1
+@evg-org/mud-clone@1.0.2
 ```
 
 The rename from `mud-clone` to `@evg-org/mud-clone` is a one-time manual
@@ -120,13 +120,13 @@ Before changing imports, verify that npm can read the package from GitHub
 Packages:
 
 ```bash
-npm view @evg-org/mud-clone@1.0.1 version --registry=https://npm.pkg.github.com
+npm view @evg-org/mud-clone@1.0.2 version --registry=https://npm.pkg.github.com
 ```
 
 Expected output:
 
 ```text
-1.0.1
+1.0.2
 ```
 
 If this command fails, fix package registry/authentication first. Installing the
