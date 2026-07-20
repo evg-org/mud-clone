@@ -7,13 +7,7 @@ React/Vite project.
 repository is public and the package is `UNLICENSED`. Do not treat public
 repository or registry visibility as open-source reuse permission.
 
-The first scoped package release was:
-
-```text
-@evg-org/mud-clone@1.0.0
-```
-
-The current patch release used in access checks is:
+The current package release is:
 
 ```text
 @evg-org/mud-clone@1.0.2
@@ -58,7 +52,7 @@ export GITHUB_TOKEN=YOUR_GITHUB_PAT_CLASSIC_WITH_READ_PACKAGES
 Install the package:
 
 ```bash
-npm install @evg-org/mud-clone@^1.0.0
+npm install @evg-org/mud-clone@^1.0.2
 ```
 
 This adds the scoped package to your `package.json`:
@@ -66,7 +60,7 @@ This adds the scoped package to your `package.json`:
 ```json
 {
   "dependencies": {
-    "@evg-org/mud-clone": "^1.0.0"
+    "@evg-org/mud-clone": "^1.0.2"
   }
 }
 ```

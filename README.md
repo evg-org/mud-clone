@@ -30,8 +30,8 @@ workspace link that points at this package root:
 ```
 
 The package is published to GitHub Packages, not the public npmjs registry. The
-first scoped registry release was `@evg-org/mud-clone@1.0.0`; consuming apps
-should use a SemVer range such as `^1.0.0` to receive compatible patch releases.
+current registry release is `@evg-org/mud-clone@1.0.2`; consuming apps should
+use a SemVer range such as `^1.0.2` to receive compatible patch releases.
 
 Configure npm for the `@evg-org` scope before installing from GitHub Packages:
 
@@ -46,7 +46,7 @@ developer setup, GitHub Actions setup, and access verification commands.
 Consuming apps should install the scoped package from GitHub Packages:
 
 ```bash
-npm install @evg-org/mud-clone@^1.0.0
+npm install @evg-org/mud-clone@^1.0.2
 ```
 
 The package rename from `mud-clone` to `@evg-org/mud-clone` is a one-time

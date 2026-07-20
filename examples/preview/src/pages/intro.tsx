@@ -1,4 +1,7 @@
 import { ExampleCard, PageHeader } from "../docs-ui";
+import packageJson from "../../../../package.json";
+
+const currentPackageVersion = `${packageJson.name}@${packageJson.version}`;
 
 const whatMudCloneIs = [
   "A local React component library built from MUD foundations, tokens, assets, and selected reusable product patterns.",
@@ -38,6 +41,27 @@ export function IntroPage() {
         title="MUD-clone"
       />
 
+      <ExampleCard title="Current version">
+        <div className="intro-source-list">
+          <code>{currentPackageVersion}</code>
+        </div>
+      </ExampleCard>
+
+      <ExampleCard
+        description="Use the integration guide for install commands, GitHub Packages access, CSS imports, and verification."
+        title="Use this library in your project"
+      >
+        <div className="intro-source-list">
+          <a
+            href="https://github.com/evg-org/mud-clone/blob/main/docs/USING_MUD_CLONE.md"
+            rel="noreferrer"
+            target="_blank"
+          >
+            ↗ Read the integration guide
+          </a>
+        </div>
+      </ExampleCard>
+
       <div className="component-grid two">
         <ExampleCard title="What MUD-clone is">
           <IntroList items={whatMudCloneIs} />
@@ -58,14 +82,14 @@ export function IntroPage() {
       >
         <div className="intro-source-list">
           <a href="https://mud.egov.md" rel="noreferrer" target="_blank">
-            Official MUD public reference
+            ↗ Official MUD public reference
           </a>
           <a
             href="https://github.com/egov-moldova/design-system/tree/main"
             rel="noreferrer"
             target="_blank"
           >
-            Upstream MUD repository
+            ↗ Upstream MUD repository
           </a>
         </div>
       </ExampleCard>
