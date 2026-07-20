@@ -41,6 +41,20 @@ export function IntroPage() {
         title="MUD-clone"
       />
 
+      <div className="component-grid two">
+        <ExampleCard title="What MUD-clone is">
+          <IntroList items={whatMudCloneIs} />
+        </ExampleCard>
+
+        <ExampleCard title="What MUD-clone is not">
+          <IntroList items={whatMudCloneIsNot} />
+        </ExampleCard>
+      </div>
+
+      <ExampleCard title="How to use this preview">
+        <IntroList items={previewUsage} />
+      </ExampleCard>
+
       <ExampleCard title="Current version">
         <div className="intro-source-list">
           <code>{currentPackageVersion}</code>
@@ -60,20 +74,6 @@ export function IntroPage() {
             ↗ Read the integration guide
           </a>
         </div>
-      </ExampleCard>
-
-      <div className="component-grid two">
-        <ExampleCard title="What MUD-clone is">
-          <IntroList items={whatMudCloneIs} />
-        </ExampleCard>
-
-        <ExampleCard title="What MUD-clone is not">
-          <IntroList items={whatMudCloneIsNot} />
-        </ExampleCard>
-      </div>
-
-      <ExampleCard title="How to use this preview">
-        <IntroList items={previewUsage} />
       </ExampleCard>
 
       <ExampleCard
