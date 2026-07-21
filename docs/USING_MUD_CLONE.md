@@ -108,6 +108,21 @@ For same-organization public package installs, `GITHUB_TOKEN` with
 access token classic with `read:packages`, then use that secret as
 `NODE_AUTH_TOKEN`.
 
+### Vercel
+
+For Vercel builds, keep the consuming repo `.npmrc` wired to
+`NODE_AUTH_TOKEN`:
+
+```ini
+@evg-org:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Add `NODE_AUTH_TOKEN` in Vercel as an environment variable containing a GitHub
+personal access token classic with `read:packages`. Make sure it is available
+in every Vercel environment that builds the app, such as Preview and
+Production.
+
 ## 3. Verify Access
 
 Before changing imports, verify that npm can read the package from GitHub
